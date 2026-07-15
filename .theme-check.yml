@@ -1,0 +1,8 @@
+root: .
+
+ignore:
+  - node_modules/**
+  - dist/**
+  - coverage/**
+
+# Theme Check defaults remain enabled. No accessibility or Liquid checks are broadly suppressed.

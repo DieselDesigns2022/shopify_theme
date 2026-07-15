@@ -1,0 +1,51 @@
+{% assign desktop_image = section.settings.desktop_image %}
+{% assign mobile_image = section.settings.mobile_image | default: desktop_image %}
+{% assign has_content_button = false %}
+{% if section.settings.button_label != blank and section.settings.button_link != blank %}
+  {% assign has_content_button = true %}
+{% endif %}
+{% assign has_banner_content = false %}
+{% if desktop_image != blank or section.settings.heading != blank or section.settings.text != blank %}
+  {% assign has_banner_content = true %}
+{% endif %}
+{% assign has_full_banner_link = false %}
+{% if section.settings.full_banner_link != blank and has_content_button == false and has_banner_content %}
+  {% assign has_full_banner_link = true %}
+{% endif %}
+{% assign full_banner_label = section.settings.heading %}
+{% if section.settings.heading == blank %}
+  {% assign full_banner_label = 'welcome_banner.full_link_label' | t %}
+{% endif %}
+{% assign banner_alt = section.settings.alt_text | default: desktop_image.alt %}
+<section class="banner welcome-banner banner--{{ section.settings.width }} banner--{{ section.settings.text_position }}" style="--banner-pt: {{ section.settings.top_spacing }}px; --banner-pb: {{ section.settings.bottom_spacing }}px; --banner-height: {{ section.settings.image_height }}px; --banner-mobile-height: {{ section.settings.mobile_image_height }}px; --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};">
+  <div class="banner__inner{% if section.settings.width == 'contained' %} page-width{% endif %}">
+    <div class="banner__media">
+      {% if desktop_image != blank %}
+        <picture>{% if mobile_image != blank %}<source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 900 }}">{% endif %}{{ desktop_image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: banner_alt }}</picture>
+      {% endif %}
+      {% if section.settings.show_overlay %}<span class="banner__overlay"></span>{% endif %}
+    </div>
+    {% if has_full_banner_link %}
+      <a class="banner__full-link" href="{{ section.settings.full_banner_link }}" aria-label="{{ full_banner_label | escape }}"></a>
+    {% endif %}
+    {% if section.settings.heading != blank or section.settings.text != blank or has_content_button %}<div class="banner__content banner__content--{{ section.settings.content_alignment }}">{% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}{% if section.settings.text != blank %}<div>{{ section.settings.text }}</div>{% endif %}{% if has_content_button %}<a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>{% endif %}</div>{% endif %}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Welcome banner",
+  "settings": [
+    { "type": "image_picker", "id": "desktop_image", "label": "Desktop image" }, { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Welcome to our store" }, { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add a welcoming message for shoppers.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label" }, { "type": "url", "id": "button_link", "label": "Button link" }, { "type": "url", "id": "full_banner_link", "label": "Full banner link" },
+    { "type": "select", "id": "width", "label": "Width", "default": "contained", "options": [{"value":"contained","label":"Contained"},{"value":"full","label":"Full width"}] },
+    { "type": "select", "id": "content_alignment", "label": "Content alignment", "default": "center", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}] },
+    { "type": "select", "id": "text_position", "label": "Text position", "default": "center", "options": [{"value":"top","label":"Top"},{"value":"center","label":"Center"},{"value":"bottom","label":"Bottom"}] },
+    { "type": "checkbox", "id": "show_overlay", "label": "Show overlay", "default": false }, { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 30 },
+    { "type": "range", "id": "top_spacing", "label": "Top spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 24 }, { "type": "range", "id": "bottom_spacing", "label": "Bottom spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "image_height", "label": "Image height", "min": 240, "max": 720, "step": 20, "unit": "px", "default": 420 }, { "type": "range", "id": "mobile_image_height", "label": "Mobile image height", "min": 180, "max": 640, "step": 20, "unit": "px", "default": 320 },
+    { "type": "text", "id": "alt_text", "label": "Alt text" }
+  ],
+  "presets": [{ "name": "Welcome banner" }]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+{
+  "current": {
+    "logo": "",
+    "favicon": "",
+    "logo_width": 160,
+    "color_background": "#ffffff",
+    "color_text": "#1f2933",
+    "color_heading": "#111827",
+    "color_link": "#1d4ed8",
+    "color_border": "#d1d5db",
+    "color_button_primary_bg": "#111827",
+    "color_button_primary_text": "#ffffff",
+    "color_button_secondary_bg": "#ffffff",
+    "color_button_secondary_text": "#111827",
+    "color_footer_bg": "#f3f4f6",
+    "color_footer_text": "#1f2933",
+    "font_heading": "assistant_n4",
+    "font_body": "assistant_n4",
+    "base_font_size": 16,
+    "heading_scale": 120,
+    "page_width": 1200,
+    "section_spacing": 48,
+    "corner_radius": 8,
+    "button_radius": 6,
+    "enable_reveal_animation": true
+  }
+}

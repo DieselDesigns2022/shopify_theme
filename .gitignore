@@ -1,0 +1,17 @@
+.env
+.env.*
+node_modules/
+.DS_Store
+Thumbs.db
+*.zip
+*.tar
+*.tar.gz
+*.bak
+*.bak-*
+*.backup
+*.backup-*
+*.tmp
+*.log
+.shopify/
+dist/
+coverage/

@@ -1,0 +1,58 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Diesel Designs Shopify Theme",
+    "theme_version": "0.1.0",
+    "theme_author": "Diesel Designs",
+    "theme_documentation_url": "https://www.dieseldesigns.co",
+    "theme_support_url": "https://www.dieseldesigns.co"
+  },
+  {
+    "name": "Branding",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo image" },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon image" },
+      { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 160 }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color", "id": "color_background", "label": "Page background", "default": "#ffffff" },
+      { "type": "color", "id": "color_text", "label": "Text", "default": "#1f2933" },
+      { "type": "color", "id": "color_heading", "label": "Heading", "default": "#111827" },
+      { "type": "color", "id": "color_link", "label": "Link", "default": "#1d4ed8" },
+      { "type": "color", "id": "color_border", "label": "Border", "default": "#d1d5db" },
+      { "type": "color", "id": "color_button_primary_bg", "label": "Primary button background", "default": "#111827" },
+      { "type": "color", "id": "color_button_primary_text", "label": "Primary button text", "default": "#ffffff" },
+      { "type": "color", "id": "color_button_secondary_bg", "label": "Secondary button background", "default": "#ffffff" },
+      { "type": "color", "id": "color_button_secondary_text", "label": "Secondary button text", "default": "#111827" },
+      { "type": "color", "id": "color_footer_bg", "label": "Footer background", "default": "#f3f4f6" },
+      { "type": "color", "id": "color_footer_text", "label": "Footer text", "default": "#1f2933" }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      { "type": "font_picker", "id": "font_heading", "label": "Heading font", "default": "assistant_n4" },
+      { "type": "font_picker", "id": "font_body", "label": "Body font", "default": "assistant_n4" },
+      { "type": "range", "id": "base_font_size", "label": "Base font size", "min": 14, "max": 20, "step": 1, "unit": "px", "default": 16 },
+      { "type": "range", "id": "heading_scale", "label": "Heading scale", "min": 100, "max": 150, "step": 5, "unit": "%", "default": 120 }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      { "type": "range", "id": "page_width", "label": "Maximum page width", "min": 960, "max": 1600, "step": 20, "unit": "px", "default": 1200 },
+      { "type": "range", "id": "section_spacing", "label": "Section vertical spacing", "min": 24, "max": 96, "step": 4, "unit": "px", "default": 48 },
+      { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 8 },
+      { "type": "range", "id": "button_radius", "label": "Button radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 6 }
+    ]
+  },
+  {
+    "name": "Animation",
+    "settings": [
+      { "type": "checkbox", "id": "enable_reveal_animation", "label": "Enable reveal animation", "default": true }
+    ]
+  }
+]

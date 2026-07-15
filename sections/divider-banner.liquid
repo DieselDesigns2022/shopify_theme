@@ -1,0 +1,22 @@
+{% assign desktop_image = section.settings.desktop_image %}{% assign mobile_image = section.settings.mobile_image | default: desktop_image %}
+<section class="divider-banner divider-banner--{{ section.settings.width }} divider-banner--{{ section.settings.height }}" style="--divider-pt: {{ section.settings.top_spacing }}px; --divider-pb: {{ section.settings.bottom_spacing }}px; --divider-fit: {{ section.settings.image_fit }};">
+  <div class="divider-banner__inner{% if section.settings.width == 'contained' %} page-width{% endif %}">
+    {% if section.settings.full_banner_link != blank and desktop_image != blank %}<a href="{{ section.settings.full_banner_link }}" class="divider-banner__link">{% endif %}
+    {% if desktop_image != blank %}{% assign divider_alt = '' %}{% unless section.settings.decorative_image %}{% assign divider_alt = section.settings.alt_text | default: desktop_image.alt %}{% endunless %}<picture>{% if mobile_image != blank %}<source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 900 }}">{% endif %}{{ desktop_image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: divider_alt }}</picture>{% endif %}
+    {% if section.settings.full_banner_link != blank and desktop_image != blank %}</a>{% endif %}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Divider banner",
+  "settings": [
+    { "type": "image_picker", "id": "desktop_image", "label": "Desktop image" }, { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" }, { "type": "url", "id": "full_banner_link", "label": "Full banner link" },
+    { "type": "select", "id": "width", "label": "Width", "default": "contained", "options": [{"value":"contained","label":"Contained"},{"value":"full","label":"Full width"}] },
+    { "type": "select", "id": "height", "label": "Height", "default": "standard", "options": [{"value":"thin","label":"Thin"},{"value":"standard","label":"Standard"},{"value":"tall","label":"Tall"},{"value":"natural","label":"Natural"}] },
+    { "type": "select", "id": "image_fit", "label": "Image fit", "default": "contain", "options": [{"value":"contain","label":"Contain"},{"value":"cover","label":"Cover"}] },
+    { "type": "range", "id": "top_spacing", "label": "Top spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 16 }, { "type": "range", "id": "bottom_spacing", "label": "Bottom spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 16 },
+    { "type": "text", "id": "alt_text", "label": "Alt text" }, { "type": "checkbox", "id": "decorative_image", "label": "Decorative image", "default": true }
+  ],
+  "presets": [{ "name": "Divider banner" }]
+}
+{% endschema %}
