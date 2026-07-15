@@ -8,10 +8,13 @@
     close: '[data-mobile-menu-close]',
     overlay: '[data-mobile-menu-overlay]',
     reveal: '.banner, .rich-text, .main-404',
+    announcement: '[data-announcement-section]',
     focusable: 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
   };
 
   var revealObserver = null;
+  var announcementControllers = new WeakMap();
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   function getFocusable(container) {
     if (!container) return [];
@@ -134,10 +137,155 @@
     });
   }
 
+
+  function storageDismissed(key) {
+    if (window.Shopify && window.Shopify.designMode) return false;
+    try { return window.sessionStorage.getItem(key) === 'true'; } catch (error) { return false; }
+  }
+
+  function setStorageDismissed(key) {
+    try { window.sessionStorage.setItem(key, 'true'); } catch (error) { /* Storage is optional. */ }
+  }
+
+  function initAnnouncement(section) {
+    if (!section || announcementControllers.has(section)) return;
+    var style = section.dataset.announcementStyle;
+    var count = parseInt(section.dataset.announcementCount, 10) || 0;
+    var items = Array.prototype.slice.call(section.querySelectorAll('[data-announcement-item]'));
+    if (!count || !items.length) return;
+
+    var sectionId = section.dataset.sectionId || section.id || 'announcement';
+    var dismissKey = 'announcement-dismissed-' + sectionId;
+    if (section.dataset.dismissible === 'true' && storageDismissed(dismissKey)) {
+      section.hidden = true;
+      announcementControllers.set(section, function () { announcementControllers.delete(section); });
+      return;
+    }
+
+    var cleanup = [];
+    var timer = null;
+    var index = 0;
+    var userPaused = false;
+    var hoverPaused = false;
+    var focusPaused = false;
+    var toggle = section.querySelector('[data-announcement-toggle]');
+    var dismiss = section.querySelector('[data-announcement-dismiss]');
+    var pauseIcon = toggle ? toggle.querySelector('[data-announcement-pause-icon]') : null;
+    var playIcon = toggle ? toggle.querySelector('[data-announcement-play-icon]') : null;
+    var toggleLabel = toggle ? toggle.querySelector('[data-announcement-toggle-label]') : null;
+
+    function isMotionReduced() {
+      return reduceMotion.matches;
+    }
+
+    function shouldPause() {
+      return userPaused || hoverPaused || focusPaused || isMotionReduced();
+    }
+
+    function showItem(nextIndex) {
+      items.forEach(function (item, itemIndex) {
+        item.hidden = itemIndex !== nextIndex;
+      });
+      index = nextIndex;
+    }
+
+    function stopTimer() {
+      if (timer) window.clearInterval(timer);
+      timer = null;
+    }
+
+    function startTimer() {
+      if (style !== 'rotating' || count <= 1 || shouldPause()) return;
+      stopTimer();
+      timer = window.setInterval(function () {
+        if (shouldPause()) { stopTimer(); return; }
+        showItem((index + 1) % items.length);
+      }, parseInt(section.dataset.rotationSpeed, 10) || 5000);
+    }
+
+    function updateToggle() {
+      if (!toggle) return;
+      var label = userPaused ? toggle.dataset.resumeLabel : toggle.dataset.pauseLabel;
+      toggle.setAttribute('aria-label', label);
+      toggle.setAttribute('aria-pressed', userPaused ? 'true' : 'false');
+      if (pauseIcon) pauseIcon.hidden = userPaused;
+      if (playIcon) playIcon.hidden = !userPaused;
+      if (toggleLabel) toggleLabel.textContent = label;
+    }
+
+    function syncMotion() {
+      section.classList.toggle('announcement-bar--is-paused', shouldPause());
+      if (style === 'rotating') {
+        if (shouldPause()) stopTimer(); else startTimer();
+      }
+    }
+
+    if (style === 'rotating') {
+      showItem(0);
+      startTimer();
+    }
+
+    if (section.dataset.pauseOnHover === 'true') {
+      section.dataset.hoverPaused = 'true';
+      var onEnter = function () { hoverPaused = true; syncMotion(); };
+      var onLeave = function () { hoverPaused = false; syncMotion(); };
+      section.addEventListener('mouseenter', onEnter);
+      section.addEventListener('mouseleave', onLeave);
+      cleanup.push(function () { section.removeEventListener('mouseenter', onEnter); section.removeEventListener('mouseleave', onLeave); });
+    }
+
+    var onFocusIn = function () { focusPaused = true; syncMotion(); };
+    var onFocusOut = function () { window.setTimeout(function () { focusPaused = section.contains(document.activeElement); syncMotion(); }, 0); };
+    section.addEventListener('focusin', onFocusIn);
+    section.addEventListener('focusout', onFocusOut);
+    cleanup.push(function () { section.removeEventListener('focusin', onFocusIn); section.removeEventListener('focusout', onFocusOut); });
+
+    if (toggle) {
+      var onToggle = function () { userPaused = !userPaused; updateToggle(); syncMotion(); };
+      toggle.addEventListener('click', onToggle);
+      cleanup.push(function () { toggle.removeEventListener('click', onToggle); });
+    }
+
+    if (dismiss) {
+      var onDismiss = function () {
+        section.hidden = true;
+        stopTimer();
+        if (!(window.Shopify && window.Shopify.designMode)) setStorageDismissed(dismissKey);
+      };
+      dismiss.addEventListener('click', onDismiss);
+      cleanup.push(function () { dismiss.removeEventListener('click', onDismiss); });
+    }
+
+    var onMotionChange = function () { syncMotion(); };
+    if (reduceMotion.addEventListener) reduceMotion.addEventListener('change', onMotionChange);
+    else if (reduceMotion.addListener) reduceMotion.addListener(onMotionChange);
+    cleanup.push(function () {
+      if (reduceMotion.removeEventListener) reduceMotion.removeEventListener('change', onMotionChange);
+      else if (reduceMotion.removeListener) reduceMotion.removeListener(onMotionChange);
+    });
+
+    updateToggle();
+    syncMotion();
+    announcementControllers.set(section, function () { stopTimer(); cleanup.forEach(function (fn) { fn(); }); announcementControllers.delete(section); });
+  }
+
+  function destroyAnnouncements(scope) {
+    var root = scope || document;
+    var sections = [];
+    if (root.matches && root.matches(selectors.announcement)) sections.push(root);
+    Array.prototype.slice.call(root.querySelectorAll(selectors.announcement)).forEach(function (section) { sections.push(section); });
+    sections.forEach(function (section) {
+      var cleanup = announcementControllers.get(section);
+      if (cleanup) cleanup();
+    });
+  }
+
   function init(scope) {
     var root = scope || document;
     if (root !== document && root.matches && root.matches(selectors.header)) initHeader(root);
     root.querySelectorAll(selectors.header).forEach(initHeader);
+    if (root !== document && root.matches && root.matches(selectors.announcement)) initAnnouncement(root);
+    root.querySelectorAll(selectors.announcement).forEach(initAnnouncement);
     initReveal(root);
   }
 
@@ -150,6 +298,7 @@
 
   document.addEventListener('shopify:section:unload', function (event) {
     if (!event || !event.target) return;
+    destroyAnnouncements(event.target);
     if (event.target.matches && event.target.matches(selectors.header)) document.body.classList.remove('mobile-menu-open');
     else if (event.target.querySelector(selectors.header)) document.body.classList.remove('mobile-menu-open');
 

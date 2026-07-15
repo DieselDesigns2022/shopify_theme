@@ -2,10 +2,31 @@
   "type": "header",
   "name": "Header group",
   "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_1": {
+          "type": "announcement",
+          "settings": {
+            "desktop_text": "Free shipping on qualifying orders.",
+            "mobile_text": "",
+            "link": "",
+            "icon": "shipping"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_1"
+      ],
+      "settings": {}
+    },
     "header": {
       "type": "header",
       "settings": {}
     }
   },
-  "order": ["header"]
+  "order": [
+    "announcement_bar",
+    "header"
+  ]
 }

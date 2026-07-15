@@ -19,7 +19,10 @@ Implemented when Shopify CLI or `theme-check` is available.
 Implemented: verify `index.json` loads configured sections.
 
 ## Header Testing
-Partially implemented: verify logo fallback, menu links, mobile drawer, and actions.
+Partially implemented: verify logo fallback, menu links, mobile drawer, actions, and that the announcement bar appears before the header in the header section group.
+
+## Announcement Testing
+Partially implemented: verify empty blocks do not render, mobile text falls back to desktop text, static mode shows only the first usable announcement, rotating mode pauses on hover/focus and does not rotate with one usable block, scrolling mode has no duplicated focusable links, dismissal uses session storage without affecting Shopify design mode, reduced motion stops automatic movement, and Theme Editor section load/unload cleans up timers. Shopify preview testing has not yet occurred.
 
 ## Footer Testing
 Partially implemented: verify optional content and footer blocks.
