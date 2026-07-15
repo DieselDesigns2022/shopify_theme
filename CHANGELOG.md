@@ -3,7 +3,8 @@
 ## Unreleased
 
 ### Added
-- Phase 1 foundation files are prepared for review.
+- Phase 2 announcement system files are prepared for review.
+- Announcement bar section with static, rotating, and scrolling display modes, optional links/icons, visibility controls, dismissal, accessible moving-content controls, and reduced-motion handling.
 
 ### Changed
 - Clarified the project-specific `main`/Codex `work` workflow for `shopify_theme`.

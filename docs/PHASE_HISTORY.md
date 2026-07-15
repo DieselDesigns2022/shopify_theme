@@ -63,3 +63,27 @@ Documentation must precede code and must not claim future features are complete.
 
 ### Status
 Implemented for Phase 1 foundation.
+
+
+## Phase 2 — Announcement System
+
+### Planning
+Phase 2 adds a Shopify section-group announcement bar above the header.
+
+### Objective
+Implement multiple merchant-controlled announcements with static, rotating, and scrolling display modes.
+
+### Architecture Decisions
+The announcement bar lives in the existing header section group before the header, uses original inline SVG icons, vanilla CSS, and private theme JavaScript controllers without external libraries.
+
+### Accessibility Decisions
+Moving announcements include pause/resume controls, hover and keyboard-focus pausing, no duplicated focusable marquee content, translated labels, and reduced-motion behavior that stops automatic movement while keeping content usable.
+
+### Testing
+Required checks include JSON validation, JavaScript syntax validation, whitespace validation, Theme Check when available, and manual Shopify preview testing for section loading/unloading, dismissal, visibility, and reduced motion. Shopify preview testing has not yet occurred.
+
+### Known Limitations
+Live Shopify Theme Editor and storefront preview testing are still required before production readiness.
+
+### Status
+Implemented for changed-file review.

@@ -39,5 +39,11 @@
   "buttons": {
     "learn_more": "Learn more",
     "shop_now": "Shop now"
+  },
+  "announcement": {
+    "region_label": "Announcements",
+    "close": "Close announcements",
+    "pause": "Pause announcements",
+    "resume": "Resume announcements"
   }
 }

@@ -1,0 +1,76 @@
+{%- liquid
+  assign scope = section.settings.visibility_scope
+  assign render_section = true
+  if scope == 'home' and request.page_type != 'index'
+    assign render_section = false
+  elsif scope == 'selected'
+    assign render_section = false
+    case request.page_type
+      when 'product'
+        assign render_section = section.settings.show_product
+      when 'collection'
+        assign render_section = section.settings.show_collection
+      when 'page'
+        assign render_section = section.settings.show_page
+      when 'blog'
+        assign render_section = section.settings.show_blog
+      when 'article'
+        assign render_section = section.settings.show_article
+      when 'search'
+        assign render_section = section.settings.show_search
+      when 'cart'
+        assign render_section = section.settings.show_cart
+      else
+        assign render_section = section.settings.show_other
+    endcase
+  endif
+-%}
+{%- if render_section -%}
+  {%- capture items -%}
+    {%- assign usable_count = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if section.settings.display_style == 'static' and usable_count > 0 -%}
+        {%- break -%}
+      {%- endif -%}
+      {%- assign desktop_text = block.settings.desktop_text | strip -%}
+      {%- if desktop_text != blank -%}
+        {%- assign usable_count = usable_count | plus: 1 -%}
+        {%- assign mobile_text = block.settings.mobile_text | strip -%}
+        {%- if mobile_text == blank -%}{%- assign mobile_text = desktop_text -%}{%- endif -%}
+        <div class="announcement-bar__item" data-announcement-item{% if section.settings.display_style == 'rotating' and usable_count > 1 %} hidden{% endif %} {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}<a class="announcement-bar__link" href="{{ block.settings.link }}">{%- endif -%}
+            {%- if block.settings.icon != 'none' -%}<span class="announcement-bar__icon">{% render 'icon-announcement', icon: block.settings.icon %}</span>{%- endif -%}
+            <span class="announcement-bar__message announcement-bar__message--desktop">{{ desktop_text | escape }}</span>
+            <span class="announcement-bar__message announcement-bar__message--mobile">{{ mobile_text | escape }}</span>
+          {%- if block.settings.link != blank -%}</a>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if usable_count > 0 -%}
+    {%- liquid
+      assign moving = false
+      if section.settings.display_style == 'scrolling'
+        assign moving = true
+      elsif section.settings.display_style == 'rotating' and usable_count > 1
+        assign moving = true
+      endif
+    -%}
+    <section id="AnnouncementBar-{{ section.id }}" class="announcement-bar announcement-bar--{{ section.settings.display_style }}{% if section.settings.hide_mobile %} announcement-bar--hide-mobile{% endif %}{% if section.settings.hide_desktop %} announcement-bar--hide-desktop{% endif %}" aria-label="{{ 'announcement.region_label' | t }}" style="--announcement-bg: {{ section.settings.background_color }}; --announcement-text: {{ section.settings.text_color }}; --announcement-link: {{ section.settings.link_color }}; --announcement-rotation-speed: {{ section.settings.rotation_speed | times: 1000 }}ms; --announcement-scroll-speed: {{ section.settings.scrolling_speed }}s;" data-announcement-section data-announcement-style="{{ section.settings.display_style }}" data-announcement-count="{{ usable_count }}" data-rotation-speed="{{ section.settings.rotation_speed | times: 1000 }}" data-pause-on-hover="{{ section.settings.pause_on_hover }}" data-dismissible="{{ section.settings.dismissible }}" data-section-id="{{ section.id }}">
+      <div class="announcement-bar__inner page-width announcement-bar__inner--{{ section.settings.text_alignment }}">
+        <div class="announcement-bar__viewport">
+          <div class="announcement-bar__track" data-announcement-track>{{ items }}</div>
+        </div>
+        {%- if moving -%}
+          <button class="announcement-bar__control" type="button" data-announcement-toggle aria-pressed="false" aria-label="{{ 'announcement.pause' | t }}" data-pause-label="{{ 'announcement.pause' | t | escape }}" data-resume-label="{{ 'announcement.resume' | t | escape }}"><span data-announcement-pause-icon>{% render 'icon-announcement', icon: 'pause' %}</span><span data-announcement-play-icon hidden>{% render 'icon-announcement', icon: 'play' %}</span><span class="visually-hidden" data-announcement-toggle-label>{{ 'announcement.pause' | t }}</span></button>
+        {%- endif -%}
+        {%- if section.settings.dismissible -%}
+          <button class="announcement-bar__dismiss" type="button" data-announcement-dismiss aria-label="{{ 'announcement.close' | t }}">{% render 'icon-close' %}</button>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+{%- endif -%}
+{% schema %}
+{"name":"Announcement bar","max_blocks":12,"settings":[{"type":"select","id":"display_style","label":"Display style","default":"static","options":[{"value":"static","label":"Static"},{"value":"rotating","label":"Rotating"},{"value":"scrolling","label":"Scrolling"}]},{"type":"color","id":"background_color","label":"Background color","default":"#111111"},{"type":"color","id":"text_color","label":"Text color","default":"#ffffff"},{"type":"color","id":"link_color","label":"Link color","default":"#ffffff"},{"type":"select","id":"text_alignment","label":"Text alignment","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]},{"type":"range","id":"rotation_speed","label":"Rotation speed","min":3,"max":15,"step":1,"unit":"s","default":5},{"type":"range","id":"scrolling_speed","label":"Scrolling speed","min":8,"max":60,"step":1,"unit":"s","default":24},{"type":"checkbox","id":"pause_on_hover","label":"Pause on hover","default":true},{"type":"checkbox","id":"dismissible","label":"Dismissible","default":false},{"type":"checkbox","id":"hide_mobile","label":"Hide on mobile","default":false},{"type":"checkbox","id":"hide_desktop","label":"Hide on desktop","default":false},{"type":"select","id":"visibility_scope","label":"Visibility scope","default":"all","options":[{"value":"all","label":"All templates"},{"value":"home","label":"Homepage only"},{"value":"selected","label":"Selected templates"}]},{"type":"checkbox","id":"show_product","label":"Product templates","default":true},{"type":"checkbox","id":"show_collection","label":"Collection templates","default":true},{"type":"checkbox","id":"show_page","label":"Standard page templates","default":true},{"type":"checkbox","id":"show_blog","label":"Blog templates","default":true},{"type":"checkbox","id":"show_article","label":"Article templates","default":true},{"type":"checkbox","id":"show_search","label":"Search templates","default":true},{"type":"checkbox","id":"show_cart","label":"Cart templates","default":true},{"type":"checkbox","id":"show_other","label":"Other template types","default":true}],"blocks":[{"type":"announcement","name":"Announcement","settings":[{"type":"text","id":"desktop_text","label":"Desktop message text","default":"Free shipping on qualifying orders."},{"type":"text","id":"mobile_text","label":"Mobile message text"},{"type":"url","id":"link","label":"Optional link"},{"type":"select","id":"icon","label":"Optional icon","default":"none","options":[{"value":"none","label":"None"},{"value":"shipping","label":"Shipping"},{"value":"sale","label":"Sale"},{"value":"clock","label":"Clock"},{"value":"star","label":"Star"},{"value":"megaphone","label":"Megaphone"}]}]}],"presets":[{"name":"Announcement bar","blocks":[{"type":"announcement"}]}]}
+{% endschema %}
