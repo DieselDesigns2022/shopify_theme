@@ -1,0 +1,40 @@
+<footer class="site-footer site-footer--{{ section.settings.text_alignment }}">
+  <div class="page-width site-footer__inner">
+    {% if section.settings.footer_logo != blank %}{% assign footer_logo_height = section.settings.logo_width | divided_by: section.settings.footer_logo.aspect_ratio | round %}<img class="site-footer__logo" src="{{ section.settings.footer_logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name | escape }}" width="{{ section.settings.logo_width }}" height="{{ footer_logo_height }}" loading="lazy">{% endif %}
+    {% if section.settings.show_store_description and section.settings.store_description != blank %}<div class="site-footer__description">{{ section.settings.store_description }}</div>{% endif %}
+    {% if section.blocks.size > 0 %}
+      <div class="site-footer__blocks">
+        {% for block in section.blocks %}
+          <div class="site-footer__block" {{ block.shopify_attributes }}>
+            {% case block.type %}
+              {% when 'menu' %}
+                {% if block.settings.menu != blank %}<h2>{{ block.settings.heading | escape }}</h2><ul>{% for link in block.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}</ul>{% endif %}
+              {% when 'text' %}
+                {% if block.settings.heading != blank %}<h2>{{ block.settings.heading | escape }}</h2>{% endif %}{% if block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% endif %}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <div class="site-footer__bottom">
+      <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</small>
+      <p class="site-footer__attribution">Website by <a href="https://www.dieseldesigns.co">Diesel Designs</a></p>
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "image_picker", "id": "footer_logo", "label": "Footer logo" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 140 },
+    { "type": "checkbox", "id": "show_store_description", "label": "Show store description", "default": false },
+    { "type": "richtext", "id": "store_description", "label": "Store description", "default": "<p>Share a short description of your store.</p>" },
+    { "type": "select", "id": "text_alignment", "label": "Text alignment", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] }
+  ],
+  "blocks": [
+    { "type": "menu", "name": "Menu", "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "Menu" }, { "type": "link_list", "id": "menu", "label": "Menu" }] },
+    { "type": "text", "name": "Text", "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "About" }, { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add footer text.</p>" }] }
+  ]
+}
+{% endschema %}

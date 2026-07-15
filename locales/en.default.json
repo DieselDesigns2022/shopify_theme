@@ -1,0 +1,43 @@
+{
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
+  "header": {
+    "main_navigation": "Main navigation",
+    "mobile_navigation": "Mobile navigation",
+    "open_menu": "Open menu",
+    "close_menu": "Close menu",
+    "account": "Account"
+  },
+  "footer": {
+    "navigation": "Footer navigation"
+  },
+  "search": {
+    "search": "Search"
+  },
+  "cart": {
+    "cart": "Cart",
+    "item_count": {
+      "one": "1 item in cart",
+      "other": "{{ count }} items in cart"
+    }
+  },
+  "welcome_banner": {
+    "full_link_label": "Open welcome banner link"
+  },
+  "image_banner": {
+    "full_link_label": "Open image banner link"
+  },
+  "divider_banner": {
+    "full_link_label": "Open divider banner link"
+  },
+  "404": {
+    "title": "Page not found",
+    "text": "The page you were looking for does not exist.",
+    "return_home": "Return home"
+  },
+  "buttons": {
+    "learn_more": "Learn more",
+    "shop_now": "Shop now"
+  }
+}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title | escape }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' | escape }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name | escape }}{% endunless %}</title>
+    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% if settings.favicon != blank %}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{% endif %}
+    {{ content_for_header }}
+    {% assign body_font = settings.font_body %}
+    {% assign heading_font = settings.font_heading %}
+    <style>
+      {{ body_font | font_face: font_display: 'swap' }}
+      {% unless heading_font == body_font %}
+        {{ heading_font | font_face: font_display: 'swap' }}
+      {% endunless %}
+      :root {
+        --color-background: {{ settings.color_background }};
+        --color-text: {{ settings.color_text }};
+        --color-heading: {{ settings.color_heading }};
+        --color-link: {{ settings.color_link }};
+        --color-border: {{ settings.color_border }};
+        --color-button-primary-bg: {{ settings.color_button_primary_bg }};
+        --color-button-primary-text: {{ settings.color_button_primary_text }};
+        --color-button-secondary-bg: {{ settings.color_button_secondary_bg }};
+        --color-button-secondary-text: {{ settings.color_button_secondary_text }};
+        --color-footer-bg: {{ settings.color_footer_bg }};
+        --color-footer-text: {{ settings.color_footer_text }};
+        --font-body-family: {{ settings.font_body.family | default: 'system-ui' }}, {{ settings.font_body.fallback_families | default: 'sans-serif' }};
+        --font-heading-family: {{ settings.font_heading.family | default: 'system-ui' }}, {{ settings.font_heading.fallback_families | default: 'sans-serif' }};
+        --base-font-size: {{ settings.base_font_size }}px;
+        --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+        --page-width: {{ settings.page_width }}px;
+        --section-spacing: {{ settings.section_spacing }}px;
+        --corner-radius: {{ settings.corner_radius }}px;
+        --button-radius: {{ settings.button_radius }}px;
+      }
+    </style>
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  </head>
+  <body data-reveal-animation="{{ settings.enable_reveal_animation }}">
+    <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+    {% sections 'header-group' %}
+    <main id="MainContent" class="main-content" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+    {% sections 'footer-group' %}
+  </body>
+</html>

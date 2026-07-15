@@ -1,0 +1,141 @@
+/* 1. Reset */
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, p, ul { margin: 0; }
+img, picture { display: block; max-width: 100%; }
+button, input, textarea, select { font: inherit; }
+
+/* 2. CSS custom properties */
+:root { color-scheme: light; }
+
+/* 3. Base elements */
+body { background: var(--color-background); color: var(--color-text); font-family: var(--font-body-family); font-size: var(--base-font-size); line-height: 1.6; }
+body.mobile-menu-open { overflow: hidden; }
+
+/* 4. Typography */
+h1, h2, h3 { color: var(--color-heading); font-family: var(--font-heading-family); line-height: 1.15; }
+h1 { font-size: calc(2rem * var(--heading-scale)); }
+h2 { font-size: calc(1.5rem * var(--heading-scale)); }
+
+/* 5. Links */
+a { color: var(--color-link); text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 0.15em; }
+
+/* 6. Buttons */
+.button, button { min-height: 44px; min-width: 44px; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.25rem; border-radius: var(--button-radius); background: var(--color-button-primary-bg); color: var(--color-button-primary-text); text-decoration: none; border: 1px solid var(--color-button-primary-bg); }
+.button:hover { opacity: 0.9; }
+
+/* 7. Form controls */
+input, textarea, select { border: 1px solid var(--color-border); border-radius: var(--corner-radius); padding: 0.75rem; }
+
+/* 8. Utility classes */
+.page-width { width: min(100% - 2rem, var(--page-width)); margin-inline: auto; }
+.icon { width: 1.25rem; height: 1.25rem; }
+
+/* 9. Accessibility utilities */
+:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+[hidden] { display: none; }
+
+/* 10. Layout containers */
+.main-content { min-height: 50vh; }
+
+/* 11. Skip link */
+.skip-link { position: absolute; inset-block-start: 0.5rem; inset-inline-start: 0.5rem; z-index: 100; transform: translateY(-150%); background: var(--color-background); color: var(--color-text); padding: 0.75rem; border: 1px solid var(--color-border); }
+.skip-link:focus { transform: translateY(0); }
+
+/* 12. Header */
+.site-header { background: var(--color-background); border-bottom: 1px solid var(--color-border); z-index: 20; }
+.site-header--sticky { position: sticky; top: 0; }
+.site-header__inner { display: grid; grid-template-areas: "menu brand actions"; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1rem; padding-block: 1rem; }
+.site-header__menu-button { grid-area: menu; }
+.site-header__brand { grid-area: brand; }
+.site-header__nav { grid-area: nav; justify-self: start; }
+.site-header__actions { grid-area: actions; justify-self: end; }
+.site-header__brand { color: var(--color-heading); font-weight: 700; text-decoration: none; }
+.site-header__brand img { width: auto; max-height: 80px; }
+.site-header__actions { display: flex; align-items: center; gap: 0.75rem; }
+.site-header__actions a, .site-header__menu-button, .mobile-menu button { color: var(--color-text); background: transparent; border: 0; display: inline-flex; align-items: center; justify-content: center; padding: 0.5rem; }
+.cart-count { font-size: 0.75rem; margin-inline-start: 0.2rem; }
+
+/* 13. Desktop navigation */
+.site-header__nav { display: none; }
+.site-header__nav-list { display: flex; list-style: none; gap: 1rem; padding: 0; }
+.site-header__nav a { color: var(--color-text); text-decoration: none; }
+
+/* 14. Mobile navigation */
+.mobile-menu-overlay { position: fixed; inset: 0; background: rgb(0 0 0 / 0.4); z-index: 40; }
+.mobile-menu { position: fixed; inset-block: 0; inset-inline-start: 0; width: min(88vw, 24rem); background: var(--color-background); color: var(--color-text); z-index: 50; padding: 1rem; box-shadow: 0 0 2rem rgb(0 0 0 / 0.2); }
+.mobile-menu__header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; font-weight: 700; }
+.mobile-menu__list { list-style: none; padding: 0; display: grid; gap: 0.75rem; }
+.mobile-menu__list a { display: block; padding: 0.5rem 0; color: var(--color-text); }
+
+/* 15. Footer */
+.site-footer { background: var(--color-footer-bg); color: var(--color-footer-text); padding-block: var(--section-spacing); border-top: 1px solid var(--color-border); }
+.site-footer--center { text-align: center; }
+.site-footer__inner { display: grid; gap: 1.5rem; }
+.site-footer__blocks { display: grid; gap: 1.5rem; }
+.site-footer__block ul { list-style: none; padding: 0; display: grid; gap: 0.4rem; }
+.site-footer__bottom { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; border-top: 1px solid var(--color-border); padding-top: 1rem; }
+.site-footer__attribution a { color: inherit; }
+
+/* 16. Welcome banner */
+.banner { padding-block: var(--banner-pt) var(--banner-pb); }
+.banner__inner { position: relative; }
+.banner__media { position: relative; min-height: var(--banner-mobile-height); background: var(--color-border); background: color-mix(in srgb, var(--color-border), transparent 50%); border-radius: var(--corner-radius); overflow: hidden; }
+.banner__media img { width: 100%; height: var(--banner-mobile-height); object-fit: cover; }
+.banner__overlay { position: absolute; inset: 0; background: rgb(0 0 0 / var(--overlay-opacity)); }
+.banner__full-link { position: absolute; inset: 0; z-index: 1; border-radius: var(--corner-radius); }
+.banner__full-link:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+.banner__content { display: grid; gap: 1rem; margin-top: 1rem; position: relative; z-index: 2; pointer-events: none; }
+.banner__content h1, .banner__content h2, .banner__content h3, .banner__content h4, .banner__content h5, .banner__content h6, .banner__content p, .banner__content a:not(.button) { color: inherit; }
+.banner__content a, .banner__content button { pointer-events: auto; }
+.banner__content a:focus-visible { outline-color: currentColor; }
+.banner__content--center { text-align: center; justify-items: center; }
+.banner__content--right { text-align: right; justify-items: end; }
+
+/* 17. Image banner */
+.image-banner .banner__media { background: var(--color-border); background: color-mix(in srgb, var(--color-border), transparent 60%); }
+
+/* 18. Divider banner */
+.divider-banner { padding-block: var(--divider-pt) var(--divider-pb); }
+.divider-banner img { width: 100%; object-fit: var(--divider-fit); }
+.divider-banner--thin img { height: 80px; }
+.divider-banner--standard img { height: 160px; }
+.divider-banner--tall img { height: 260px; }
+.divider-banner--natural img { height: auto; }
+
+/* 19. Rich text */
+.rich-text { padding-block: var(--rich-pt) var(--rich-pb); }
+.rich-text__inner { display: grid; gap: 1rem; }
+.rich-text--center { text-align: center; }
+.rich-text--right { text-align: right; }
+.rich-text--narrow .rich-text__inner { max-width: 48rem; }
+
+/* 20. 404 page */
+.main-404 { padding-block: calc(var(--section-spacing) * 2); }
+.main-404__inner { display: grid; gap: 1rem; justify-items: center; text-align: center; }
+.main-404__code { font-weight: 700; letter-spacing: 0.2em; }
+.main-404__search { margin-top: 0.5rem; }
+
+/* 21. Reveal animation */
+[data-reveal-animation='true'] .reveal-ready { opacity: 0; transform: translateY(1rem); }
+[data-reveal-animation='true'] .reveal-ready.reveal-visible { opacity: 1; transform: translateY(0); transition: opacity 180ms ease, transform 180ms ease; }
+
+/* 22. Responsive rules */
+@media (min-width: 750px) {
+  .site-header__menu-button { display: none; }
+  .site-header__nav { display: block; }
+  .site-header__inner { grid-template-areas: "brand nav actions"; grid-template-columns: auto minmax(0, 1fr) auto; }
+  .site-header__inner--center { grid-template-areas: "nav brand actions"; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+  .site-footer__blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .banner__media, .banner__media img { min-height: var(--banner-height); height: var(--banner-height); }
+  .banner__content { position: absolute; inset: 2rem; margin: 0; align-content: center; color: white; }
+  .banner--top .banner__content { align-content: start; }
+  .banner--bottom .banner__content { align-content: end; }
+}
+
+/* 23. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms; animation-iteration-count: 1; scroll-behavior: auto; transition-duration: 0.01ms; }
+  [data-reveal-animation='true'] .reveal-ready { opacity: 1; transform: none; }
+}

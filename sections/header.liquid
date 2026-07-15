@@ -1,0 +1,70 @@
+<header class="site-header{% if section.settings.sticky_header %} site-header--sticky{% endif %}" data-header-section>
+  {% assign has_mobile_menu = false %}
+  {% if section.settings.main_menu != blank and section.settings.main_menu.links.size > 0 %}
+    {% assign has_mobile_menu = true %}
+  {% endif %}
+  <div class="site-header__inner page-width site-header__inner--{{ section.settings.logo_alignment }}">
+    {% if has_mobile_menu %}
+      <button class="site-header__menu-button" type="button" data-mobile-menu-trigger aria-expanded="false" aria-controls="MobileMenu-{{ section.id }}" aria-label="{{ 'header.open_menu' | t }}">
+        {% render 'icon-menu' %}
+      </button>
+    {% endif %}
+
+    <a class="site-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
+      {% assign header_logo = settings.logo %}
+      {% if header_logo != blank %}
+        {% assign header_logo_height = section.settings.logo_width | divided_by: header_logo.aspect_ratio | round %}
+        <img src="{{ header_logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name | escape }}" width="{{ section.settings.logo_width }}" height="{{ header_logo_height }}" loading="eager">
+      {% else %}
+        <span>{{ shop.name | escape }}</span>
+      {% endif %}
+    </a>
+
+    <nav class="site-header__nav" aria-label="{{ 'header.main_navigation' | t }}">
+      {% if section.settings.main_menu != blank %}
+        <ul class="site-header__nav-list">
+          {% for link in section.settings.main_menu.links %}
+            <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </nav>
+
+    <div class="site-header__actions">
+      {% if section.settings.show_search %}<a href="{{ routes.search_url }}" aria-label="{{ 'search.search' | t }}">{% render 'icon-search' %}</a>{% endif %}
+      {% if section.settings.show_account and shop.customer_accounts_enabled %}<a href="{{ routes.account_url }}" aria-label="{{ 'header.account' | t }}">{% render 'icon-account' %}</a>{% endif %}
+      {% if section.settings.show_cart %}<a href="{{ routes.cart_url }}" aria-label="{{ 'cart.cart' | t }}">{% render 'icon-cart' %}<span class="cart-count" aria-label="{{ 'cart.item_count' | t: count: cart.item_count }}">{{ cart.item_count }}</span></a>{% endif %}
+    </div>
+  </div>
+
+  {% if has_mobile_menu %}
+    <div class="mobile-menu-overlay" data-mobile-menu-overlay hidden></div>
+    <aside id="MobileMenu-{{ section.id }}" class="mobile-menu" data-mobile-menu hidden role="dialog" aria-modal="true" aria-label="{{ 'header.mobile_navigation' | t }}">
+    <div class="mobile-menu__header">
+      <span>{{ shop.name | escape }}</span>
+      <button type="button" data-mobile-menu-close aria-label="{{ 'header.close_menu' | t }}">{% render 'icon-close' %}</button>
+    </div>
+    <nav aria-label="{{ 'header.mobile_navigation' | t }}">
+      {% if section.settings.main_menu != blank %}
+        <ul class="mobile-menu__list">
+          {% for link in section.settings.main_menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}
+        </ul>
+      {% endif %}
+    </nav>
+    </aside>
+  {% endif %}
+</header>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 160 },
+    { "type": "link_list", "id": "main_menu", "label": "Main menu" },
+    { "type": "checkbox", "id": "sticky_header", "label": "Sticky header", "default": false },
+    { "type": "select", "id": "logo_alignment", "label": "Logo alignment", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show account", "default": true },
+    { "type": "checkbox", "id": "show_cart", "label": "Show cart", "default": true }
+  ]
+}
+{% endschema %}
