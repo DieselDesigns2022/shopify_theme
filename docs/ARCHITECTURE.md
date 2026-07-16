@@ -34,7 +34,7 @@ Icon snippets are reusable to avoid duplicated SVG code and keep header markup c
 Global CSS and JavaScript are loaded once from Shopify assets. No external CSS or JavaScript is used.
 
 ## Settings Architecture
-Global settings define shared branding, colors, typography, layout, and animation only. Banner-specific settings live in banner sections.
+Global settings define shared branding, colors, typography, layout widths, horizontal padding, reusable component styling, forms, cards, images, animation behavior, social URLs, contact fallback values, and utility visibility that gates header rendering in Liquid. Phase 4 exposes these settings through documented CSS variables in `layout/theme.liquid` and reusable classes in `assets/base.css`; banner-specific settings remain in banner sections.
 
 ## Locale Architecture
 Locale files hold reusable interface and Theme Editor text.
@@ -61,7 +61,7 @@ Cart architecture is deferred. Phase 1 includes only a cart link and cart count.
 Future metafields and metaobjects will provide structured product and content data when the related features are implemented.
 
 ## Accessibility Architecture
-The foundation includes landmarks, skip link, focus states, keyboard mobile navigation, ARIA state updates, alt handling, and reduced-motion support.
+The foundation includes landmarks, skip link, focus-visible states using the configured focus color, keyboard mobile navigation, ARIA state updates, alt handling, 44-pixel interactive targets, and reduced-motion support that disables global animation effects.
 
 ## Performance Architecture
 The foundation avoids frameworks, external scripts, oversized JavaScript, and unnecessary global features.

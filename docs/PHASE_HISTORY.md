@@ -107,3 +107,23 @@ Product, collection, cart system, homepage merchandising, predictive search, and
 
 ### Status
 Implemented for changed-file review.
+
+## Phase 4 — Global Design Settings, Typography, Layout Controls, Animations, and Presets
+
+### Objective
+Audit and complete the Phase 3 global design system without adding homepage, product, collection, cart, search, or later-phase systems.
+
+### Architecture Decisions
+Global colors, typography, layout widths, horizontal padding, component controls, form controls, card/image controls, animation settings, social links, contact fallback values, utility visibility, and Clean/Bold/Soft/Minimal presets are centralized in Theme Editor settings. `layout/theme.liquid` loads selected Shopify fonts and exposes the settings as CSS custom properties, while `assets/base.css` provides reusable utilities for future sections.
+
+### Accessibility Decisions
+Configured focus color is used for visible focus states, reusable buttons and controls maintain a 44-pixel minimum interactive size, disabled/error/success states are explicit, component hover toggles remain independent, and reduced-motion preferences disable animation and transition effects.
+
+### Testing
+Automated validation was run in the Codex environment, including corrected Phase 4 behavior checks. Shopify Theme Check availability was checked separately; live Shopify Theme Editor and storefront preview testing is still required.
+
+### Known Limitations
+Homepage merchandising, product, collection, cart, search, account, and later-phase commerce systems remain future work.
+
+### Status
+Implemented and awaiting changed-file review.
