@@ -547,6 +547,22 @@
   var slideshowControllers = new WeakMap();
   var countdownControllers = new WeakMap();
   var videoControllers = new WeakMap();
+  var productControllers = new WeakMap();
+
+  function initProduct(section) {
+    if (!section || productControllers.has(section)) return;
+    var gallery = section.querySelector('[data-product-gallery]'); var quantityInput = section.querySelector('input[name="quantity"]'); var cleanup = [];
+    function add(el, name, fn) { if (!el) return; el.addEventListener(name, fn); cleanup.push(function () { el.removeEventListener(name, fn); }); }
+    function change(n) { if (quantityInput) quantityInput.value = Math.max(1, (parseInt(quantityInput.value, 10) || 1) + n); } add(section.querySelector('[data-quantity-decrease]'), 'click', function () { change(-1); }); add(section.querySelector('[data-quantity-increase]'), 'click', function () { change(1); }); add(quantityInput, 'change', function () { if ((parseInt(quantityInput.value, 10) || 0) < 1) quantityInput.value = 1; });
+    if (gallery) { var media = Array.prototype.slice.call(gallery.querySelectorAll('[data-product-media]')); var thumbs = Array.prototype.slice.call(gallery.querySelectorAll('[data-product-thumbnail]')); var initialMediaId = gallery.dataset.initialMediaId; var active = media.map(function (item) { return item.dataset.mediaId; }).indexOf(initialMediaId); if (active < 0) active = 0; var modal = gallery.querySelector('[data-product-modal]'), modalImage = gallery.querySelector('[data-product-modal-image]'), close = gallery.querySelector('[data-product-modal-close]'), lastFocus = null;
+      function show(index) { if (!media.length) return; active = (index + media.length) % media.length; media.forEach(function (item, i) { item.hidden = i !== active; }); thumbs.forEach(function (item, i) { item.setAttribute('aria-selected', i === active ? 'true' : 'false'); }); }
+      function closeModal() { if (!modal || modal.hidden) return; modal.hidden = true; document.body.classList.remove('product-modal-open'); if (lastFocus) lastFocus.focus(); }
+      function trap(event) { if (!modal || modal.hidden) return; if (event.key === 'Escape') { event.preventDefault(); closeModal(); return; } if (event.key !== 'Tab') return; var nodes = getFocusable(modal); if (!nodes.length) { event.preventDefault(); return; } if (event.shiftKey && document.activeElement === nodes[0]) { event.preventDefault(); nodes[nodes.length - 1].focus(); } else if (!event.shiftKey && document.activeElement === nodes[nodes.length - 1]) { event.preventDefault(); nodes[0].focus(); } }
+      thumbs.forEach(function (thumb, index) { add(thumb, 'click', function () { show(index); }); add(thumb, 'keydown', function (event) { var next = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? index + 1 : (event.key === 'ArrowLeft' || event.key === 'ArrowUp' ? index - 1 : null); if (next !== null) { event.preventDefault(); next = (next + thumbs.length) % thumbs.length; thumbs[next].focus(); show(next); } }); });
+      add(gallery.querySelector('[data-product-gallery-prev]'), 'click', function () { show(active - 1); }); add(gallery.querySelector('[data-product-gallery-next]'), 'click', function () { show(active + 1); });
+      Array.prototype.slice.call(gallery.querySelectorAll('[data-product-zoom]')).forEach(function (button) { add(button, 'click', function () { var image = button.parentNode.querySelector('img'); if (!modal || !modalImage || !image) return; lastFocus = button; modalImage.src = image.currentSrc || image.src; modalImage.alt = image.alt; modal.hidden = false; document.body.classList.add('product-modal-open'); close.focus(); }); }); add(close, 'click', closeModal); add(modal, 'click', function (event) { if (event.target === modal) closeModal(); }); add(document, 'keydown', trap); show(active); gallery.classList.add('is-initialized'); }
+    productControllers.set(section, { destroy: function () { if (gallery) { var modal = gallery.querySelector('[data-product-modal]'); if (modal) modal.hidden = true; } document.body.classList.remove('product-modal-open'); cleanup.forEach(function (fn) { fn(); }); productControllers.delete(section); } });
+  }
 
   function initSlideshow(section) {
     if (!section || slideshowControllers.has(section)) return;
@@ -594,7 +610,7 @@
     sync(); videoControllers.set(section, { destroy: function () { if (automaticallyStarted && video) video.pause(); cleanup.forEach(function (fn) { fn(); }); videoControllers.delete(section); } });
   }
 
-  function destroyDynamic(scope) { var root = scope || document; [selectors.slideshow, selectors.countdown, selectors.video].forEach(function (selector) { var items = []; if (root.matches && root.matches(selector)) items.push(root); Array.prototype.slice.call(root.querySelectorAll(selector)).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var controller = (selector === selectors.slideshow ? slideshowControllers : (selector === selectors.countdown ? countdownControllers : videoControllers)).get(item); if (controller) controller.destroy(); }); }); }
+  function destroyDynamic(scope) { var root = scope || document; [selectors.slideshow, selectors.countdown, selectors.video].forEach(function (selector) { var items = []; if (root.matches && root.matches(selector)) items.push(root); Array.prototype.slice.call(root.querySelectorAll(selector)).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var controller = (selector === selectors.slideshow ? slideshowControllers : (selector === selectors.countdown ? countdownControllers : videoControllers)).get(item); if (controller) controller.destroy(); }); }); var products = []; if (root.matches && root.matches('[data-product-section]')) products.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-product-section]')).forEach(function (item) { products.push(item); }); products.forEach(function (item) { var controller = productControllers.get(item); if (controller) controller.destroy(); }); }
 
   function init(scope) {
     var root = scope || document;
@@ -608,6 +624,8 @@
     root.querySelectorAll(selectors.countdown).forEach(initCountdown);
     if (root !== document && root.matches && root.matches(selectors.video)) initVideo(root);
     root.querySelectorAll(selectors.video).forEach(initVideo);
+    if (root !== document && root.matches && root.matches('[data-product-section]')) initProduct(root);
+    root.querySelectorAll('[data-product-section]').forEach(initProduct);
     initReveal(root);
   }
 
