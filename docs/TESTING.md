@@ -99,3 +99,6 @@ Required manual Phase 1 correction checks for a Shopify preview: verify selected
 
 ## Theme Package Testing
 Planned/required before customer use: run Shopify Theme Check before packaging when available; verify the ZIP contains only valid Shopify theme folders; confirm theme folders are at the ZIP root; confirm there is no outer project folder; exclude documentation, Git data, backups, logs, temporary files, credentials, and development-only files; upload successfully as a Shopify draft theme; then complete Theme Editor, storefront, mobile, accessibility, attribution, performance, and regression testing after upload. These checks have not been completed in Phase 1.
+
+## Phase 3 Header and Global Styling Testing
+Partially implemented: verify global settings map to CSS custom properties, theme presets apply safely, header layouts render without empty navigation containers, dropdown and mega-menu toggles match controlled panels, mobile drawer focus trapping and body scroll locking work, sticky/transparent state changes are readable, app blocks do not break header alignment, social links render only when configured, and the Diesel Designs footer attribution remains unchanged. Shopify Theme Editor and storefront preview testing is still required.

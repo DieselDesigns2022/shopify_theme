@@ -1,0 +1,3 @@
+<ul id="{{ panel_id }}" class="header-dropdown" data-header-panel hidden>
+  {% for child in link.links %}<li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>{% if child.links.size > 0 %}<ul>{% for grandchild in child.links %}<li><a href="{{ grandchild.url }}"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>{% endfor %}</ul>{% endif %}</li>{% endfor %}
+</ul>

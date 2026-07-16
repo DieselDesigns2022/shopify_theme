@@ -4,7 +4,7 @@
 This repository contains a completely original custom Shopify Online Store 2.0 theme created and owned by Diesel Designs. It is intended to be sold as a licensed theme for merchants who primarily sell physical products such as apparel, tumblers, drinkware, jewelry, handmade goods, home décor, candles, beauty products, personalized products, printed products, and craft supplies. Digital products, services, and mixed stores are planned compatibility targets.
 
 ## Current Development Status
-Phase 2 adds the announcement system to the Phase 1 storefront foundation. The theme is not ready for production, live merchant use, or customer sale.
+Phase 3 adds the global design-system settings and header/navigation foundation to the Phase 2 storefront foundation. The theme is not ready for production, live merchant use, or customer sale.
 
 ## Technology Stack
 - Shopify Online Store 2.0 Liquid theme files.
@@ -16,10 +16,10 @@ Phase 2 adds the announcement system to the Phase 1 storefront foundation. The t
 The finished theme will support physical-product-first merchandising, flexible navigation, banners, product options, accessibility, SEO, performance, app blocks, and merchant documentation.
 
 ## Current Implementation
-Implemented now: documentation, global settings, layout, announcement bar system, header foundation, footer foundation, permanent attribution, welcome banner, image banner, divider banner, rich text homepage support, homepage template, 404 template, CSS foundation, JavaScript mobile menu and announcement behavior, locale files, and Theme Check configuration. Full product, collection, cart, search, blog, page, and account systems are not implemented yet.
+Implemented now: documentation, expanded global settings, theme presets, layout, announcement bar system, header layouts, dropdown navigation, mega-menu blocks, utility/social header links, mobile navigation drawer, footer foundation, permanent attribution, welcome banner, image banner, divider banner, rich text homepage support, homepage template, 404 template, CSS foundation, JavaScript header/announcement/reveal behavior, locale files, and Theme Check configuration. Full product, collection, cart, search, blog, page, and account systems are not implemented yet.
 
 ## Planned Features
-Planned future work includes product templates, collection filtering, cart drawer, cart page, predictive search, mega menus, product personalization, file uploads where Shopify supports them, swatches, app blocks, and complete merchant documentation.
+Planned future work includes product templates, collection filtering, cart drawer, cart page, predictive search, product personalization, file uploads where Shopify supports them, swatches, app blocks, and complete merchant documentation.
 
 ## Quick Start
 1. Work in this repository, which remains on `main` for this project.

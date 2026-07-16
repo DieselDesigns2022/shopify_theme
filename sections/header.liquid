@@ -1,70 +1,118 @@
-<header class="site-header{% if section.settings.sticky_header %} site-header--sticky{% endif %}" data-header-section>
-  {% assign has_mobile_menu = false %}
-  {% if section.settings.main_menu != blank and section.settings.main_menu.links.size > 0 %}
-    {% assign has_mobile_menu = true %}
-  {% endif %}
-  <div class="site-header__inner page-width site-header__inner--{{ section.settings.logo_alignment }}">
-    {% if has_mobile_menu %}
-      <button class="site-header__menu-button" type="button" data-mobile-menu-trigger aria-expanded="false" aria-controls="MobileMenu-{{ section.id }}" aria-label="{{ 'header.open_menu' | t }}">
-        {% render 'icon-menu' %}
-      </button>
-    {% endif %}
-
+{% liquid
+  assign requested_layout = section.settings.header_layout
+  assign effective_layout = requested_layout
+  assign page_type = request.page_type
+  assign is_transparent = false
+  if section.settings.transparent_home and page_type == 'index'
+    assign is_transparent = true
+  elsif section.settings.transparent_product and page_type == 'product'
+    assign is_transparent = true
+  elsif section.settings.transparent_collection and page_type == 'collection'
+    assign is_transparent = true
+  elsif section.settings.transparent_page and page_type == 'page'
+    assign is_transparent = true
+  elsif section.settings.transparent_blog and page_type == 'blog'
+    assign is_transparent = true
+  elsif section.settings.transparent_article and page_type == 'article'
+    assign is_transparent = true
+  elsif section.settings.transparent_search and page_type == 'search'
+    assign is_transparent = true
+  elsif section.settings.transparent_cart and page_type == 'cart'
+    assign is_transparent = true
+  elsif section.settings.transparent_other and page_type != 'index' and page_type != 'product' and page_type != 'collection' and page_type != 'page' and page_type != 'blog' and page_type != 'article' and page_type != 'search' and page_type != 'cart'
+    assign is_transparent = true
+  endif
+  if request.design_mode
+    assign is_transparent = false
+  endif
+  assign has_main_menu = false
+  assign has_left_menu = false
+  assign has_right_menu = false
+  if section.settings.main_menu != blank and section.settings.main_menu.links.size > 0
+    assign has_main_menu = true
+  endif
+  if section.settings.left_menu != blank and section.settings.left_menu.links.size > 0
+    assign has_left_menu = true
+  endif
+  if section.settings.right_menu != blank and section.settings.right_menu.links.size > 0
+    assign has_right_menu = true
+  endif
+  if requested_layout == 'center-split' and has_left_menu == false and has_right_menu == false and has_main_menu
+    assign effective_layout = 'left-inline'
+  endif
+  assign layout_class = 'site-header--layout-' | append: effective_layout
+  assign use_split_mobile = false
+  if requested_layout == 'center-split' and has_left_menu or requested_layout == 'center-split' and has_right_menu
+    assign use_split_mobile = true
+  endif
+  assign left_right_same_menu = false
+  if has_left_menu and has_right_menu and section.settings.left_menu.handle == section.settings.right_menu.handle
+    assign left_right_same_menu = true
+  endif
+  assign has_mobile_menu = false
+  if use_split_mobile or has_main_menu or has_left_menu or has_right_menu
+    assign has_mobile_menu = true
+  endif
+  assign logo = settings.logo | default: settings.mobile_logo | default: settings.transparent_logo
+  assign mobile_logo = settings.mobile_logo | default: logo
+  assign transparent_logo = settings.transparent_logo | default: logo | default: mobile_logo
+  assign solid_logo_loading = 'eager'
+  assign transparent_logo_loading = 'lazy'
+  if is_transparent
+    assign solid_logo_loading = 'lazy'
+    assign transparent_logo_loading = 'eager'
+  endif
+  assign has_any_logo = false
+  if logo != blank or mobile_logo != blank or transparent_logo != blank
+    assign has_any_logo = true
+  endif
+  assign desktop_logo_width = settings.logo_width
+  assign mobile_logo_width = settings.mobile_logo_width
+  assign location_label = section.settings.location_label | strip
+  if location_label == blank
+    assign location_label = 'header.store_location' | t
+  endif
+  assign contact_label = section.settings.contact_label | strip
+  if contact_label == blank
+    assign contact_label = 'header.contact' | t
+  endif
+  assign phone_href = section.settings.phone_number | remove: ' ' | remove: '(' | remove: ')' | remove: '-' | remove: '.' | escape
+  assign sticky_class = ''
+  if section.settings.sticky_behavior == 'always' or section.settings.sticky_behavior == 'sticky-after-scroll' or section.settings.sticky_behavior == 'hide-on-scroll'
+    assign sticky_class = ' is-sticky-capable'
+  endif
+%}
+<header id="SiteHeader-{{ section.id }}" class="site-header {{ layout_class }}{{ sticky_class }}{% if section.settings.compact_header %} site-header--compact{% endif %}{% if is_transparent %} site-header--transparent{% endif %}" data-header-section data-sticky-behavior="{{ section.settings.sticky_behavior }}" data-transparent-active="{{ is_transparent }}" data-transparent-threshold="{{ section.settings.transparent_scroll_threshold }}" data-design-mode="{{ request.design_mode }}" style="--header-transparent-text: {{ section.settings.transparent_text_color }}; --header-transparent-icon: {{ section.settings.transparent_icon_color }}; --header-transparent-nav: {{ section.settings.transparent_nav_color }}; --header-solid-bg: {{ section.settings.solid_background_color }}; --header-solid-text: {{ section.settings.solid_text_color }}; --logo-desktop-width: {{ desktop_logo_width }}px; --logo-mobile-width: {{ mobile_logo_width }}px;">
+  <div class="site-header__inner page-width">
+    {% if has_mobile_menu %}<button class="site-header__menu-button header-action header-action--menu" type="button" data-mobile-menu-trigger aria-expanded="false" aria-controls="MobileMenu-{{ section.id }}" aria-label="{{ 'header.open_menu' | t }}">{% render 'icon-menu' %}</button>{% endif %}
+    {% if effective_layout == 'center-split' and has_left_menu %}<nav class="site-header__nav site-header__nav--left" aria-label="{{ 'header.left_navigation' | t }}"><ul class="site-header__nav-list">{% for link in section.settings.left_menu.links %}{% render 'header-nav-item', link: link, section: section, index: forloop.index, nav_scope: 'left' %}{% endfor %}</ul></nav>{% endif %}
     <a class="site-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
-      {% assign header_logo = settings.logo %}
-      {% if header_logo != blank %}
-        {% assign header_logo_height = section.settings.logo_width | divided_by: header_logo.aspect_ratio | round %}
-        <img src="{{ header_logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name | escape }}" width="{{ section.settings.logo_width }}" height="{{ header_logo_height }}" loading="eager">
-      {% else %}
-        <span>{{ shop.name | escape }}</span>
-      {% endif %}
+      {% if has_any_logo %}
+        {% if logo != blank %}{% assign logo_height = desktop_logo_width | divided_by: logo.aspect_ratio | round %}{% assign mobile_logo_height = mobile_logo_width | divided_by: mobile_logo.aspect_ratio | round %}<picture class="site-header__logo-picture site-header__logo-picture--solid"><source media="(max-width: 749px)" srcset="{{ mobile_logo | image_url: width: 220 }} 220w, {{ mobile_logo | image_url: width: 440 }} 440w" sizes="{{ mobile_logo_width }}px" width="{{ mobile_logo_width }}" height="{{ mobile_logo_height }}"><source media="(min-width: 750px)" srcset="{{ logo | image_url: width: 320 }} 320w, {{ logo | image_url: width: 640 }} 640w" sizes="{{ desktop_logo_width }}px" width="{{ desktop_logo_width }}" height="{{ logo_height }}">{{ logo | image_url: width: 640 | image_tag: class: 'site-header__logo', alt: shop.name, width: desktop_logo_width, height: logo_height, loading: solid_logo_loading }}</picture>{% endif %}
+        {% if is_transparent and transparent_logo != blank %}{% assign transparent_logo_height = desktop_logo_width | divided_by: transparent_logo.aspect_ratio | round %}{% assign transparent_mobile_logo_height = mobile_logo_width | divided_by: transparent_logo.aspect_ratio | round %}<picture class="site-header__logo-picture site-header__logo-picture--transparent"><source media="(max-width: 749px)" srcset="{{ transparent_logo | image_url: width: 220 }} 220w, {{ transparent_logo | image_url: width: 440 }} 440w" sizes="{{ mobile_logo_width }}px" width="{{ mobile_logo_width }}" height="{{ transparent_mobile_logo_height }}"><source media="(min-width: 750px)" srcset="{{ transparent_logo | image_url: width: 320 }} 320w, {{ transparent_logo | image_url: width: 640 }} 640w" sizes="{{ desktop_logo_width }}px" width="{{ desktop_logo_width }}" height="{{ transparent_logo_height }}">{{ transparent_logo | image_url: width: 640 | image_tag: class: 'site-header__logo', alt: shop.name, width: desktop_logo_width, height: transparent_logo_height, loading: transparent_logo_loading }}</picture>{% endif %}
+      {% else %}<span class="site-header__brand-text">{{ shop.name | escape }}</span>{% endif %}
+      {% if settings.store_tagline != blank %}<small>{{ settings.store_tagline | escape }}</small>{% endif %}
     </a>
-
-    <nav class="site-header__nav" aria-label="{{ 'header.main_navigation' | t }}">
-      {% if section.settings.main_menu != blank %}
-        <ul class="site-header__nav-list">
-          {% for link in section.settings.main_menu.links %}
-            <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    </nav>
-
+    {% unless effective_layout == 'center-split' %}{% if has_main_menu %}<nav class="site-header__nav site-header__nav--main" aria-label="{{ 'header.main_navigation' | t }}"><ul class="site-header__nav-list">{% for link in section.settings.main_menu.links %}{% render 'header-nav-item', link: link, section: section, index: forloop.index, nav_scope: 'main' %}{% endfor %}</ul></nav>{% endif %}{% endunless %}
+    {% if effective_layout == 'center-split' and has_right_menu %}<nav class="site-header__nav site-header__nav--right" aria-label="{{ 'header.right_navigation' | t }}"><ul class="site-header__nav-list">{% for link in section.settings.right_menu.links %}{% render 'header-nav-item', link: link, section: section, index: forloop.index, nav_scope: 'right' %}{% endfor %}</ul></nav>{% endif %}
     <div class="site-header__actions">
-      {% if section.settings.show_search %}<a href="{{ routes.search_url }}" aria-label="{{ 'search.search' | t }}">{% render 'icon-search' %}</a>{% endif %}
-      {% if section.settings.show_account and shop.customer_accounts_enabled %}<a href="{{ routes.account_url }}" aria-label="{{ 'header.account' | t }}">{% render 'icon-account' %}</a>{% endif %}
-      {% if section.settings.show_cart %}<a href="{{ routes.cart_url }}" aria-label="{{ 'cart.cart' | t }}">{% render 'icon-cart' %}<span class="cart-count" aria-label="{{ 'cart.item_count' | t: count: cart.item_count }}">{{ cart.item_count }}</span></a>{% endif %}
+      {% if section.settings.enable_utility_links %}{% if section.settings.location_url != blank %}<a class="header-action header-action--utility" href="{{ section.settings.location_url }}" aria-label="{{ location_label | escape }}">{% render 'icon-location' %}<span class="header-action__label">{{ location_label | escape }}</span></a>{% endif %}{% if section.settings.contact_url != blank %}<a class="header-action header-action--utility" href="{{ section.settings.contact_url }}" aria-label="{{ contact_label | escape }}"><span class="header-action__label">{{ contact_label | escape }}</span></a>{% endif %}{% if section.settings.phone_number != blank %}<a class="header-action header-action--utility" href="tel:{{ phone_href }}" aria-label="{{ 'header.phone' | t }} {{ section.settings.phone_number | escape }}">{% render 'icon-phone' %}<span class="header-action__label">{{ section.settings.phone_number | escape }}</span></a>{% endif %}{% if section.settings.email_address != blank %}<a class="header-action header-action--utility" href="mailto:{{ section.settings.email_address | escape }}" aria-label="{{ 'header.email' | t }} {{ section.settings.email_address | escape }}">{% render 'icon-email' %}<span class="header-action__label">{{ section.settings.email_address | escape }}</span></a>{% endif %}{% endif %}
+      {% if section.settings.show_search %}<a class="header-action header-action--search" href="{{ routes.search_url }}" aria-label="{{ 'search.search' | t }}">{% render 'icon-search' %}</a>{% endif %}{% if section.settings.show_account and shop.customer_accounts_enabled %}<a class="header-action header-action--account" href="{{ routes.account_url }}" aria-label="{{ 'header.account' | t }}">{% render 'icon-account' %}</a>{% endif %}{% if section.settings.show_cart %}<a class="header-action header-action--cart" href="{{ routes.cart_url }}" aria-label="{{ 'cart.cart' | t }}">{% render 'icon-cart' %}<span class="cart-count" aria-label="{{ 'cart.item_count' | t: count: cart.item_count }}">{{ cart.item_count }}</span></a>{% endif %}
+      <div class="site-header__app-blocks header-action header-action--app">{% for block in section.blocks %}{% if block.type == '@app' %}{% render block %}{% endif %}{% endfor %}</div>
     </div>
   </div>
-
-  {% if has_mobile_menu %}
-    <div class="mobile-menu-overlay" data-mobile-menu-overlay hidden></div>
-    <aside id="MobileMenu-{{ section.id }}" class="mobile-menu" data-mobile-menu hidden role="dialog" aria-modal="true" aria-label="{{ 'header.mobile_navigation' | t }}">
-    <div class="mobile-menu__header">
-      <span>{{ shop.name | escape }}</span>
-      <button type="button" data-mobile-menu-close aria-label="{{ 'header.close_menu' | t }}">{% render 'icon-close' %}</button>
-    </div>
-    <nav aria-label="{{ 'header.mobile_navigation' | t }}">
-      {% if section.settings.main_menu != blank %}
-        <ul class="mobile-menu__list">
-          {% for link in section.settings.main_menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}
-        </ul>
-      {% endif %}
-    </nav>
-    </aside>
-  {% endif %}
+  {% if section.settings.enable_social_icons %}<div class="site-header__social page-width">{% assign socials = 'facebook,instagram,tiktok,pinterest,youtube,twitter' | split: ',' %}{% for social in socials %}{% assign key = 'social_' | append: social | append: '_url' %}{% if settings[key] != blank %}{% case social %}{% when 'facebook' %}{% assign social_label = 'header.social_facebook' | t %}{% when 'instagram' %}{% assign social_label = 'header.social_instagram' | t %}{% when 'tiktok' %}{% assign social_label = 'header.social_tiktok' | t %}{% when 'pinterest' %}{% assign social_label = 'header.social_pinterest' | t %}{% when 'youtube' %}{% assign social_label = 'header.social_youtube' | t %}{% else %}{% assign social_label = 'header.social_twitter' | t %}{% endcase %}<a class="header-action header-action--social" href="{{ settings[key] }}" target="_blank" rel="noopener" aria-label="{{ social_label | escape }}">{% render 'icon-social', platform: social %}</a>{% endif %}{% endfor %}</div>{% endif %}
+  {% if has_mobile_menu %}<div class="mobile-menu-overlay" data-mobile-menu-overlay hidden></div><aside id="MobileMenu-{{ section.id }}" class="mobile-menu" data-mobile-menu hidden role="dialog" aria-modal="true" aria-label="{{ 'header.mobile_navigation' | t }}"><div class="mobile-menu__header"><span>{{ shop.name | escape }}</span><button type="button" data-mobile-menu-close aria-label="{{ 'header.close_menu' | t }}">{% render 'icon-close' %}</button></div><nav aria-label="{{ 'header.mobile_navigation' | t }}"><ul class="mobile-menu__list">{% if use_split_mobile %}{% if has_left_menu %}{% render 'mobile-menu-links', menu: section.settings.left_menu, prefix: 'left', nav_scope: 'left', depth: 0 %}{% endif %}{% if has_right_menu and left_right_same_menu == false %}{% render 'mobile-menu-links', menu: section.settings.right_menu, prefix: 'right', nav_scope: 'right', depth: 0 %}{% endif %}{% elsif has_main_menu %}{% render 'mobile-menu-links', menu: section.settings.main_menu, prefix: 'main', nav_scope: 'main', depth: 0 %}{% else %}{% if has_left_menu %}{% render 'mobile-menu-links', menu: section.settings.left_menu, prefix: 'left', nav_scope: 'left', depth: 0 %}{% endif %}{% if has_right_menu and left_right_same_menu == false %}{% render 'mobile-menu-links', menu: section.settings.right_menu, prefix: 'right', nav_scope: 'right', depth: 0 %}{% endif %}{% endif %}</ul></nav><div class="mobile-menu__actions">{% if section.settings.show_search %}<a href="{{ routes.search_url }}">{{ 'search.search' | t }}</a>{% endif %}{% if section.settings.show_account and shop.customer_accounts_enabled %}<a href="{{ routes.account_url }}">{{ 'header.account' | t }}</a>{% endif %}{% if section.settings.show_cart %}<a href="{{ routes.cart_url }}">{{ 'cart.cart' | t }}</a>{% endif %}{% if section.settings.enable_utility_links %}{% if section.settings.location_url != blank %}<a href="{{ section.settings.location_url }}">{{ location_label | escape }}</a>{% endif %}{% if section.settings.contact_url != blank %}<a href="{{ section.settings.contact_url }}">{{ contact_label | escape }}</a>{% endif %}{% if section.settings.phone_number != blank %}<a href="tel:{{ phone_href }}">{{ section.settings.phone_number | escape }}</a>{% endif %}{% if section.settings.email_address != blank %}<a href="mailto:{{ section.settings.email_address | escape }}">{{ section.settings.email_address | escape }}</a>{% endif %}{% endif %}</div>{% if section.settings.enable_social_icons %}<div class="mobile-menu__social">{% assign socials = 'facebook,instagram,tiktok,pinterest,youtube,twitter' | split: ',' %}{% for social in socials %}{% assign key = 'social_' | append: social | append: '_url' %}{% if settings[key] != blank %}{% case social %}{% when 'facebook' %}{% assign social_label = 'header.social_facebook' | t %}{% when 'instagram' %}{% assign social_label = 'header.social_instagram' | t %}{% when 'tiktok' %}{% assign social_label = 'header.social_tiktok' | t %}{% when 'pinterest' %}{% assign social_label = 'header.social_pinterest' | t %}{% when 'youtube' %}{% assign social_label = 'header.social_youtube' | t %}{% else %}{% assign social_label = 'header.social_twitter' | t %}{% endcase %}<a href="{{ settings[key] }}" target="_blank" rel="noopener" aria-label="{{ social_label | escape }}">{% render 'icon-social', platform: social %}</a>{% endif %}{% endfor %}</div>{% endif %}</aside>{% endif %}
 </header>
+<script>
+  (function () {
+    var header = document.getElementById('SiteHeader-{{ section.id }}');
+    if (!header) return;
+    var actions = header.querySelector('.site-header__actions');
+    header.style.setProperty('--header-height', header.offsetHeight + 'px');
+    header.style.setProperty('--header-action-width', (actions ? actions.offsetWidth : 0) + 'px');
+  }());
+</script>
 {% schema %}
-{
-  "name": "Header",
-  "settings": [
-    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 160 },
-    { "type": "link_list", "id": "main_menu", "label": "Main menu" },
-    { "type": "checkbox", "id": "sticky_header", "label": "Sticky header", "default": false },
-    { "type": "select", "id": "logo_alignment", "label": "Logo alignment", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] },
-    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
-    { "type": "checkbox", "id": "show_account", "label": "Show account", "default": true },
-    { "type": "checkbox", "id": "show_cart", "label": "Show cart", "default": true }
-  ]
-}
+{"name":"Header","settings":[{"type":"select","id":"header_layout","label":"Header layout","default":"left-inline","options":[{"value":"left-inline","label":"Logo left with navigation beside it"},{"value":"center-below","label":"Logo centered with navigation below"},{"value":"center-split","label":"Logo centered between two navigation groups"},{"value":"compact","label":"Compact header"}]},{"type":"checkbox","id":"compact_header","label":"Compact header spacing","default":false},{"type":"link_list","id":"main_menu","label":"Main menu"},{"type":"link_list","id":"left_menu","label":"Left menu"},{"type":"link_list","id":"right_menu","label":"Right menu"},{"type":"select","id":"sticky_behavior","label":"Sticky behavior","default":"sticky-after-scroll","options":[{"value":"always","label":"Always sticky"},{"value":"sticky-after-scroll","label":"Sticky after scrolling"},{"value":"hide-on-scroll","label":"Hide while scrolling down"},{"value":"never","label":"Never sticky"}]},{"type":"checkbox","id":"transparent_home","label":"Enable transparent header on homepage","default":false},{"type":"checkbox","id":"transparent_product","label":"Enable transparent header on product templates","default":false},{"type":"checkbox","id":"transparent_collection","label":"Enable transparent header on collection templates","default":false},{"type":"checkbox","id":"transparent_page","label":"Enable transparent header on standard pages","default":false},{"type":"checkbox","id":"transparent_blog","label":"Enable transparent header on blogs","default":false},{"type":"checkbox","id":"transparent_article","label":"Enable transparent header on articles","default":false},{"type":"checkbox","id":"transparent_search","label":"Enable transparent header on search","default":false},{"type":"checkbox","id":"transparent_cart","label":"Enable transparent header on cart","default":false},{"type":"checkbox","id":"transparent_other","label":"Enable transparent header on other template types","default":false},{"type":"color","id":"transparent_text_color","label":"Transparent text color","default":"#ffffff"},{"type":"color","id":"transparent_icon_color","label":"Transparent icon color","default":"#ffffff"},{"type":"color","id":"transparent_nav_color","label":"Transparent navigation color","default":"#ffffff"},{"type":"color","id":"solid_background_color","label":"Solid background after scrolling","default":"#ffffff"},{"type":"color","id":"solid_text_color","label":"Solid text/icon color after scrolling","default":"#111827"},{"type":"range","id":"transparent_scroll_threshold","label":"Transparent scroll threshold","min":0,"max":300,"step":10,"unit":"px","default":80},{"type":"checkbox","id":"show_search","label":"Show search","default":true},{"type":"checkbox","id":"show_account","label":"Show account","default":true},{"type":"checkbox","id":"show_cart","label":"Show cart","default":true},{"type":"checkbox","id":"enable_social_icons","label":"Enable social icons","default":false},{"type":"checkbox","id":"enable_utility_links","label":"Enable utility links","default":false},{"type":"text","id":"location_label","label":"Store-location label","default":"Store location"},{"type":"url","id":"location_url","label":"Store-location URL"},{"type":"text","id":"contact_label","label":"Contact label","default":"Contact"},{"type":"url","id":"contact_url","label":"Contact URL"},{"type":"text","id":"phone_number","label":"Phone number","default":""},{"type":"text","id":"email_address","label":"Email address","default":""}],"blocks":[{"type":"mega_menu","name":"Mega menu","settings":[{"type":"text","id":"trigger_title","label":"Menu item trigger/title"},{"type":"select","id":"menu_scope","label":"Menu scope","default":"main","options":[{"value":"main","label":"Main menu"},{"value":"left","label":"Left menu"},{"value":"right","label":"Right menu"}]},{"type":"range","id":"columns","label":"Number of columns","min":1,"max":4,"step":1,"default":3},{"type":"select","id":"width","label":"Width","default":"contained","options":[{"value":"contained","label":"Contained"},{"value":"full","label":"Full width"}]},{"type":"text","id":"heading_1","label":"Column 1 heading"},{"type":"link_list","id":"menu_1","label":"Column 1 menu"},{"type":"text","id":"heading_2","label":"Column 2 heading"},{"type":"link_list","id":"menu_2","label":"Column 2 menu"},{"type":"text","id":"heading_3","label":"Column 3 heading"},{"type":"link_list","id":"menu_3","label":"Column 3 menu"},{"type":"text","id":"heading_4","label":"Column 4 heading"},{"type":"link_list","id":"menu_4","label":"Column 4 menu"},{"type":"image_picker","id":"promo_image","label":"Promotional image"},{"type":"select","id":"promo_placement","label":"Promotional image placement","default":"right","options":[{"value":"right","label":"Right"},{"value":"left","label":"Left"}]},{"type":"text","id":"promo_heading","label":"Promotional heading"},{"type":"textarea","id":"promo_text","label":"Promotional text"},{"type":"url","id":"promo_link","label":"Promotional link"},{"type":"text","id":"promo_button_label","label":"Promotional button label"},{"type":"collection","id":"featured_collection","label":"Featured collection"},{"type":"product","id":"featured_product","label":"Featured product"},{"type":"text","id":"sale_callout","label":"Sale callout text"},{"type":"checkbox","id":"show_promo_desktop","label":"Show promotional image on desktop","default":true},{"type":"checkbox","id":"show_promo_mobile","label":"Show promotional image on mobile","default":true}]},{"type":"@app"}],"max_blocks":16}
 {% endschema %}

@@ -1,0 +1,26 @@
+{% liquid
+  assign has_promo_button = false
+  if block.settings.promo_link != blank and block.settings.promo_button_label != blank
+    assign has_promo_button = true
+  endif
+  assign has_non_image_promo = false
+  if block.settings.sale_callout != blank or block.settings.promo_heading != blank or block.settings.promo_text != blank or block.settings.featured_collection != blank or block.settings.featured_product != blank or has_promo_button
+    assign has_non_image_promo = true
+  endif
+  assign has_desktop_promo = false
+  if has_non_image_promo or block.settings.promo_image != blank and block.settings.show_promo_desktop
+    assign has_desktop_promo = true
+  endif
+  assign promo_class = ''
+  if has_desktop_promo
+    assign promo_class = ' mega-menu__inner--has-promo mega-menu__inner--promo-' | append: block.settings.promo_placement
+  endif
+%}
+<div id="{{ panel_id }}" class="mega-menu mega-menu--{{ block.settings.width }}" data-header-panel hidden {{ block.shopify_attributes }}>
+  <div class="mega-menu__inner page-width{{ promo_class }}" style="--mega-columns: {{ block.settings.columns }};">
+    <div class="mega-menu__columns">
+      {% for column_index in (1..4) %}{% assign menu_key = 'menu_' | append: column_index %}{% assign heading_key = 'heading_' | append: column_index %}{% assign column_menu = block.settings[menu_key] %}{% if column_index <= block.settings.columns and column_menu != blank %}<div class="mega-menu__column"><h3>{{ block.settings[heading_key] | default: column_menu.title | escape }}</h3><ul>{% for child in column_menu.links %}<li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>{% endfor %}</ul></div>{% endif %}{% endfor %}
+    </div>
+    {% if has_desktop_promo %}{% render 'header-promo-content', block: block, class: 'mega-menu__promo', context: 'desktop' %}{% endif %}
+  </div>
+</div>
