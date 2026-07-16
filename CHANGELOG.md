@@ -3,16 +3,17 @@
 ## Unreleased
 
 ### Added
-- Phase 2 announcement system files are prepared for review.
-- Announcement bar section with static, rotating, and scrolling display modes, optional links/icons, visibility controls, dismissal, accessible moving-content controls, and reduced-motion handling.
+- Phase 4 global design system completion is implemented and awaiting changed-file review.
+- Complete global color variables, typography controls, layout width controls, reusable button/form/card/image utilities, animation controls, and Clean/Bold/Soft/Minimal presets.
 
 ### Changed
+- Global Shopify font loading, CSS variables, and storefront utility classes now consistently reflect Theme Editor settings.
 - Clarified the project-specific `main`/Codex `work` workflow for `shopify_theme`.
 - Removed outdated VPS, phase-branch, pull-request, and merge workflow claims from project documentation.
 - Documented planned future Shopify ZIP packaging and draft-theme testing requirements.
 
 ### Fixed
-- Nothing yet.
+- Corrected Phase 4 contact fallbacks, header utility visibility gating, link-hover toggles, reveal distances, hover animation contracts, image zoom controls, grid-gap utilities, and error/success utility styles.
 
 ## Phase 1 — Project Bootstrap and Theme Foundation
 

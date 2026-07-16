@@ -8,7 +8,7 @@
     <link rel="canonical" href="{{ canonical_url }}">
     {% if settings.favicon != blank %}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{% endif %}
     {{ content_for_header }}
-    {% assign body_font = settings.font_body %}{% assign heading_font = settings.font_heading %}{% assign button_font = settings.font_button %}{% assign navigation_font = settings.font_navigation %}
+    {% assign body_font = settings.font_body %}{% assign heading_font = settings.font_heading %}{% assign button_font = settings.font_body %}{% assign navigation_font = settings.font_body %}
     {% assign body_font_weight = settings.body_font_weight | plus: 0 %}{% assign heading_font_weight = settings.heading_font_weight | plus: 0 %}{% assign button_font_weight = settings.button_font_weight | plus: 0 %}{% assign navigation_font_weight = settings.navigation_font_weight | plus: 0 %}
     {% assign body_weight_font = body_font | font_modify: 'weight', body_font_weight %}{% assign heading_weight_font = heading_font | font_modify: 'weight', heading_font_weight %}{% assign button_weight_font = button_font | font_modify: 'weight', button_font_weight %}{% assign navigation_weight_font = navigation_font | font_modify: 'weight', navigation_font_weight %}
     <style>
@@ -21,20 +21,89 @@
       {% if navigation_font != blank and navigation_font != body_font and navigation_font != heading_font and navigation_font != button_font %}{{ navigation_font | font_face: font_display: 'swap' }}{% endif %}
       {% if navigation_weight_font != blank and navigation_weight_font != navigation_font and navigation_weight_font != body_font and navigation_weight_font != body_weight_font and navigation_weight_font != heading_font and navigation_weight_font != heading_weight_font and navigation_weight_font != button_font and navigation_weight_font != button_weight_font %}{{ navigation_weight_font | font_face: font_display: 'swap' }}{% endif %}
       :root {
-        --color-brand-primary: {{ settings.color_brand_primary }}; --color-brand-secondary: {{ settings.color_brand_secondary }}; --color-accent: {{ settings.color_accent }};
-        --color-background: {{ settings.color_background }}; --color-background-secondary: {{ settings.color_background_secondary }}; --color-text: {{ settings.color_text }}; --color-text-muted: {{ settings.color_text_muted }}; --color-heading: {{ settings.color_heading }}; --color-link: {{ settings.color_link }}; --color-link-hover: {{ settings.color_link_hover }}; --color-border: {{ settings.color_border }}; --color-sale: {{ settings.color_sale }}; --color-sold-out: {{ settings.color_sold_out }}; --color-badge-bg: {{ settings.color_badge_bg }}; --color-badge-text: {{ settings.color_badge_text }};
-        --color-button-primary-bg: {{ settings.color_button_primary_bg }}; --color-button-primary-text: {{ settings.color_button_primary_text }}; --color-button-primary-hover-bg: {{ settings.color_button_primary_hover_bg }}; --color-button-primary-hover-text: {{ settings.color_button_primary_hover_text }}; --color-button-secondary-bg: {{ settings.color_button_secondary_bg }}; --color-button-secondary-text: {{ settings.color_button_secondary_text }}; --color-button-secondary-border: {{ settings.color_button_secondary_border }}; --color-button-secondary-hover-bg: {{ settings.color_button_secondary_hover_bg }}; --color-button-secondary-hover-text: {{ settings.color_button_secondary_hover_text }}; --color-footer-bg: {{ settings.color_footer_bg }}; --color-footer-text: {{ settings.color_footer_text }};
-        --font-body-family: {{ settings.font_body.family | default: 'system-ui' }}, {{ settings.font_body.fallback_families | default: 'sans-serif' }}; --font-heading-family: {{ settings.font_heading.family | default: 'system-ui' }}, {{ settings.font_heading.fallback_families | default: 'sans-serif' }}; --font-button-family: {{ settings.font_button.family | default: 'system-ui' }}, {{ settings.font_button.fallback_families | default: 'sans-serif' }}; --font-navigation-family: {{ settings.font_navigation.family | default: 'system-ui' }}, {{ settings.font_navigation.fallback_families | default: 'sans-serif' }};
-        --base-font-size: {{ settings.base_font_size }}px; --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }}; --button-font-size: {{ settings.button_font_size }}px; --navigation-font-size: {{ settings.navigation_font_size }}px; --body-font-weight: {{ settings.body_font_weight }}; --heading-font-weight: {{ settings.heading_font_weight }}; --button-font-weight: {{ settings.button_font_weight }}; --navigation-font-weight: {{ settings.navigation_font_weight }}; --heading-letter-spacing: {{ settings.heading_letter_spacing }}em; --body-letter-spacing: {{ settings.body_letter_spacing }}em; --button-letter-spacing: {{ settings.button_letter_spacing }}em; --navigation-letter-spacing: {{ settings.navigation_letter_spacing }}em; --button-text-transform: {% if settings.button_uppercase %}uppercase{% else %}none{% endif %}; --navigation-text-transform: {% if settings.navigation_uppercase %}uppercase{% else %}none{% endif %};
-        --page-width: {{ settings.page_width }}px; --section-spacing: {{ settings.section_spacing }}px; --product-grid-spacing: {{ settings.product_grid_spacing }}px;
-        --corner-radius-control: {{ settings.corner_radius }}px; --corner-radius: {% case settings.corner_style %}{% when 'square' %}0{% when 'soft' %}4px{% when 'pill' %}24px{% else %}{{ settings.corner_radius }}px{% endcase %};
-        --button-radius: {% case settings.button_shape %}{% when 'square' %}0{% when 'soft' %}4px{% when 'pill' %}999px{% else %}{{ settings.button_radius }}px{% endcase %}; --input-radius: {% case settings.input_shape %}{% when 'square' %}0{% when 'soft' %}4px{% when 'pill' %}999px{% else %}{{ settings.input_radius }}px{% endcase %}; --image-radius: {% case settings.image_shape %}{% when 'square' %}0{% when 'soft' %}4px{% else %}{{ settings.image_radius }}px{% endcase %}; --card-border-width: {{ settings.card_border_width }}px; --card-border-color: {{ settings.card_border_color }}; --card-background: {{ settings.card_background }}; --card-shadow: {% case settings.card_shadow_style %}{% when 'none' %}none{% when 'medium' %}0 .75rem 2rem rgb(0 0 0 / .12){% when 'strong' %}0 1rem 3rem rgb(0 0 0 / .18){% else %}0 .25rem 1rem rgb(0 0 0 / .06){% endcase %}; --content-alignment-default: {{ settings.content_alignment_default }}; --animation-duration: {{ settings.animation_duration }}ms;
+        /* Phase 4 global design tokens */
+        --color-background: {{ settings.color_background }};
+        --color-background-secondary: {{ settings.color_background_secondary }};
+        --color-text: {{ settings.color_text }};
+        --color-text-muted: {{ settings.color_text_muted }};
+        --color-heading: {{ settings.color_heading }};
+        --color-border: {{ settings.color_border }};
+        --color-link: {{ settings.color_link }};
+        --color-link-hover: {{ settings.color_link_hover }};
+        --color-button-primary-bg: {{ settings.color_button_primary_bg }};
+        --color-button-primary-text: {{ settings.color_button_primary_text }};
+        --color-button-primary-hover-bg: {{ settings.color_button_primary_hover_bg }};
+        --color-button-primary-hover-text: {{ settings.color_button_primary_hover_text }};
+        --color-button-secondary-bg: {{ settings.color_button_secondary_bg }};
+        --color-button-secondary-text: {{ settings.color_button_secondary_text }};
+        --color-button-secondary-border: {{ settings.color_button_secondary_border }};
+        --color-button-secondary-hover-bg: {{ settings.color_button_secondary_hover_bg }};
+        --color-button-secondary-hover-text: {{ settings.color_button_secondary_hover_text }};
+        --color-input-background: {{ settings.color_input_background }};
+        --color-input-text: {{ settings.color_input_text }};
+        --color-input-border: {{ settings.color_input_border }};
+        --color-placeholder: {{ settings.color_placeholder }};
+        --color-focus: {{ settings.color_focus }};
+        --color-sale: {{ settings.color_sale }};
+        --color-error: {{ settings.color_error }};
+        --color-success: {{ settings.color_success }};
+        --color-sold-out: {{ settings.color_sold_out }};
+        --color-badge-bg: {{ settings.color_badge_bg }};
+        --color-badge-text: {{ settings.color_badge_text }};
+        --color-footer-bg: {{ settings.color_footer_bg }};
+        --color-footer-text: {{ settings.color_footer_text }};
+        --font-body-family: {{ settings.font_body.family | default: 'system-ui' }}, {{ settings.font_body.fallback_families | default: 'sans-serif' }};
+        --font-heading-family: {{ settings.font_heading.family | default: 'system-ui' }}, {{ settings.font_heading.fallback_families | default: 'sans-serif' }};
+        --font-button-family: var(--font-body-family);
+        --font-navigation-family: var(--font-body-family);
+        --base-font-size: {{ settings.base_font_size }}px;
+        --line-height: {{ settings.line_height }};
+        --heading-line-height: {{ settings.heading_line_height }};
+        --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+        --body-font-weight: {{ settings.body_font_weight }};
+        --heading-font-weight: {{ settings.heading_font_weight }};
+        --body-letter-spacing: {{ settings.body_letter_spacing }}em;
+        --heading-letter-spacing: {{ settings.heading_letter_spacing }}em;
+        --button-font-size: {{ settings.button_font_size }}px;
+        --button-font-weight: {{ settings.button_font_weight }};
+        --button-letter-spacing: {{ settings.button_letter_spacing }}em;
+        --button-text-transform: {% if settings.button_uppercase %}uppercase{% else %}none{% endif %};
+        --navigation-font-size: {{ settings.navigation_font_size }}px;
+        --navigation-font-weight: {{ settings.navigation_font_weight }};
+        --navigation-letter-spacing: {{ settings.navigation_letter_spacing }}em;
+        --navigation-text-transform: {% if settings.navigation_uppercase %}uppercase{% else %}none{% endif %};
+        --page-width: {{ settings.page_width }}px;
+        --content-width-narrow: {{ settings.content_width_narrow }}px;
+        --content-width-standard: {{ settings.content_width_standard }}px;
+        --content-width-wide: {{ settings.content_width_wide }}px;
+        --page-padding-desktop: {{ settings.page_padding_desktop }}px;
+        --page-padding-mobile: {{ settings.page_padding_mobile }}px;
+        --section-spacing: {{ settings.section_spacing }}px;
+        --grid-gap: {{ settings.grid_gap }}px;
+        --product-grid-spacing: var(--grid-gap);
+        --button-radius: {{ settings.button_radius }}px;
+        --button-border-thickness: {{ settings.button_border_thickness }}px;
+        --button-padding-horizontal: {{ settings.button_padding_horizontal }}px;
+        --button-padding-vertical: {{ settings.button_padding_vertical }}px;
+        --input-radius: {{ settings.input_radius }}px;
+        --input-border-thickness: {{ settings.input_border_thickness }}px;
+        --input-padding: {{ settings.input_padding }}px;
+        --card-radius: {{ settings.card_radius }}px;
+        --corner-radius: var(--card-radius);
+        --image-radius: {{ settings.image_radius }}px;
+        --card-border-width: {{ settings.card_border_width }}px;
+        --card-border-color: {{ settings.card_border_color }};
+        --card-background: {{ settings.card_background }};
+        --card-shadow: {% case settings.card_shadow_style %}{% when 'none' %}none{% when 'medium' %}0 .75rem 2rem rgb(0 0 0 / .12){% when 'strong' %}0 1rem 3rem rgb(0 0 0 / .18){% else %}0 .25rem 1rem rgb(0 0 0 / .06){% endcase %};
+        --animation-duration: {{ settings.animation_duration }}ms;
+        --reveal-distance: {{ settings.reveal_distance }}px;
+        --hover-transform: {% case settings.hover_animation_style %}{% when 'none' %}none{% when 'zoom' %}scale(1.02){% else %}translateY(-2px){% endcase %};
       }
     </style>
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
   </head>
-  <body data-reveal-animation="{{ settings.enable_reveal_animation }}" data-reveal-style="{{ settings.section_reveal_style }}" data-button-hover="{{ settings.enable_button_hover_effects }}" data-link-hover="{{ settings.enable_link_hover_effects }}" data-image-hover="{{ settings.enable_image_hover_effects }}" data-card-hover="{{ settings.enable_card_hover_effects }}" data-image-zoom="{{ settings.enable_image_zoom_effects }}">
+  <body data-header-width="{{ settings.header_width_behavior }}" data-footer-width="{{ settings.footer_width_behavior }}" data-show-search="{{ settings.show_search }}" data-show-account="{{ settings.show_account }}" data-show-cart="{{ settings.show_cart }}" data-hover-style="{{ settings.hover_animation_style }}" data-reveal-animation="{{ settings.enable_reveal_animation }}" data-reveal-style="{{ settings.section_reveal_style }}" data-button-hover="{{ settings.enable_button_hover_effects }}" data-link-hover="{{ settings.enable_link_hover_effects }}" data-image-hover="{{ settings.enable_image_hover_effects }}" data-card-hover="{{ settings.enable_card_hover_effects }}">
     <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
     {% sections 'header-group' %}
     <main id="MainContent" class="main-content" role="main" tabindex="-1">{{ content_for_layout }}</main>

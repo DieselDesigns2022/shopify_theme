@@ -129,3 +129,20 @@
 - Solution: Rebuild the package with the Shopify theme folders at the ZIP root and exclude documentation, Git data, backups, logs, temporary files, credentials, and development-only files. Prefer `shopify theme package` when Shopify CLI is available.
 - Prevention: Verify ZIP structure before upload and do not package the entire repository.
 - Lesson learned: The Shopify upload package is not the same thing as the development repository.
+
+## Global design setting has no storefront effect
+- Symptom: A Theme Editor global design setting saves but the storefront appearance does not change.
+- Likely cause: The setting is missing from `layout/theme.liquid` CSS variables or from the reusable CSS utilities in `assets/base.css`.
+- Diagnosis: Compare the setting ID in `config/settings_schema.json` to the variables emitted in `layout/theme.liquid` and the selectors that consume those variables.
+- Solution: Add or correct the CSS variable and connect it to a reusable utility or global component style.
+- Prevention: For every new Phase 4 setting, validate that it has a storefront effect before committing.
+- Lesson learned: Global settings are only useful when future sections can safely consume them.
+
+
+## Header utility visibility mismatch
+- Symptom: Search, account, cart, email, or phone utility links appear when a global or section-level setting should hide them.
+- Likely cause: Header Liquid is not combining the global Theme Editor setting with the header-section setting, or contact fallback values are not stripped before rendering.
+- Diagnosis: Check `sections/header.liquid` for `render_search_action`, `render_account_action`, `render_cart_action`, `effective_phone_number`, and `effective_email_address`.
+- Solution: Gate actions in Liquid and render only one effective contact link for each utility value.
+- Prevention: Validate desktop and mobile header actions after changing global utility settings.
+- Lesson learned: CSS hiding is not enough for global utility controls.
