@@ -1,0 +1,13 @@
+{% assign price_variant = use_variant | default: product.selected_or_first_available_variant %}
+<div class="product-price" data-product-price>
+  {% if price_variant.compare_at_price > price_variant.price %}
+    <span class="product-price__sale">{{ price_variant.price | money }}</span>
+    <s class="product-price__compare">{{ price_variant.compare_at_price | money }}</s>
+    <span class="visually-hidden">Sale</span>
+  {% else %}
+    <span>{{ price_variant.price | money }}</span>
+  {% endif %}
+  {% if price_variant.unit_price_measurement %}
+    <small class="product-price__unit">{{ price_variant.unit_price | money }} / {% if price_variant.unit_price_measurement.reference_value != 1 %}{{ price_variant.unit_price_measurement.reference_value }}{% endif %}{{ price_variant.unit_price_measurement.reference_unit }}</small>
+  {% endif %}
+</div>

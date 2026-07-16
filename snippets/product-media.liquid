@@ -1,0 +1,15 @@
+<div class="product-gallery__media" id="ProductMedia-{{ section.id }}-{{ media.id }}" data-product-media data-media-id="{{ media.id }}"{% if media_is_selected %} data-initial-selected="true"{% endif %}>
+  {% case media.media_type %}
+    {% when 'image' %}
+      {{ media.preview_image | image_url: width: 1800 | image_tag: widths: '375, 550, 750, 1100, 1500, 1800', sizes: '(min-width: 750px) 55vw, 100vw', loading: media_loading, width: media.preview_image.width, height: media.preview_image.height, class: 'product-gallery__image' }}
+      {% if section.settings.enable_image_zoom %}<button class="product-gallery__zoom" type="button" data-product-zoom data-media-id="{{ media.id }}" aria-label="Zoom {{ media.alt | default: product.title | escape }}">{% render 'icon-zoom' %}</button>{% endif %}
+    {% when 'external_video' %}
+      {{ media | external_video_tag: image_size: '1100x', loading: 'lazy', class: 'product-gallery__video' }}
+    {% when 'video' %}
+      {{ media | video_tag: image_size: '1100x', controls: true, loop: section.settings.enable_video_looping, muted: true, preload: 'metadata', class: 'product-gallery__video' }}
+    {% when 'model' %}
+      {{ media | model_viewer_tag: image_size: '1100x', reveal: 'interaction', toggleable: true, class: 'product-gallery__model' }}
+    {% else %}
+      <p>Media unavailable.</p>
+  {% endcase %}
+</div>
