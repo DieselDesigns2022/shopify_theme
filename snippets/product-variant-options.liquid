@@ -1,0 +1,24 @@
+<div class="product-variant-picker product-variant-picker--{{ block.settings.picker_type }}" data-variant-picker>
+  {% for option in product.options_with_values %}
+    {% assign selected_value = current_variant.options[forloop.index0] %}
+    {% assign option_id = 'Option-' | append: section.id | append: '-' | append: option.position %}
+    {% if block.settings.picker_type == 'buttons' %}
+      <fieldset class="product-variant-picker__group" data-option-position="{{ option.position }}">
+        <legend{% unless block.settings.show_option_labels %} class="visually-hidden"{% endunless %}>{{ option.name | escape }}{% if block.settings.show_option_labels and block.settings.show_selected_value %}: <span data-selected-option>{{ selected_value | escape }}</span>{% endif %}</legend>
+        <div class="product-variant-picker__buttons">
+          {% for value in option.values %}{% assign value_id = option_id | append: '-' | append: forloop.index %}
+            <input class="product-variant-picker__radio" type="radio" id="{{ value_id }}" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-option-value data-option-position="{{ option.position }}"{% if value == selected_value %} checked{% endif %}>
+            <label class="product-variant-picker__button" for="{{ value_id }}"><span>{{ value | escape }}</span><span class="product-variant-picker__availability" data-option-availability></span></label>
+          {% endfor %}
+        </div>
+      </fieldset>
+    {% else %}
+      <div class="product-variant-picker__group" data-option-position="{{ option.position }}">
+        {% if block.settings.show_option_labels %}<label for="{{ option_id }}">{{ option.name | escape }}{% if block.settings.show_selected_value %}: <span data-selected-option>{{ selected_value | escape }}</span>{% endif %}</label>{% endif %}
+        <select id="{{ option_id }}" name="options[{{ option.name | escape }}]" data-option-value data-option-position="{{ option.position }}"{% unless block.settings.show_option_labels %} aria-label="{{ option.name | escape }}"{% endunless %}>
+          {% for value in option.values %}<option value="{{ value | escape }}"{% if value == selected_value %} selected{% endif %}>{{ value | escape }}</option>{% endfor %}
+        </select>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
