@@ -4,10 +4,27 @@
   },
   "header": {
     "main_navigation": "Main navigation",
+    "left_navigation": "Left navigation",
+    "right_navigation": "Right navigation",
     "mobile_navigation": "Mobile navigation",
     "open_menu": "Open menu",
     "close_menu": "Close menu",
-    "account": "Account"
+    "account": "Account",
+    "open_submenu": "Open {{ title }} submenu",
+    "close_submenu": "Close submenu",
+    "back": "Back",
+    "store_location": "Store location",
+    "contact": "Contact",
+    "phone": "Phone",
+    "email": "Email",
+    "social_facebook": "Facebook",
+    "social_instagram": "Instagram",
+    "social_tiktok": "TikTok",
+    "social_pinterest": "Pinterest",
+    "social_youtube": "YouTube",
+    "social_twitter": "X/Twitter",
+    "mega_menu_promo": "Mega menu promotional area",
+    "close_submenu_with_title": "Close {{ title }} submenu"
   },
   "footer": {
     "navigation": "Footer navigation"

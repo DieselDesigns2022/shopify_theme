@@ -1,0 +1,17 @@
+{% liquid
+  assign mega_block = blank
+  for candidate in section.blocks
+    if candidate.type == 'mega_menu' and candidate.settings.trigger_title == link.title and candidate.settings.menu_scope == nav_scope
+      assign mega_block = candidate
+    endif
+  endfor
+  assign panel_id = 'HeaderPanel-' | append: section.id | append: '-' | append: nav_scope | append: '-' | append: index
+%}
+<li class="site-header__nav-item{% if link.links.size > 0 or mega_block != blank %} site-header__nav-item--has-panel{% endif %}">
+  {% if link.links.size > 0 or mega_block != blank %}
+    <div class="site-header__nav-row"><a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a><button type="button" class="site-header__dropdown-toggle" data-header-toggle data-open-label="{{ 'header.open_submenu' | t: title: link.title | escape }}" data-close-label="{{ 'header.close_submenu_with_title' | t: title: link.title | escape }}" aria-expanded="false" aria-controls="{{ panel_id }}" aria-label="{{ 'header.open_submenu' | t: title: link.title | escape }}">{% render 'icon-chevron-down' %}</button></div>
+    {% if mega_block != blank %}{% render 'header-mega-menu', block: mega_block, section: section, panel_id: panel_id %}{% else %}{% render 'header-dropdown', link: link, panel_id: panel_id %}{% endif %}
+  {% else %}
+    <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+  {% endif %}
+</li>

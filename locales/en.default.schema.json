@@ -1,19 +1,122 @@
 {
   "settings_schema": {
-    "theme_information": { "name": "Theme information" },
-    "branding": { "name": "Branding", "settings": { "logo": "Logo image", "favicon": "Favicon image", "logo_width": "Logo width" } },
-    "colors": { "name": "Colors" },
-    "typography": { "name": "Typography" },
-    "layout": { "name": "Layout" },
-    "animation": { "name": "Animation" }
+    "theme_information": {
+      "name": "Theme information"
+    },
+    "branding": {
+      "name": "Branding",
+      "settings": {
+        "logo": "Logo image",
+        "favicon": "Favicon image",
+        "logo_width": "Logo width"
+      }
+    },
+    "colors": {
+      "name": "Colors"
+    },
+    "typography": {
+      "name": "Typography"
+    },
+    "layout": {
+      "name": "Layout"
+    },
+    "animation": {
+      "name": "Animation"
+    },
+    "social_media": {
+      "name": "Social media"
+    }
   },
   "sections": {
-    "header": { "name": "Header", "settings": { "main_menu": "Main menu", "sticky_header": "Sticky header", "show_search": "Show search", "show_account": "Show account", "show_cart": "Show cart" } },
-    "footer": { "name": "Footer", "settings": { "footer_logo": "Footer logo", "store_description": "Store description", "text_alignment": "Text alignment" }, "blocks": { "menu": "Menu", "text": "Text" } },
-    "welcome_banner": { "name": "Welcome banner", "settings": { "desktop_image": "Desktop image", "mobile_image": "Mobile image", "heading": "Heading", "text": "Text", "button_label": "Button label", "button_link": "Button link", "full_banner_link": "Full banner link" } },
-    "image_banner": { "name": "Image banner", "settings": { "desktop_image": "Desktop image", "mobile_image": "Mobile image", "heading": "Heading", "text": "Text", "button_label": "Button label", "button_link": "Button link", "full_banner_link": "Full banner link" } },
-    "divider_banner": { "name": "Divider banner", "settings": { "desktop_image": "Desktop image", "mobile_image": "Mobile image", "full_banner_link": "Full banner link", "decorative_image": "Decorative image" } },
-    "rich_text": { "name": "Rich text", "settings": { "heading": "Heading", "text": "Text", "button_label": "Button label", "button_link": "Button link", "text_alignment": "Text alignment" } },
-    "main_404": { "name": "404 page", "settings": { "heading": "Heading", "text": "Text", "button_label": "Button label", "show_search_link": "Show search link" } }
+    "header": {
+      "name": "Header",
+      "settings": {
+        "header_layout": "Header layout",
+        "main_menu": "Main menu",
+        "left_menu": "Left menu",
+        "right_menu": "Right menu",
+        "sticky_behavior": "Sticky behavior",
+        "show_search": "Show search",
+        "show_account": "Show account",
+        "show_cart": "Show cart",
+        "enable_social_icons": "Enable social icons",
+        "enable_utility_links": "Enable utility links",
+        "transparent_product": "Transparent product templates",
+        "transparent_collection": "Transparent collection templates",
+        "transparent_page": "Transparent pages",
+        "transparent_blog": "Transparent blogs",
+        "transparent_article": "Transparent articles",
+        "transparent_search": "Transparent search",
+        "transparent_cart": "Transparent cart",
+        "transparent_other": "Transparent other templates"
+      },
+      "blocks": {
+        "mega_menu": "Mega menu"
+      }
+    },
+    "footer": {
+      "name": "Footer",
+      "settings": {
+        "footer_logo": "Footer logo",
+        "store_description": "Store description",
+        "text_alignment": "Text alignment"
+      },
+      "blocks": {
+        "menu": "Menu",
+        "text": "Text"
+      }
+    },
+    "welcome_banner": {
+      "name": "Welcome banner",
+      "settings": {
+        "desktop_image": "Desktop image",
+        "mobile_image": "Mobile image",
+        "heading": "Heading",
+        "text": "Text",
+        "button_label": "Button label",
+        "button_link": "Button link",
+        "full_banner_link": "Full banner link"
+      }
+    },
+    "image_banner": {
+      "name": "Image banner",
+      "settings": {
+        "desktop_image": "Desktop image",
+        "mobile_image": "Mobile image",
+        "heading": "Heading",
+        "text": "Text",
+        "button_label": "Button label",
+        "button_link": "Button link",
+        "full_banner_link": "Full banner link"
+      }
+    },
+    "divider_banner": {
+      "name": "Divider banner",
+      "settings": {
+        "desktop_image": "Desktop image",
+        "mobile_image": "Mobile image",
+        "full_banner_link": "Full banner link",
+        "decorative_image": "Decorative image"
+      }
+    },
+    "rich_text": {
+      "name": "Rich text",
+      "settings": {
+        "heading": "Heading",
+        "text": "Text",
+        "button_label": "Button label",
+        "button_link": "Button link",
+        "text_alignment": "Text alignment"
+      }
+    },
+    "main_404": {
+      "name": "404 page",
+      "settings": {
+        "heading": "Heading",
+        "text": "Text",
+        "button_label": "Button label",
+        "show_search_link": "Show search link"
+      }
+    }
   }
 }

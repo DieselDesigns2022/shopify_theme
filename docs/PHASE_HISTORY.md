@@ -87,3 +87,23 @@ Live Shopify Theme Editor and storefront preview testing are still required befo
 
 ### Status
 Implemented for changed-file review.
+
+## Phase 3 — Global Styling and Header Navigation
+
+### Objective
+Implement the global design-system settings and the header/navigation foundation.
+
+### Architecture Decisions
+Global branding, typography, layout, component, animation, social, and preset settings are centralized in Shopify theme settings. The header supports left-inline, centered-below, centered-split, compact, sticky, transparent, dropdown, mega-menu, utility-link, social-link, mobile-drawer, and app-block areas using Liquid snippets, CSS custom properties, and vanilla JavaScript controllers.
+
+### Accessibility Decisions
+Dropdowns and mobile submenus use buttons with `aria-expanded` and `aria-controls`, Escape/outside-click handling, focus return, mobile focus trapping, visible focus styles, and reduced-motion handling.
+
+### Testing
+Automated validation was run in the Codex environment. Live Shopify Theme Editor and storefront preview testing is still required.
+
+### Known Limitations
+Product, collection, cart system, homepage merchandising, predictive search, and live Shopify preview validation remain future work.
+
+### Status
+Implemented for changed-file review.
