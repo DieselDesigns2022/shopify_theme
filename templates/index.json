@@ -1,9 +1,1 @@
-{
-  "sections": {
-    "welcome_banner": { "type": "welcome-banner", "settings": { "heading": "Welcome to our store", "text": "<p>Showcase your brand with a custom welcome graphic.</p>", "button_label": "", "width": "contained" } },
-    "homepage_rich_text": { "type": "rich-text", "settings": { "heading": "Built for your products", "text": "<p>Add a short introduction for shoppers.</p>", "text_alignment": "center" } },
-    "divider_banner": { "type": "divider-banner", "settings": { "height": "standard", "decorative_image": true } },
-    "image_banner": { "type": "image-banner", "settings": { "heading": "Feature a collection", "text": "<p>Add an optional promotional message.</p>", "button_label": "", "width": "contained" } }
-  },
-  "order": ["welcome_banner", "homepage_rich_text", "divider_banner", "image_banner"]
-}
+{"sections":{"hero":{"type":"hero-slideshow","blocks":{"slide_1":{"type":"slide","settings":{"heading":"Welcome to our store","text":"<p>Use this space to introduce your newest collection.</p>"}}},"block_order":["slide_1"],"settings":{}},"features":{"type":"feature-list","settings":{}},"image_text":{"type":"image-with-text","settings":{}},"cards":{"type":"promo-card-grid","settings":{}},"newsletter":{"type":"newsletter-signup","settings":{}}},"order":["hero","features","image_text","cards","newsletter"]}
