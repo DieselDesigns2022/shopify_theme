@@ -18,6 +18,7 @@
   var revealObserver = null;
   var announcementControllers = new WeakMap();
   var headerControllers = new WeakMap();
+  var predictiveSearchControllers = new WeakMap();
   var cartControllers = new WeakMap();
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function getFocusable(container) {
@@ -314,6 +315,65 @@
       headerControllers.delete(header);
     });
   }
+
+  function initPredictiveSearch(root) {
+    if (!root || predictiveSearchControllers.has(root)) return;
+    var cleanup = [], input = root.querySelector('[data-predictive-search-input]'), results = root.querySelector('[data-predictive-search-results]'), status = root.querySelector('[data-predictive-search-status]'), close = root.querySelector('[data-predictive-search-close]');
+    var header = root.closest('[data-header-section]'), trigger = header && header.querySelector('[data-predictive-search-trigger]'), timer = null, controller = null, generation = 0, requestedQuery = '', renderedQuery = '', destroyed = false, opener = null;
+    if (!input || !results) return;
+    root.classList.add('is-enhanced');
+    root.hidden = true;
+    function isActive() { return !destroyed && document.documentElement.contains(root); }
+    function add(element, name, handler) { if (!element) return; element.addEventListener(name, handler); cleanup.push(function () { element.removeEventListener(name, handler); }); }
+    function cancel() { generation += 1; if (timer !== null) { window.clearTimeout(timer); timer = null; } if (controller) { controller.abort(); controller = null; } requestedQuery = ''; input.setAttribute('aria-busy', 'false'); results.setAttribute('aria-busy', 'false'); }
+    function clear(message) { results.innerHTML = ''; renderedQuery = ''; input.setAttribute('aria-expanded', 'false'); if (message !== undefined && status) status.textContent = message; }
+    function closeSearch(returnFocus) { if (root.hidden) return; cancel(); clear(''); root.hidden = true; document.body.classList.remove('predictive-search-open'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); if (returnFocus && opener && typeof opener.focus === 'function') opener.focus(); }
+    function openSearch(event) { opener = event && event.currentTarget ? event.currentTarget : trigger; var menuClose = header && header.querySelector('[data-mobile-menu-close]'); if (menuClose) menuClose.click(); root.hidden = false; document.body.classList.add('predictive-search-open'); if (trigger) trigger.setAttribute('aria-expanded', 'true'); window.setTimeout(function () { if (isActive()) input.focus(); }, 0); }
+    function resultLinks() { return Array.prototype.slice.call(results.querySelectorAll('a[href]')); }
+    function renderLoading() { results.innerHTML = '<p class="predictive-search__loading">Loading suggestions…</p>'; input.setAttribute('aria-expanded', 'true'); input.setAttribute('aria-busy', 'true'); results.setAttribute('aria-busy', 'true'); if (status) status.textContent = 'Loading suggestions'; }
+    function request(query) {
+      var current = ++generation;
+      if (controller) controller.abort();
+      controller = 'AbortController' in window ? new AbortController() : null;
+      requestedQuery = query;
+      renderLoading();
+      var url = new URL(root.dataset.predictiveSearchUrl, window.location.origin);
+      url.searchParams.set('q', query);
+      url.searchParams.set('section_id', root.dataset.predictiveSearchSection);
+      url.searchParams.set('resources[type]', 'product,collection,page,article,query');
+      url.searchParams.set('resources[limit]', '6');
+      url.searchParams.set('resources[options][unavailable_products]', 'last');
+      fetch(url.toString(), { signal: controller ? controller.signal : undefined, credentials: 'same-origin' }).then(function (response) { if (!response.ok) throw new Error('Search unavailable'); return response.text(); }).then(function (markup) {
+        if (!isActive() || current !== generation || root.hidden) return;
+        var documentResponse = new DOMParser().parseFromString(markup, 'text/html');
+        var response = documentResponse.querySelector('[data-predictive-search-response]');
+        if (!response) throw new Error('Search unavailable');
+        Array.prototype.slice.call(response.querySelectorAll('script')).forEach(function (script) { script.remove(); });
+        results.innerHTML = response.innerHTML;
+        renderedQuery = query;
+        requestedQuery = '';
+        var links = resultLinks();
+        input.setAttribute('aria-expanded', links.length ? 'true' : 'false');
+        if (status) status.textContent = links.length ? links.length + ' search suggestions available.' : 'No suggestions found.';
+      }).catch(function (error) {
+        if (!isActive() || current !== generation || (error && error.name === 'AbortError')) return;
+        requestedQuery = ''; renderedQuery = '';
+        results.innerHTML = '<p class="predictive-search__empty">Suggestions are unavailable. You can still submit your search.</p>';
+        input.setAttribute('aria-expanded', 'false'); if (status) status.textContent = 'Suggestions are unavailable.';
+      }).then(function () { if (isActive() && current === generation) { controller = null; input.setAttribute('aria-busy', 'false'); results.setAttribute('aria-busy', 'false'); } });
+    }
+    function schedule() { var query = input.value.trim(); cancel(); if (!query) { clear(''); return; } root.hidden = false; if (query === renderedQuery) return; clear(''); timer = window.setTimeout(function () { timer = null; request(query); }, 250); }
+    add(trigger, 'click', function (event) { event.preventDefault(); if (root.hidden) openSearch(event); else closeSearch(true); });
+    add(close, 'click', function () { closeSearch(true); });
+    add(input, 'input', schedule);
+    add(input, 'keydown', function (event) { var links = resultLinks(); if (event.key === 'ArrowDown' && links.length) { event.preventDefault(); links[0].focus(); } else if (event.key === 'Escape') { event.preventDefault(); closeSearch(true); } });
+    add(results, 'keydown', function (event) { var links = resultLinks(), position = links.indexOf(document.activeElement); if (event.key === 'ArrowDown' && position >= 0 && position < links.length - 1) { event.preventDefault(); links[position + 1].focus(); } else if (event.key === 'ArrowUp' && position >= 0) { event.preventDefault(); if (position === 0) input.focus(); else links[position - 1].focus(); } else if (event.key === 'Escape') { event.preventDefault(); closeSearch(true); } });
+    add(root, 'click', function (event) { if (event.target === root) closeSearch(true); });
+    add(document, 'keydown', function (event) { if (event.key === 'Escape' && !root.hidden) { event.preventDefault(); closeSearch(true); } });
+    predictiveSearchControllers.set(root, { destroy: function () { destroyed = true; cancel(); clear(''); root.hidden = true; document.body.classList.remove('predictive-search-open'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); cleanup.forEach(function (fn) { fn(); }); predictiveSearchControllers.delete(root); } });
+  }
+
+  function destroyPredictiveSearch(scope) { var root = scope || document, items = []; if (root.matches && root.matches('[data-predictive-search]')) items.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-predictive-search]')).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var search = predictiveSearchControllers.get(item); if (search) search.destroy(); }); }
 
   function showRevealItems() {
     document.querySelectorAll('.reveal-ready').forEach(function (item) {
@@ -681,6 +741,8 @@
     var root = scope || document;
     if (root !== document && root.matches && root.matches(selectors.header)) initHeader(root);
     root.querySelectorAll(selectors.header).forEach(initHeader);
+    if (root !== document && root.matches && root.matches('[data-predictive-search]')) initPredictiveSearch(root);
+    root.querySelectorAll('[data-predictive-search]').forEach(initPredictiveSearch);
     if (root !== document && root.matches && root.matches(selectors.announcement)) initAnnouncement(root);
     root.querySelectorAll(selectors.announcement).forEach(initAnnouncement);
     if (root !== document && root.matches && root.matches(selectors.slideshow)) initSlideshow(root);
@@ -709,6 +771,7 @@
     if (!event || !event.target) return;
     destroyDynamic(event.target);
     destroyAnnouncements(event.target);
+    destroyPredictiveSearch(event.target);
     destroyHeaders(event.target);
 
     if (revealObserver) {
