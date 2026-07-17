@@ -18,6 +18,7 @@
   var revealObserver = null;
   var announcementControllers = new WeakMap();
   var headerControllers = new WeakMap();
+  var cartControllers = new WeakMap();
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function getFocusable(container) {
     if (!container) return [];
@@ -643,7 +644,37 @@
     browseControllers.set(section, { destroy: function () { if (panel) panel.classList.remove('is-open'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); section.classList.remove('is-browse-initialized'); cleanup.forEach(function (fn) { fn(); }); browseControllers.delete(section); } });
   }
 
-  function destroyDynamic(scope) { var root = scope || document; [selectors.slideshow, selectors.countdown, selectors.video].forEach(function (selector) { var items = []; if (root.matches && root.matches(selector)) items.push(root); Array.prototype.slice.call(root.querySelectorAll(selector)).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var controller = (selector === selectors.slideshow ? slideshowControllers : (selector === selectors.countdown ? countdownControllers : videoControllers)).get(item); if (controller) controller.destroy(); }); }); var browses = []; if (root.matches && root.matches('[data-browse-section]')) browses.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-browse-section]')).forEach(function (item) { browses.push(item); }); browses.forEach(function (item) { var controller = browseControllers.get(item); if (controller) controller.destroy(); });
+  function initCart(section) {
+    if (!section || cartControllers.has(section)) return;
+    var cleanup = [];
+    function add(element, name, handler) { if (!element) return; element.addEventListener(name, handler); cleanup.push(function () { element.removeEventListener(name, handler); }); }
+    Array.prototype.slice.call(section.querySelectorAll('[data-cart-item]')).forEach(function (item) {
+      var input = item.querySelector('input[type="number"]');
+      if (!input) return;
+      add(item.querySelector('[data-quantity-decrease]'), 'click', function () { input.value = Math.max(0, (parseInt(input.value, 10) || 0) - 1); });
+      add(item.querySelector('[data-quantity-increase]'), 'click', function () { input.value = Math.max(0, (parseInt(input.value, 10) || 0) + 1); });
+    });
+    Array.prototype.slice.call(section.querySelectorAll('[data-cart-previous-link]')).forEach(function (link) {
+      function normalizePath(pathname) { var path = (pathname || '/').replace(/\/{2,}/g, '/'); return path.length > 1 ? path.replace(/\/+$/, '') : '/'; }
+      function cartPathFromRoot(rootPath) { var root = normalizePath(rootPath); return normalizePath((root === '/' ? '' : root) + '/cart').toLowerCase(); }
+      function isCartPath(pathname, currentPath, configuredCartPath, localeCartPath) { var path = normalizePath(pathname).toLowerCase(); return path === currentPath || path === configuredCartPath || path === '/cart' || path === localeCartPath; }
+      try {
+        if (!document.referrer) return;
+        var referrer = new URL(document.referrer);
+        var current = new URL(window.location.href);
+        var currentPath = normalizePath(current.pathname);
+        var configuredCartPath = normalizePath(link.dataset.cartRoute || '/cart').toLowerCase();
+        var localeCartPath = link.dataset.cartRoot ? cartPathFromRoot(link.dataset.cartRoot) : configuredCartPath;
+        if (referrer.origin === current.origin && !isCartPath(referrer.pathname, currentPath.toLowerCase(), configuredCartPath, localeCartPath)) link.href = referrer.href;
+      } catch (error) {}
+    });
+    var checkout = section.querySelector('[data-cart-checkout]');
+    var terms = section.querySelector('[data-cart-terms]');
+    add(checkout, 'click', function () { if (terms && !terms.checked) { terms.focus(); } });
+    cartControllers.set(section, { destroy: function () { cleanup.forEach(function (fn) { fn(); }); cartControllers.delete(section); } });
+  }
+
+  function destroyDynamic(scope) { var root = scope || document; [selectors.slideshow, selectors.countdown, selectors.video].forEach(function (selector) { var items = []; if (root.matches && root.matches(selector)) items.push(root); Array.prototype.slice.call(root.querySelectorAll(selector)).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var controller = (selector === selectors.slideshow ? slideshowControllers : (selector === selectors.countdown ? countdownControllers : videoControllers)).get(item); if (controller) controller.destroy(); }); }); var browses = []; if (root.matches && root.matches('[data-browse-section]')) browses.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-browse-section]')).forEach(function (item) { browses.push(item); }); browses.forEach(function (item) { var controller = browseControllers.get(item); if (controller) controller.destroy(); }); var carts = []; if (root.matches && root.matches('[data-cart-section]')) carts.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-cart-section]')).forEach(function (item) { carts.push(item); }); carts.forEach(function (item) { var controller = cartControllers.get(item); if (controller) controller.destroy(); });
     var products = []; if (root.matches && root.matches('[data-product-section]')) products.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-product-section]')).forEach(function (item) { products.push(item); }); products.forEach(function (item) { var controller = productControllers.get(item); if (controller) controller.destroy(); }); }
 
   function init(scope) {
@@ -660,6 +691,8 @@
     root.querySelectorAll(selectors.video).forEach(initVideo);
     if (root !== document && root.matches && root.matches('[data-browse-section]')) initBrowse(root);
     root.querySelectorAll('[data-browse-section]').forEach(initBrowse);
+    if (root !== document && root.matches && root.matches('[data-cart-section]')) initCart(root);
+    root.querySelectorAll('[data-cart-section]').forEach(initCart);
     if (root !== document && root.matches && root.matches('[data-product-section]')) initProduct(root);
     root.querySelectorAll('[data-product-section]').forEach(initProduct);
     initReveal(root);
