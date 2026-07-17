@@ -1,0 +1,52 @@
+{% liquid
+  assign cart_product = item.product
+  assign cart_image = item.image | default: cart_product.featured_image
+  assign quantity_id = 'CartQuantity-' | append: section.id | append: '-' | append: item.key | md5
+  assign line_is_discounted = false
+  if item.original_line_price != item.final_line_price
+    assign line_is_discounted = true
+  endif
+  assign has_public_properties = false
+  for property in item.properties
+    assign property_key_first = property.first | slice: 0
+    assign property_value = property.last | strip
+    if property_key_first != '_' and property_value != blank
+      assign has_public_properties = true
+      break
+    endif
+  endfor
+%}
+<li class="cart-item" data-cart-item>
+  {% if show_images %}
+    <div class="cart-item__media cart-item__media--{{ image_ratio }} cart-item__media--{{ image_fit }}"{% if image_ratio == 'adapt' and cart_image != blank %} style="--cart-image-ratio: {{ cart_image.aspect_ratio }}"{% endif %}>
+      {% if cart_image != blank %}
+        {% if item.url != blank %}<a class="cart-item__image-link" href="{{ item.url }}" aria-label="View {{ item.product.title | default: item.title | escape }}">{% endif %}
+        {{ cart_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '120, 180, 240, 360, 600', sizes: '(min-width: 750px) 180px, 120px', alt: cart_image.alt | default: item.product.title | default: item.title | escape, class: 'cart-item__image' }}
+        {% if item.url != blank %}</a>{% endif %}
+      {% else %}
+        <div class="cart-item__placeholder" role="img" aria-label="{{ item.title | escape }} image unavailable">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+  <div class="cart-item__details">
+    {% if show_vendor and cart_product.vendor != blank %}<p class="cart-item__vendor">{{ cart_product.vendor | escape }}</p>{% endif %}
+    {% if show_product_type and cart_product.type != blank %}<p class="cart-item__type">{{ cart_product.type | escape }}</p>{% endif %}
+    <h2 class="cart-item__title">{% if item.url != blank %}<a href="{{ item.url }}">{{ item.product.title | default: item.title | escape }}</a>{% else %}{{ item.product.title | default: item.title | escape }}{% endif %}</h2>
+    {% if cart_product == blank or cart_product.available == false %}<p class="cart-item__unavailable">This product is unavailable.</p>{% endif %}
+    {% if show_variant_title and item.variant.title != blank and item.variant.title != 'Default Title' %}<p class="cart-item__variant">{{ item.variant.title | escape }}</p>{% endif %}
+    {% if item.selling_plan_allocation != blank %}<p class="cart-item__selling-plan">{{ item.selling_plan_allocation.selling_plan.name | escape }}</p>{% endif %}
+    {% if show_properties and has_public_properties %}<dl class="cart-item__properties">{% for property in item.properties %}{% assign property_key_first = property.first | slice: 0 %}{% assign property_value = property.last | strip %}{% if property_key_first != '_' and property_value != blank %}<div><dt>{{ property.first | escape }}:</dt><dd>{% if property_value contains '/uploads/' %}{% assign file_name = property_value | split: '/' | last %}<a href="{{ property_value | escape }}" target="_blank" rel="noopener">{{ file_name | default: 'View uploaded file' | escape }}</a>{% else %}{{ property_value | escape }}{% endif %}</dd></div>{% endif %}{% endfor %}</dl>
+    {% endif %}
+  </div>
+  <div class="cart-item__pricing">
+    {% if show_unit_price %}<p class="cart-item__unit-price">Unit price: {% if show_original_price and item.original_price != item.final_price %}<s>{{ item.original_price | money }}</s> <span class="visually-hidden">Sale price</span>{% endif %} <strong>{{ item.final_price | money }}</strong></p>{% endif %}
+    {% if item.unit_price_measurement %}<p class="cart-item__measurement">{{ item.unit_price | money }} / {% if item.unit_price_measurement.reference_value != 1 %}{{ item.unit_price_measurement.reference_value }}{% endif %}{{item.unit_price_measurement.reference_unit}}</p>{% endif %}
+    <p class="cart-item__line-price">{% if line_is_discounted and show_original_price %}<span><s>{{ item.original_line_price | money }}</s> <span class="visually-hidden">Original line price</span></span>{% endif %}<strong>{% if line_is_discounted %}<span class="visually-hidden">Discounted line total: </span>{% endif %}{{ item.final_line_price | money }}</strong></p>
+    {% if show_line_discounts and item.line_level_discount_allocations.size > 0 %}<ul class="cart-item__discounts" aria-label="Discounts for {{ item.title | escape }}">{% for discount in item.line_level_discount_allocations %}<li>{{ discount.discount_application.title | escape }} (-{{ discount.amount | money }})</li>{% endfor %}</ul>{% endif %}
+  </div>
+  <div class="cart-item__quantity">
+    <label for="{{ quantity_id }}">Quantity for {{ item.product.title | default: item.title | escape }}</label>
+    <div class="quantity-control"><button type="button" data-quantity-decrease aria-label="Decrease quantity for {{ item.product.title | default: item.title | escape }}">{% render 'icon-minus' %}</button><input id="{{ quantity_id }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric" aria-label="Quantity for {{ item.product.title | default: item.title | escape }}"><button type="button" data-quantity-increase aria-label="Increase quantity for {{ item.product.title | default: item.title | escape }}">{% render 'icon-plus' %}</button></div>
+    <a class="cart-item__remove" href="{{ item.url_to_remove }}" aria-label="Remove {{ item.product.title | default: item.title | escape }} from cart">{% render 'icon-remove' %}<span>Remove</span></a>
+  </div>
+</li>

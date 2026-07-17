@@ -1,0 +1,35 @@
+{% liquid
+  assign continue_url = routes.all_products_collection_url
+  if section.settings.continue_shopping_destination == 'custom' and section.settings.custom_continue_shopping_link != blank
+    assign continue_url = section.settings.custom_continue_shopping_link
+  endif
+  assign note_label = section.settings.cart_note_label | default: 'Order instructions'
+%}
+<section class="main-cart" data-cart-section style="--cart-pt:{{ section.settings.top_spacing }}px;--cart-pb:{{ section.settings.bottom_spacing }}px">
+  <div class="content-width--{{ section.settings.content_width }}">
+    <header class="cart-header"><h1>Cart</h1><p>{{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}</p></header>
+    {% if cart.item_count == 0 %}
+      <div class="cart-empty"><h2>Your cart is empty</h2><p>Browse our collection to find something you’ll love.</p><a class="button" href="{{ continue_url }}"{% if section.settings.continue_shopping_destination == 'previous' %} data-cart-previous-link data-cart-fallback-url="{{ routes.all_products_collection_url }}" data-cart-route="{{ routes.cart_url | escape }}" data-cart-root="{{ routes.root_url | escape }}"{% endif %}>Continue shopping</a></div>
+    {% else %}
+      <form action="{{ routes.cart_url }}" method="post" class="cart-form">
+        <ul class="cart-items" role="list">{% for item in cart.items %}{% render 'cart-item', item: item, section: section, show_images: section.settings.show_product_images, image_ratio: section.settings.image_ratio, image_fit: section.settings.image_fit, show_vendor: section.settings.show_vendor, show_product_type: section.settings.show_product_type, show_variant_title: section.settings.show_variant_title, show_properties: section.settings.show_line_item_properties, show_unit_price: section.settings.show_unit_price, show_original_price: section.settings.show_original_price, show_line_discounts: section.settings.show_line_item_discounts %}{% endfor %}</ul>
+        <div class="cart-form__footer">
+          <div class="cart-form__note">{% if section.settings.show_cart_note %}<h2>{{ note_label | escape }}</h2><label for="CartNote-{{ section.id }}">{{ note_label | escape }}</label><textarea id="CartNote-{{ section.id }}" name="note" rows="5">{{ cart.note | escape }}</textarea>{% endif %}</div>
+          <div class="cart-summary">
+            {% if section.settings.show_cart_level_discounts and cart.cart_level_discount_applications.size > 0 %}<ul class="cart-summary__discounts" aria-label="Cart discounts">{% for discount in cart.cart_level_discount_applications %}<li>{{ discount.title | escape }} (-{{ discount.total_allocated_amount | money }})</li>{% endfor %}</ul>{% endif %}
+            <p class="cart-summary__subtotal"><span>Subtotal</span><strong>{{ cart.total_price | money }}</strong></p>
+            <p class="cart-summary__notice">Taxes and shipping calculated at checkout.</p>
+            {% if section.settings.require_terms_agreement %}<div class="cart-terms"><input id="CartTerms-{{ section.id }}" type="checkbox" data-cart-terms required><label for="CartTerms-{{ section.id }}">{% if section.settings.terms_page != blank %}<a href="{{ section.settings.terms_page.url }}">{{ section.settings.terms_label | default: 'I agree to the terms and conditions' | escape }}</a>{% else %}{{ section.settings.terms_label | default: 'I agree to the terms and conditions' | escape }}{% endif %}</label></div>{% endif %}
+            {% if section.settings.trust_message != blank %}<p class="cart-summary__trust">{{ section.settings.trust_message | escape }}</p>{% endif %}
+            <div class="cart-actions"><button class="button button--secondary" type="submit" name="update" formnovalidate>Update cart</button><button class="button" type="submit" name="checkout" data-cart-checkout>Checkout</button></div>
+            {% if section.settings.show_accelerated_checkout and section.settings.require_terms_agreement == false and additional_checkout_buttons %}<div class="cart-accelerated-checkout">{{ content_for_additional_checkout_buttons }}</div>{% endif %}
+            <a class="cart-continue" href="{{ continue_url }}"{% if section.settings.continue_shopping_destination == 'previous' %} data-cart-previous-link data-cart-fallback-url="{{ routes.all_products_collection_url }}" data-cart-route="{{ routes.cart_url | escape }}" data-cart-root="{{ routes.root_url | escape }}"{% endif %}>Continue shopping</a>
+          </div>
+        </div>
+      </form>
+    {% endif %}
+  </div>
+</section>
+{% schema %}
+{"name":"Cart","settings":[{"type":"select","id":"content_width","label":"Content width","default":"wide","options":[{"value":"standard","label":"Standard"},{"value":"wide","label":"Wide"}]},{"type":"checkbox","id":"show_vendor","label":"Show vendor","default":true},{"type":"checkbox","id":"show_product_type","label":"Show product type","default":false},{"type":"checkbox","id":"show_variant_title","label":"Show variant title","default":true},{"type":"checkbox","id":"show_line_item_properties","label":"Show line-item properties","default":true},{"type":"checkbox","id":"show_unit_price","label":"Show unit price","default":true},{"type":"checkbox","id":"show_original_price","label":"Show original price","default":true},{"type":"checkbox","id":"show_line_item_discounts","label":"Show line-item discounts","default":true},{"type":"checkbox","id":"show_cart_level_discounts","label":"Show cart-level discounts","default":true},{"type":"checkbox","id":"show_cart_note","label":"Show cart note","default":true},{"type":"text","id":"cart_note_label","label":"Cart note label","default":"Order instructions"},{"type":"checkbox","id":"require_terms_agreement","label":"Require terms agreement","default":false},{"type":"text","id":"terms_label","label":"Terms label","default":"I agree to the terms and conditions"},{"type":"page","id":"terms_page","label":"Terms page"},{"type":"checkbox","id":"show_accelerated_checkout","label":"Show accelerated checkout","default":true},{"type":"select","id":"continue_shopping_destination","label":"Continue-shopping destination","default":"catalog","options":[{"value":"catalog","label":"Catalog"},{"value":"previous","label":"Previous page fallback"},{"value":"custom","label":"Custom link"}]},{"type":"url","id":"custom_continue_shopping_link","label":"Custom continue-shopping link"},{"type":"text","id":"trust_message","label":"Trust-message text"},{"type":"checkbox","id":"show_product_images","label":"Show product images","default":true},{"type":"select","id":"image_ratio","label":"Image ratio","default":"adapt","options":[{"value":"adapt","label":"Adapt"},{"value":"square","label":"Square"}]},{"type":"select","id":"image_fit","label":"Image fit","default":"cover","options":[{"value":"contain","label":"Contain"},{"value":"cover","label":"Cover"}]},{"type":"range","id":"top_spacing","label":"Top spacing","min":0,"max":96,"step":4,"unit":"px","default":48},{"type":"range","id":"bottom_spacing","label":"Bottom spacing","min":0,"max":96,"step":4,"unit":"px","default":48}]}
+{% endschema %}
