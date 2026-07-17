@@ -1,0 +1,13 @@
+{% assign size_chart_content = block.settings.page.content | default: block.settings.fallback %}
+{% if size_chart_content != blank %}
+  {% assign chart_id = 'SizeChart-' | append: section.id | append: '-' | append: block.id %}
+  {% if block.settings.display_style == 'modal' %}
+    <div class="product-size-chart product-size-chart--modal">
+      <button type="button" class="product-size-chart__trigger" data-size-chart-trigger aria-haspopup="dialog" aria-controls="{{ chart_id }}">{{ block.settings.button_label | default: 'Size chart' | escape }}</button>
+      <div id="{{ chart_id }}" class="product-size-chart__modal" data-size-chart-modal hidden role="dialog" aria-modal="true" aria-labelledby="{{ chart_id }}-heading"><div class="product-size-chart__modal-content"><button type="button" class="product-size-chart__close" data-size-chart-close aria-label="Close {{ block.settings.heading | default: block.settings.button_label | default: 'size chart' | escape }}">{% render 'icon-close' %}</button><h2 id="{{ chart_id }}-heading">{{ block.settings.heading | default: block.settings.button_label | default: 'Size chart' | escape }}</h2><div class="rte">{{ size_chart_content }}</div></div></div>
+      <details class="product-size-chart__disclosure"><summary>{{ block.settings.button_label | default: 'Size chart' | escape }}</summary><div class="rte">{{ size_chart_content }}</div></details>
+    </div>
+  {% else %}
+    <details class="product-size-chart product-size-chart__disclosure"><summary>{{ block.settings.button_label | default: block.settings.heading | default: 'Size chart' | escape }}</summary><div class="rte">{% if block.settings.heading != blank %}<h2>{{ block.settings.heading | escape }}</h2>{% endif %}{{ size_chart_content }}</div></details>
+  {% endif %}
+{% endif %}
