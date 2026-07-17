@@ -1,0 +1,14 @@
+{% assign age_heading = section.settings.heading | default: 'Please confirm' %}
+{% assign confirm_label = section.settings.confirm_label | default: 'I confirm' %}
+{% if section.settings.enabled %}
+<section id="AgeVerification-{{ section.id }}" class="promotion-dialog age-verification" data-age-gate data-design-mode="{{ request.design_mode }}" data-days="{{ section.settings.remember_days }}" hidden>
+  {% if section.settings.background != blank %}<div class="age-verification__background">{{ section.settings.background | image_url: width: 1600 | image_tag: loading: 'lazy', widths: '800, 1200, 1600', width: 1600, height: 900, alt: '' }}</div>{% endif %}
+  <div class="promotion-dialog__content" role="dialog" aria-modal="true" aria-labelledby="AgeVerificationTitle-{{ section.id }}" tabindex="-1">
+    <h2 id="AgeVerificationTitle-{{ section.id }}">{{ age_heading | escape }}</h2>
+    <p>{{ section.settings.statement | escape }}</p><div>{{ section.settings.text }}</div>
+    <button class="button" type="button" data-age-confirm>{{ confirm_label | escape }}</button>
+    {% if section.settings.exit_url != blank and section.settings.exit_label != blank %}<a class="button button--secondary" href="{{ section.settings.exit_url }}">{{ section.settings.exit_label | escape }}</a>{% endif %}
+  </div>
+</section>
+{% endif %}
+{% schema %}{"name":"Age confirmation","settings":[{"type":"checkbox","id":"enabled","label":"Enable confirmation gate","default":false},{"type":"text","id":"heading","label":"Heading","default":"Please confirm"},{"type":"text","id":"statement","label":"Minimum-age statement","default":"Please confirm you meet the minimum age required to enter this store."},{"type":"richtext","id":"text","label":"Text","default":"<p>This is a simple confirmation and does not verify identity.</p>"},{"type":"text","id":"confirm_label","label":"Confirm label","default":"I confirm"},{"type":"text","id":"exit_label","label":"Exit label","default":"Leave site"},{"type":"url","id":"exit_url","label":"Exit destination"},{"type":"range","id":"remember_days","label":"Remember confirmation for","min":1,"max":365,"step":1,"unit":"d","default":30},{"type":"image_picker","id":"background","label":"Background image"}]}{% endschema %}

@@ -1,0 +1,29 @@
+<section class="customer-page page-width" data-addresses-section>
+  <h1>Addresses</h1>
+  <p><a href="{{ routes.account_url }}">Back to account</a></p>
+  <h2>Add an address</h2>
+  {% render 'customer-address-form', address: customer.new_address, section: section %}
+  {% paginate customer.addresses by 10 %}
+    {% if customer.addresses.size == 0 %}
+      <p>You do not have any saved addresses yet.</p>
+    {% else %}
+      {% for address in customer.addresses %}
+        <article>
+          <h2>{% if address.first_name != blank %}{{ address.first_name | escape }}{% endif %}{% if address.last_name != blank %} {{ address.last_name | escape }}{% endif %}{% if address == customer.default_address %} <span>(Default address)</span>{% endif %}</h2>
+          <address>
+            {% if address.company != blank %}{{ address.company | escape }}<br>{% endif %}
+            {% if address.address1 != blank %}{{ address.address1 | escape }}<br>{% endif %}
+            {% if address.address2 != blank %}{{ address.address2 | escape }}<br>{% endif %}
+            {% capture locality %}{% if address.city != blank %}{{ address.city | escape }}{% endif %}{% if address.province != blank %}{% if address.city != blank %}, {% endif %}{{ address.province | escape }}{% endif %}{% if address.zip != blank %}{% if address.city != blank or address.province != blank %} {% endif %}{{ address.zip | escape }}{% endif %}{% endcapture %}{% if locality != blank %}{{ locality }}<br>{% endif %}
+            {% if address.country != blank %}{{ address.country | escape }}<br>{% endif %}
+            {% if address.phone != blank %}{{ address.phone | escape }}{% endif %}
+          </address>
+          <details><summary>Edit this address</summary>{% render 'customer-address-form', address: address, section: section %}</details>
+          <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}" data-address-delete aria-label="Delete address for {{ address.first_name | escape }} {{ address.last_name | escape }}"><input type="hidden" name="_method" value="delete"><button class="button button--secondary" type="submit">Delete address for {{ address.first_name | escape }} {{ address.last_name | escape }}</button></form>
+        </article>
+      {% endfor %}
+      {% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}
+    {% endif %}
+  {% endpaginate %}
+</section>
+{% schema %}{"name":"Customer addresses"}{% endschema %}

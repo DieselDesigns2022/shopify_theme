@@ -3,9 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page_title | escape }}{% if current_tags %} &ndash; {{ current_tags | join: ', ' | escape }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name | escape }}{% endunless %}</title>
-    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
-    <link rel="canonical" href="{{ canonical_url }}">
+    {% render 'meta-tags' %}
+    {% render 'structured-data' %}
     {% if settings.favicon != blank %}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">{% endif %}
     {{ content_for_header }}
     {% assign body_font = settings.font_body %}{% assign heading_font = settings.font_heading %}{% assign button_font = settings.font_body %}{% assign navigation_font = settings.font_body %}
@@ -108,5 +107,8 @@
     {% sections 'header-group' %}
     <main id="MainContent" class="main-content" role="main" tabindex="-1">{{ content_for_layout }}</main>
     {% sections 'footer-group' %}
+    {% section 'newsletter-popup' %}
+    {% section 'privacy-banner' %}
+    {% section 'age-verification' %}
   </body>
 </html>

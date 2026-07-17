@@ -1,0 +1,18 @@
+{% assign address_key = address.id | default: 'new' %}
+{% assign form_id = 'AddressForm-' | append: section.id | append: '-' | append: address_key %}
+{% form 'customer_address', address, id: form_id, data-address-form: '' %}
+  {% assign current_country = form.country | default: address.country | default: localization.country.name | default: shop.address.country %}
+  {% if form.errors %}<div role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+  <label for="{{ form_id }}-First">First name</label><input id="{{ form_id }}-First" name="address[first_name]" value="{{ form.first_name | escape }}" autocomplete="given-name">
+  <label for="{{ form_id }}-Last">Last name</label><input id="{{ form_id }}-Last" name="address[last_name]" value="{{ form.last_name | escape }}" autocomplete="family-name">
+  <label for="{{ form_id }}-Company">Company</label><input id="{{ form_id }}-Company" name="address[company]" value="{{ form.company | escape }}" autocomplete="organization">
+  <label for="{{ form_id }}-Address1">Address</label><input id="{{ form_id }}-Address1" name="address[address1]" value="{{ form.address1 | escape }}" autocomplete="address-line1" required>
+  <label for="{{ form_id }}-Address2">Apartment, suite, etc.</label><input id="{{ form_id }}-Address2" name="address[address2]" value="{{ form.address2 | escape }}" autocomplete="address-line2">
+  <label for="{{ form_id }}-City">City</label><input id="{{ form_id }}-City" name="address[city]" value="{{ form.city | escape }}" autocomplete="address-level2" required>
+  <label for="{{ form_id }}-Country">Country / region</label><select id="{{ form_id }}-Country" name="address[country]" data-address-country data-default="{{ current_country | escape }}" autocomplete="country">{{ all_country_option_tags }}</select>
+  <div id="{{ form_id }}-ProvinceWrap" data-address-province-wrap><label for="{{ form_id }}-Province">Province / state</label><select id="{{ form_id }}-Province" name="address[province]" data-address-province data-default="{{ form.province | escape }}"></select></div>
+  <label for="{{ form_id }}-Zip">Postal code</label><input id="{{ form_id }}-Zip" name="address[zip]" value="{{ form.zip | escape }}" autocomplete="postal-code" required>
+  <label for="{{ form_id }}-Phone">Phone</label><input id="{{ form_id }}-Phone" name="address[phone]" value="{{ form.phone | escape }}" autocomplete="tel">
+  <input id="{{ form_id }}-Default" type="checkbox" name="address[default]"{% if address == customer.default_address %} checked{% endif %}><label for="{{ form_id }}-Default">Set as default address</label>
+  <button class="button" type="submit">{% if address.id %}Update address{% else %}Add address{% endif %}</button>
+{% endform %}

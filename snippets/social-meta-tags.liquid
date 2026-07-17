@@ -1,0 +1,21 @@
+{% liquid
+  assign social_title = title | default: shop.name
+  assign social_description = description | default: shop.description | strip_html | strip | truncate: 200
+  assign social_image = settings.seo_social_image
+  assign social_type = 'website'
+  if request.page_type == 'product'
+    assign social_type = 'product'
+    assign social_image = product.featured_image | default: social_image
+  elsif request.page_type == 'article'
+    assign social_type = 'article'
+    assign social_image = article.image | default: social_image
+  elsif request.page_type == 'collection'
+    assign social_image = collection.image | default: social_image
+  elsif request.page_type == 'page'
+    assign social_image = page.image | default: social_image
+  endif
+%}
+<meta property="og:site_name" content="{{ shop.name | escape }}"><meta property="og:url" content="{{ canonical_url }}"><meta property="og:title" content="{{ social_title | escape }}"><meta property="og:type" content="{{ social_type }}">
+{% if social_description != blank %}<meta property="og:description" content="{{ social_description | escape }}">{% endif %}
+{% if social_image != blank %}<meta property="og:image" content="{{ social_image | image_url: width: 1200 | prepend: 'https:' }}"><meta property="og:image:width" content="1200">{% endif %}
+<meta name="twitter:card" content="{% if social_image != blank %}summary_large_image{% else %}summary{% endif %}"><meta name="twitter:title" content="{{ social_title | escape }}">{% if social_description != blank %}<meta name="twitter:description" content="{{ social_description | escape }}">{% endif %}{% if social_image != blank %}<meta name="twitter:image" content="{{ social_image | image_url: width: 1200 | prepend: 'https:' }}">{% endif %}
