@@ -23,10 +23,15 @@
     "header": {
       "type": "header",
       "settings": {}
+    },
+    "cart_drawer": {
+      "type": "cart-drawer",
+      "settings": {}
     }
   },
   "order": [
     "announcement_bar",
-    "header"
+    "header",
+    "cart_drawer"
   ]
 }

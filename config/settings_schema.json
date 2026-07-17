@@ -903,5 +903,34 @@
         "default": true
       }
     ]
+  },
+  {
+    "name": "Cart progress",
+    "settings": [
+      {
+        "type": "number",
+        "id": "cart_free_shipping_threshold",
+        "label": "Free-shipping threshold (major currency units)",
+        "default": 75
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_heading",
+        "label": "Free-shipping heading",
+        "default": "Free-shipping progress"
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_progress_message",
+        "label": "Progress message",
+        "default": "You\u2019re {{ amount }} away from the free-shipping threshold."
+      },
+      {
+        "type": "text",
+        "id": "cart_free_shipping_success_message",
+        "label": "Success message",
+        "default": "You may qualify for free shipping."
+      }
+    ]
   }
 ]
