@@ -1,0 +1,18 @@
+{% liquid
+  assign predictive_terms = predictive_search.terms | default: search.terms | strip
+  assign result_total = predictive_search.resources.products.size | plus: predictive_search.resources.collections.size | plus: predictive_search.resources.articles.size | plus: predictive_search.resources.pages.size | plus: predictive_search.resources.queries.size
+%}
+<div data-predictive-search-response>
+  {% if predictive_search.performed and predictive_terms != blank %}
+    {% if result_total > 0 %}
+      {% if predictive_search.resources.queries.size > 0 %}<section class="predictive-search__group"><h3>Suggestions</h3><ul>{% for query in predictive_search.resources.queries %}<li><a href="{{ routes.search_url }}?q={{ query.text | url_encode }}&amp;options%5Bprefix%5D=last">{{ query.text | escape }}</a></li>{% endfor %}</ul></section>{% endif %}
+      {% if predictive_search.resources.products.size > 0 %}<section class="predictive-search__group"><h3>Products</h3><ul>{% for product in predictive_search.resources.products %}<li><a class="predictive-search__product" href="{{ product.url }}">{% if product.featured_image != blank %}{{ product.featured_image | image_url: width: 160 | image_tag: widths: '80, 120, 160', sizes: '80px', loading: 'eager', alt: product.featured_image.alt | default: product.title | escape }}{% else %}<span class="predictive-search__image-placeholder" aria-hidden="true"></span>{% endif %}<span><span class="predictive-search__title">{{ product.title | escape }}</span>{% render 'price', product: product, show_from: true %}{% unless product.available %}<span class="predictive-search__sold-out">Sold out</span>{% endunless %}</span></a></li>{% endfor %}</ul></section>{% endif %}
+      {% if predictive_search.resources.collections.size > 0 %}<section class="predictive-search__group"><h3>Collections</h3><ul>{% for collection in predictive_search.resources.collections %}<li><a class="predictive-search__product" href="{{ collection.url }}">{% if collection.featured_image != blank %}{{ collection.featured_image | image_url: width: 160 | image_tag: widths: '80, 120, 160', sizes: '80px', loading: 'lazy', alt: collection.featured_image.alt | default: collection.title | escape }}{% endif %}<span class="predictive-search__title">{{ collection.title | escape }}</span></a></li>{% endfor %}</ul></section>{% endif %}
+      {% if predictive_search.resources.articles.size > 0 %}<section class="predictive-search__group"><h3>Articles</h3><ul>{% for article in predictive_search.resources.articles %}<li><a href="{{ article.url }}"><span class="predictive-search__type">Article</span><span class="predictive-search__title">{{ article.title | escape }}</span></a></li>{% endfor %}</ul></section>{% endif %}
+      {% if predictive_search.resources.pages.size > 0 %}<section class="predictive-search__group"><h3>Pages</h3><ul>{% for page in predictive_search.resources.pages %}<li><a href="{{ page.url }}"><span class="predictive-search__type">Page</span><span class="predictive-search__title">{{ page.title | escape }}</span></a></li>{% endfor %}</ul></section>{% endif %}
+      <a class="predictive-search__view-all" href="{{ routes.search_url }}?q={{ predictive_terms | url_encode }}&amp;options%5Bprefix%5D=last">View all results for “{{ predictive_terms | escape }}”</a>
+    {% else %}
+      <div class="predictive-search__empty"><p>No suggestions found for “{{ predictive_terms | escape }}”.</p><a href="{{ routes.search_url }}?q={{ predictive_terms | url_encode }}&amp;options%5Bprefix%5D=last">View all results</a></div>
+    {% endif %}
+  {% endif %}
+</div>

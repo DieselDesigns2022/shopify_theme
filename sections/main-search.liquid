@@ -13,7 +13,7 @@
     {% if search.performed == false %}
       <div class="browse-empty"><h2>Start your search</h2><p>Enter a term above to find products, articles, and pages.</p></div>
     {% elsif search.results_count == 0 %}
-      <div class="browse-empty"><h2>No results found</h2><p>Try another search term.</p></div>
+      <div class="browse-empty"><h2>No results found</h2><p>Check the spelling, try a shorter term, or <a href="{{ routes.all_products_collection_url }}">browse the catalog</a>.</p></div>
     {% else %}
       {% if search.sort_options != blank %}
         <form action="{{ routes.search_url }}" method="get" class="browse-sort"><label for="SearchSort-{{ section.id }}">Sort by</label><input type="hidden" name="q" value="{{ search.terms | escape }}"><input type="hidden" name="options[prefix]" value="last"><select id="SearchSort-{{ section.id }}" name="sort_by" data-sort-select>{% assign sort_by = search.sort_by | default: search.default_sort_by %}{% for option in search.sort_options %}<option value="{{ option.value }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>{% endfor %}</select>{% for filter in search.filters %}{% for value in filter.active_values %}<input type="hidden" name="{{ value.param_name }}" value="{{ value.value }}">{% endfor %}{% if filter.min_value.value %}<input type="hidden" name="{{ filter.min_value.param_name }}" value="{{ filter.min_value.value }}">{% endif %}{% if filter.max_value.value %}<input type="hidden" name="{{ filter.max_value.param_name }}" value="{{ filter.max_value.value }}">{% endif %}{% endfor %}<button type="submit">Sort</button></form>
