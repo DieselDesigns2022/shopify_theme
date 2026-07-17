@@ -1,8 +1,36 @@
-{% assign price_variant = use_variant | default: product.selected_or_first_available_variant %}
-<div class="product-price{% if price_variant.compare_at_price > price_variant.price %} product-price--on-sale{% endif %}" data-product-price>
-  <span class="product-price__regular" data-price-regular{% if price_variant.compare_at_price > price_variant.price %} hidden{% endif %}>{{ price_variant.price | money }}</span>
-  <span class="product-price__sale" data-price-sale{% unless price_variant.compare_at_price > price_variant.price %} hidden{% endunless %}>{{ price_variant.price | money }}</span>
-  <s class="product-price__compare" data-price-compare{% unless price_variant.compare_at_price > price_variant.price %} hidden{% endunless %}>{{ price_variant.compare_at_price | money }}</s>
-  <span class="visually-hidden" data-price-sale-status{% unless price_variant.compare_at_price > price_variant.price %} hidden{% endunless %}>Sale</span>
-  <small class="product-price__unit" data-price-unit{% unless price_variant.unit_price_measurement %} hidden{% endunless %}>{% if price_variant.unit_price_measurement %}{{ price_variant.unit_price | money }} / {% if price_variant.unit_price_measurement.reference_value != 1 %}{{ price_variant.unit_price_measurement.reference_value }}{% endif %}{{ price_variant.unit_price_measurement.reference_unit }}{% endif %}</small>
+{% liquid
+  assign price_product = product
+  assign price_variant = use_variant
+  assign on_sale = false
+
+  if price_variant
+    if price_variant.compare_at_price > price_variant.price
+      assign on_sale = true
+    endif
+  else
+    assign minimum_variant = nil
+    for variant in price_product.variants
+      if variant.price == price_product.price_min and minimum_variant == nil
+        assign minimum_variant = variant
+      endif
+    endfor
+    if minimum_variant and minimum_variant.compare_at_price > minimum_variant.price
+      assign on_sale = true
+    endif
+  endif
+%}
+<div class="product-price{% if on_sale %} product-price--on-sale{% endif %}" data-product-price>
+  {% if price_variant %}
+    <span class="product-price__regular" data-price-regular{% if on_sale %} hidden{% endif %}>{{ price_variant.price | money }}</span>
+    <span class="product-price__sale" data-price-sale{% unless on_sale %} hidden{% endunless %}>{{ price_variant.price | money }}</span>
+    <s class="product-price__compare" data-price-compare{% unless on_sale %} hidden{% endunless %}>{{ price_variant.compare_at_price | money }}</s>
+    <span class="visually-hidden" data-price-sale-status{% unless on_sale %} hidden{% endunless %}>Sale</span>
+    <small class="product-price__unit" data-price-unit{% unless price_variant.unit_price_measurement %} hidden{% endunless %}>{% if price_variant.unit_price_measurement %}{{ price_variant.unit_price | money }} / {% if price_variant.unit_price_measurement.reference_value != 1 %}{{ price_variant.unit_price_measurement.reference_value }}{% endif %}{{ price_variant.unit_price_measurement.reference_unit }}{% endif %}</small>
+  {% else %}
+    {% if show_from and price_product.price_varies %}<span class="product-price__from">From</span>{% endif %}
+    <span class="product-price__regular" data-price-regular{% if on_sale %} hidden{% endif %}>{{ price_product.price_min | money }}</span>
+    <span class="product-price__sale" data-price-sale{% unless on_sale %} hidden{% endunless %}>{{ price_product.price_min | money }}</span>
+    <s class="product-price__compare" data-price-compare{% unless on_sale %} hidden{% endunless %}>{% if minimum_variant %}{{ minimum_variant.compare_at_price | money }}{% endif %}</s>
+    <span class="visually-hidden" data-price-sale-status{% unless on_sale %} hidden{% endunless %}>Sale</span>
+  {% endif %}
 </div>
