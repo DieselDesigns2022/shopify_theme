@@ -547,6 +547,7 @@
   var slideshowControllers = new WeakMap();
   var countdownControllers = new WeakMap();
   var videoControllers = new WeakMap();
+  var browseControllers = new WeakMap();
   var productControllers = new WeakMap();
 
   function initProduct(section) {
@@ -629,7 +630,21 @@
     sync(); videoControllers.set(section, { destroy: function () { if (automaticallyStarted && video) video.pause(); cleanup.forEach(function (fn) { fn(); }); videoControllers.delete(section); } });
   }
 
-  function destroyDynamic(scope) { var root = scope || document; [selectors.slideshow, selectors.countdown, selectors.video].forEach(function (selector) { var items = []; if (root.matches && root.matches(selector)) items.push(root); Array.prototype.slice.call(root.querySelectorAll(selector)).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var controller = (selector === selectors.slideshow ? slideshowControllers : (selector === selectors.countdown ? countdownControllers : videoControllers)).get(item); if (controller) controller.destroy(); }); }); var products = []; if (root.matches && root.matches('[data-product-section]')) products.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-product-section]')).forEach(function (item) { products.push(item); }); products.forEach(function (item) { var controller = productControllers.get(item); if (controller) controller.destroy(); }); }
+
+  function initBrowse(section) {
+    if (!section || browseControllers.has(section)) return;
+    var cleanup = [], trigger = section.querySelector('[data-filter-open]'), panel = section.querySelector('[data-filter-panel]'), close = section.querySelector('[data-filter-close]');
+    function add(el, name, fn) { if (!el) return; el.addEventListener(name, fn); cleanup.push(function () { el.removeEventListener(name, fn); }); }
+    function shut() { if (!panel) return; panel.classList.remove('is-open'); if (trigger) { trigger.setAttribute('aria-expanded', 'false'); trigger.focus(); } }
+    add(trigger, 'click', function () { if (!panel) return; var open = !panel.classList.contains('is-open'); panel.classList.toggle('is-open', open); trigger.setAttribute('aria-expanded', open ? 'true' : 'false'); if (open) { var focus = panel.querySelector('button, summary, input'); if (focus) focus.focus(); } });
+    add(close, 'click', shut); add(panel, 'keydown', function (event) { if (event.key === 'Escape') { event.preventDefault(); shut(); } });
+    Array.prototype.slice.call(section.querySelectorAll('[data-sort-select]')).forEach(function (select) { add(select, 'change', function () { if (select.form) select.form.submit(); }); });
+    section.classList.add('is-browse-initialized');
+    browseControllers.set(section, { destroy: function () { if (panel) panel.classList.remove('is-open'); if (trigger) trigger.setAttribute('aria-expanded', 'false'); section.classList.remove('is-browse-initialized'); cleanup.forEach(function (fn) { fn(); }); browseControllers.delete(section); } });
+  }
+
+  function destroyDynamic(scope) { var root = scope || document; [selectors.slideshow, selectors.countdown, selectors.video].forEach(function (selector) { var items = []; if (root.matches && root.matches(selector)) items.push(root); Array.prototype.slice.call(root.querySelectorAll(selector)).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var controller = (selector === selectors.slideshow ? slideshowControllers : (selector === selectors.countdown ? countdownControllers : videoControllers)).get(item); if (controller) controller.destroy(); }); }); var browses = []; if (root.matches && root.matches('[data-browse-section]')) browses.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-browse-section]')).forEach(function (item) { browses.push(item); }); browses.forEach(function (item) { var controller = browseControllers.get(item); if (controller) controller.destroy(); });
+    var products = []; if (root.matches && root.matches('[data-product-section]')) products.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-product-section]')).forEach(function (item) { products.push(item); }); products.forEach(function (item) { var controller = productControllers.get(item); if (controller) controller.destroy(); }); }
 
   function init(scope) {
     var root = scope || document;
@@ -643,6 +658,8 @@
     root.querySelectorAll(selectors.countdown).forEach(initCountdown);
     if (root !== document && root.matches && root.matches(selectors.video)) initVideo(root);
     root.querySelectorAll(selectors.video).forEach(initVideo);
+    if (root !== document && root.matches && root.matches('[data-browse-section]')) initBrowse(root);
+    root.querySelectorAll('[data-browse-section]').forEach(initBrowse);
     if (root !== document && root.matches && root.matches('[data-product-section]')) initProduct(root);
     root.querySelectorAll('[data-product-section]').forEach(initProduct);
     initReveal(root);

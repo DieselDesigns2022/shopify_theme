@@ -1,0 +1,11 @@
+{% for filter in filters %}
+  {% assign filter_id = section.id | append: '-' | append: filter.param_name | handleize | append: '-' | append: forloop.index %}
+  <details class="facets__group"{% if filter.active_values.size > 0 %} open{% endif %}><summary>{{ filter.label | escape }}</summary>
+    <fieldset><legend class="visually-hidden">{{ filter.label | escape }}</legend>
+    {% case filter.type %}
+      {% when 'boolean', 'list' %}{% for value in filter.values %}<label class="facets__value"><input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}"{% if value.active %} checked{% endif %}{% if value.count == 0 and value.active == false %} disabled{% endif %}> <span>{{ value.label | escape }} ({{ value.count }})</span></label>{% endfor %}
+      {% when 'price_range' %}<div class="facets__price"><label for="{{ filter_id }}-min">Minimum {{ cart.currency.symbol | escape }}</label><input id="{{ filter_id }}-min" name="{{ filter.min_value.param_name }}" type="number" min="0" value="{% if filter.min_value.value %}{{ filter.min_value.value | money_without_currency | replace: ',', '' }}{% endif %}"><label for="{{ filter_id }}-max">Maximum {{ cart.currency.symbol | escape }}</label><input id="{{ filter_id }}-max" name="{{ filter.max_value.param_name }}" type="number" min="0" value="{% if filter.max_value.value %}{{ filter.max_value.value | money_without_currency | replace: ',', '' }}{% endif %}"></div>
+    {% endcase %}
+    </fieldset>
+  </details>
+{% endfor %}
