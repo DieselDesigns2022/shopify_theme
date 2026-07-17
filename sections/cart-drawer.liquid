@@ -1,0 +1,25 @@
+{% liquid
+  assign continue_url = section.settings.continue_shopping_link | default: routes.all_products_collection_url
+%}
+<section class="cart-drawer-section" data-cart-drawer data-cart-section data-cart-sections="{{ section.id }}{% if template.name == 'cart' %},main{% endif %}" data-cart-change-url="{{ routes.cart_change_url }}" data-cart-update-url="{{ routes.cart_update_url }}" hidden>
+  <div class="cart-drawer__overlay" data-cart-drawer-overlay></div>
+  <aside id="CartDrawer-{{ section.id }}" class="cart-drawer" data-cart-drawer-dialog role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle-{{ section.id }}" aria-hidden="true" tabindex="-1">
+    <header class="cart-drawer__header"><h2 id="CartDrawerTitle-{{ section.id }}">Your cart <span data-cart-item-count aria-label="{{ 'cart.item_count' | t: count: cart.item_count }}">{{ cart.item_count }}</span></h2><button type="button" class="cart-drawer__close" data-cart-drawer-close aria-label="Close cart">{% render 'icon-close' %}</button></header>
+    <div class="cart-drawer__messages"><p class="cart-drawer__status" data-cart-status role="status" aria-live="polite"></p><p class="cart-drawer__error" data-cart-error role="alert" hidden></p></div>
+    {% if cart.item_count == 0 %}
+      <div class="cart-empty"><h3>{{ section.settings.empty_cart_heading | escape }}</h3><p>{{ section.settings.empty_cart_text | escape }}</p><a class="button" href="{{ continue_url }}">Continue shopping</a></div>
+    {% else %}
+      <div class="cart-drawer__body"><ul class="cart-items" role="list">{% for item in cart.items %}{% render 'cart-item', item: item, section: section, show_images: true, image_ratio: 'square', image_fit: 'cover', show_vendor: false, show_product_type: false, show_variant_title: true, show_properties: true, show_unit_price: true, show_original_price: true, show_line_discounts: true %}{% endfor %}</ul></div>
+      <div class="cart-drawer__footer">
+        {% render 'free-shipping-progress', enabled: section.settings.enable_free_shipping_progress, threshold: settings.cart_free_shipping_threshold, heading: settings.cart_free_shipping_heading, progress_message: settings.cart_free_shipping_progress_message, success_message: settings.cart_free_shipping_success_message %}
+        {% if section.settings.show_cart_note %}<label for="CartDrawerNote-{{ section.id }}">Order instructions</label><textarea id="CartDrawerNote-{{ section.id }}" data-cart-note rows="3">{{ cart.note | escape }}</textarea><p data-cart-note-state aria-live="polite"></p>{% endif %}
+        {% if cart.cart_level_discount_applications.size > 0 %}<ul class="cart-summary__discounts" aria-label="Cart discounts">{% for discount in cart.cart_level_discount_applications %}<li>{{ discount.title | escape }} (-{{ discount.total_allocated_amount | money }})</li>{% endfor %}</ul>{% endif %}
+        <p class="cart-summary__subtotal"><span>Subtotal</span><strong>{{ cart.total_price | money }}</strong></p><p class="cart-summary__notice">Taxes and shipping calculated at checkout.</p>
+        <div class="cart-drawer__actions"><a class="button" href="{{ routes.cart_url }}">View cart to agree to terms and checkout</a></div>
+      </div>
+    {% endif %}
+  </aside>
+</section>
+{% schema %}
+{"name":"Cart drawer","settings":[{"type":"checkbox","id":"enable_free_shipping_progress","label":"Enable free-shipping progress","default":true},{"type":"checkbox","id":"show_cart_note","label":"Show cart note","default":true},{"type":"text","id":"empty_cart_heading","label":"Empty-cart heading","default":"Your cart is empty"},{"type":"textarea","id":"empty_cart_text","label":"Empty-cart text","default":"Browse our collection to find something you’ll love."},{"type":"url","id":"continue_shopping_link","label":"Continue-shopping link"}]}
+{% endschema %}

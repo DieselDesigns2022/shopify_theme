@@ -41,7 +41,7 @@
     {% render 'price', product: card_product, show_from: true %}
     {% if show_description and card_product.description != blank %}<p class="product-card__description">{{ card_product.description | strip_html | truncate: 120 | escape }}</p>{% endif %}
     {% if enable_quick_add %}
-      {% if available_variant_count == 1 %}{% form 'product', card_product, class: 'product-card__quick-add' %}<input type="hidden" name="id" value="{{ only_available_variant.id }}"><button class="button button--secondary" type="submit">Add to cart</button>{% endform %}
+      {% if available_variant_count == 1 %}{% form 'product', card_product, class: 'product-card__quick-add', data-cart-quick-add: '' %}<input type="hidden" name="id" value="{{ only_available_variant.id }}"><button class="button button--secondary" type="submit">Add to cart</button><p class="product-card__quick-add-status" data-quick-add-status role="status" aria-live="polite"></p>{% endform %}
       {% elsif available_variant_count > 1 %}<a class="button button--secondary product-card__choose" href="{{ card_product.url }}">Choose options</a>{% endif %}
     {% endif %}
   </div>
