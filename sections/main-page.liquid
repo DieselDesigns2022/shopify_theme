@@ -1,0 +1,12 @@
+<section class="content-page" style="--content-pt:{{ section.settings.top_spacing }}px;--content-pb:{{ section.settings.bottom_spacing }}px">
+  <div class="page-width content-page__inner content-width--{{ section.settings.content_width }} content-page__inner--{{ section.settings.alignment }}">
+    {% if section.settings.show_breadcrumbs %}<nav aria-label="Breadcrumb"><a href="{{ routes.root_url }}">Home</a><span aria-hidden="true"> / </span><span aria-current="page">{{ page.title | escape }}</span></nav>{% endif %}
+    {% if section.settings.show_image and section.settings.image != blank %}<div class="content-page__banner">{{ section.settings.image | image_url: width: 2000 | image_tag: widths: '480, 720, 1000, 1500, 2000', loading: 'eager', width: section.settings.image.width, height: section.settings.image.height, alt: section.settings.image.alt }}</div>{% endif %}
+    <header class="content-page__header"><h1>{{ page.title | escape }}</h1></header>
+    {% if page.content != blank %}<div class="rte content-page__body">{{ page.content }}</div>{% else %}<p class="content-empty">This page does not have any content yet.</p>{% endif %}
+    {% for block in section.blocks %}{% if block.type == '@app' %}<div {{ block.shopify_attributes }}>{% render block %}</div>{% endif %}{% endfor %}
+  </div>
+</section>
+{% schema %}
+{"name":"Page","settings":[{"type":"checkbox","id":"show_breadcrumbs","label":"Show page breadcrumb","default":false},{"type":"checkbox","id":"show_image","label":"Show banner image","default":false},{"type":"image_picker","id":"image","label":"Banner image"},{"type":"select","id":"content_width","label":"Content width","default":"standard","options":[{"value":"narrow","label":"Narrow"},{"value":"standard","label":"Standard"},{"value":"wide","label":"Wide"}]},{"type":"select","id":"alignment","label":"Text alignment","default":"left","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"}]},{"type":"range","id":"top_spacing","label":"Top spacing","min":0,"max":96,"step":4,"unit":"px","default":48},{"type":"range","id":"bottom_spacing","label":"Bottom spacing","min":0,"max":96,"step":4,"unit":"px","default":48}],"blocks":[{"type":"@app"}]}
+{% endschema %}

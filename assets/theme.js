@@ -22,6 +22,8 @@
   var cartControllers = new WeakMap();
   var cartDrawerControllers = new WeakMap();
   var quickAddControllers = new WeakMap();
+  var faqControllers = new WeakMap();
+  var shareControllers = new WeakMap();
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function resolveCurrentCartDrawer() {
     var triggers = Array.prototype.slice.call(document.querySelectorAll('[data-cart-trigger]')).filter(function (trigger) { return document.contains(trigger); });
@@ -753,6 +755,59 @@
     form.addEventListener('submit',submit);cleanup.push(function(){form.removeEventListener('submit',submit);});quickAddControllers.set(form,{destroy:function(){destroyed=true;cleanup.forEach(function(fn){fn();});quickAddControllers.delete(form);}});
   }
 
+  function initFaq(section) {
+    if (!section || !section.matches || !section.matches('[data-faq-section]') || faqControllers.has(section)) return;
+    var cleanups = [];
+    if (section.dataset.singleOpen === 'true') {
+      section.querySelectorAll('details').forEach(function (item) {
+        var handler = function () {
+          if (!item.open) return;
+          section.querySelectorAll('details').forEach(function (other) { if (other !== item) other.open = false; });
+        };
+        item.addEventListener('toggle', handler);
+        cleanups.push(function () { item.removeEventListener('toggle', handler); });
+      });
+    }
+    faqControllers.set(section, { destroy: function () { cleanups.forEach(function (cleanup) { cleanup(); }); faqControllers.delete(section); } });
+  }
+
+  function initShare(root) {
+    if (!root || !root.matches || !root.matches('.social-sharing') || shareControllers.has(root)) return;
+    var button = root.querySelector('[data-copy-link]');
+    var destroyed = false;
+    var status = root.querySelector('[data-copy-status]');
+    if (!button) return;
+    function announce(message) { if (destroyed || !root.isConnected) return; if (status) status.textContent = message; }
+    function fallbackCopy(value) {
+      if (destroyed || !root.isConnected) return false;
+      var field = document.createElement('textarea');
+      field.value = value; field.setAttribute('readonly', ''); field.style.position = 'fixed'; field.style.opacity = '0';
+      document.body.appendChild(field); field.select();
+      var copied = false;
+      try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+      document.body.removeChild(field);
+      return copied;
+    }
+    function copy() {
+      var value = button.getAttribute('data-copy-url') || '';
+      if (!value) { announce('Unable to copy the link.'); return; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(value).then(function () { announce('Link copied.'); }, function () { announce(fallbackCopy(value) ? 'Link copied.' : 'Unable to copy the link.'); });
+      } else announce(fallbackCopy(value) ? 'Link copied.' : 'Unable to copy the link.');
+    }
+    button.addEventListener('click', copy);
+    button.hidden = false;
+    shareControllers.set(root, { destroy: function () { destroyed = true; button.removeEventListener('click', copy); if (root.isConnected) { button.hidden = true; if (status) status.textContent = ''; } shareControllers.delete(root); } });
+  }
+
+  function destroyContent(scope) {
+    var root = scope || document, items = [];
+    function add(item) { if (item && items.indexOf(item) === -1) items.push(item); }
+    if (root.matches && root.matches('[data-faq-section], .social-sharing')) add(root);
+    root.querySelectorAll('[data-faq-section], .social-sharing').forEach(add);
+    items.forEach(function (item) { var controller = item.matches('[data-faq-section]') ? faqControllers.get(item) : shareControllers.get(item); if (controller && controller.destroy) controller.destroy(); });
+  }
+
   function destroyDynamic(scope) { var root = scope || document; [selectors.slideshow, selectors.countdown, selectors.video].forEach(function (selector) { var items = []; if (root.matches && root.matches(selector)) items.push(root); Array.prototype.slice.call(root.querySelectorAll(selector)).forEach(function (item) { items.push(item); }); items.forEach(function (item) { var controller = (selector === selectors.slideshow ? slideshowControllers : (selector === selectors.countdown ? countdownControllers : videoControllers)).get(item); if (controller) controller.destroy(); }); }); var browses = []; if (root.matches && root.matches('[data-browse-section]')) browses.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-browse-section]')).forEach(function (item) { browses.push(item); }); browses.forEach(function (item) { var controller = browseControllers.get(item); if (controller) controller.destroy(); }); var drawers = []; if (root.matches && root.matches('[data-cart-drawer]')) drawers.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-cart-drawer]')).forEach(function(item){drawers.push(item);}); drawers.forEach(function(item){var controller=cartDrawerControllers.get(item);if(controller)controller.destroy();}); var carts = []; if (root.matches && root.matches('[data-cart-section]')) carts.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-cart-section]')).forEach(function (item) { carts.push(item); }); carts.forEach(function (item) { var controller = cartControllers.get(item); if (controller) controller.destroy(); });
     var quickAdds = []; if (root.matches && root.matches('[data-cart-quick-add]')) quickAdds.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-cart-quick-add]')).forEach(function(item){quickAdds.push(item);}); quickAdds.forEach(function(item){var controller=quickAddControllers.get(item);if(controller)controller.destroy();});
     var products = []; if (root.matches && root.matches('[data-product-section]')) products.push(root); Array.prototype.slice.call(root.querySelectorAll('[data-product-section]')).forEach(function (item) { products.push(item); }); products.forEach(function (item) { var controller = productControllers.get(item); if (controller) controller.destroy(); }); }
@@ -781,6 +836,10 @@
     root.querySelectorAll('[data-cart-quick-add]').forEach(initQuickAdd);
     if (root !== document && root.matches && root.matches('[data-product-section]')) initProduct(root);
     root.querySelectorAll('[data-product-section]').forEach(initProduct);
+    if (root !== document && root.matches && root.matches('[data-faq-section]')) initFaq(root);
+    root.querySelectorAll('[data-faq-section]').forEach(initFaq);
+    if (root !== document && root.matches && root.matches('.social-sharing')) initShare(root);
+    root.querySelectorAll('.social-sharing').forEach(initShare);
     initReveal(root);
   }
 
@@ -797,6 +856,7 @@
     destroyAnnouncements(event.target);
     destroyPredictiveSearch(event.target);
     destroyHeaders(event.target);
+    destroyContent(event.target);
 
     if (revealObserver) {
       var revealItems = Array.prototype.slice.call(event.target.querySelectorAll(selectors.reveal));
