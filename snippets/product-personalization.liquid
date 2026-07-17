@@ -1,0 +1,15 @@
+{% assign field_id = 'Personalization-' | append: section.id | append: '-' | append: block.id %}
+{% assign help_id = field_id | append: '-help' %}
+{% assign counter_id = field_id | append: '-counter' %}
+<div class="product-personalization" data-product-personalization>
+  {% if block.settings.heading != blank %}<h2 class="product-personalization__heading">{{ block.settings.heading | escape }}</h2>{% endif %}
+  {% if block.settings.instructions != blank %}<div id="{{ help_id }}" class="product-personalization__instructions rte">{{ block.settings.instructions }}</div>{% endif %}
+  <label for="{{ field_id }}">{{ block.settings.field_label | default: 'Personalization' | escape }}{% if block.settings.required %}<span aria-hidden="true"> *</span>{% endif %}</label>
+  {% if block.settings.field_type == 'long_text' %}
+    <textarea id="{{ field_id }}" name="properties[{{ block.settings.field_label | default: 'Personalization' | escape }}]" form="{{ product_form_id }}"{% if block.settings.required %} required{% endif %}{% if block.settings.maximum_characters > 0 %} maxlength="{{ block.settings.maximum_characters }}"{% endif %}{% if block.settings.placeholder != blank %} placeholder="{{ block.settings.placeholder | escape }}"{% endif %}{% if block.settings.instructions != blank or block.settings.show_character_counter %} aria-describedby="{% if block.settings.instructions != blank %}{{ help_id }}{% endif %}{% if block.settings.instructions != blank and block.settings.show_character_counter %} {% endif %}{% if block.settings.show_character_counter %}{{ counter_id }}{% endif %}"{% endif %} data-character-input></textarea>
+  {% else %}
+    <input id="{{ field_id }}" type="text" name="properties[{{ block.settings.field_label | default: 'Personalization' | escape }}]" form="{{ product_form_id }}"{% if block.settings.required %} required{% endif %}{% if block.settings.maximum_characters > 0 %} maxlength="{{ block.settings.maximum_characters }}"{% endif %}{% if block.settings.placeholder != blank %} placeholder="{{ block.settings.placeholder | escape }}"{% endif %}{% if block.settings.instructions != blank or block.settings.show_character_counter %} aria-describedby="{% if block.settings.instructions != blank %}{{ help_id }}{% endif %}{% if block.settings.instructions != blank and block.settings.show_character_counter %} {% endif %}{% if block.settings.show_character_counter %}{{ counter_id }}{% endif %}"{% endif %} data-character-input>
+  {% endif %}
+  {% if block.settings.show_character_counter %}<p id="{{ counter_id }}" class="product-character-counter" data-character-counter data-maximum="{{ block.settings.maximum_characters }}" aria-live="polite"></p>{% endif %}
+  {% if block.settings.additional_price_notice != blank %}<p class="product-personalization__price-notice">{{ block.settings.additional_price_notice | escape }}</p>{% endif %}
+</div>

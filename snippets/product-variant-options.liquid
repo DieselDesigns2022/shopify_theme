@@ -1,23 +1,39 @@
+{% assign configured_swatch_names = block.settings.swatch_option_names | downcase | split: ',' %}
 <div class="product-variant-picker product-variant-picker--{{ block.settings.picker_type }}" data-variant-picker>
   {% for option in product.options_with_values %}
     {% assign selected_value = current_variant.options[forloop.index0] %}
-    {% assign option_id = 'Option-' | append: section.id | append: '-' | append: option.position %}
-    {% if block.settings.picker_type == 'buttons' %}
-      <fieldset class="product-variant-picker__group" data-option-position="{{ option.position }}">
+    {% assign option_id = 'Option-' | append: section.id | append: '-' | append: block.id | append: '-' | append: option.position %}
+    {% assign option_name_downcase = option.name | downcase | strip %}{% assign is_swatch = false %}
+    {% if block.settings.enable_swatches %}{% for swatch_name in configured_swatch_names %}{% assign swatch_name_clean = swatch_name | strip %}{% if option_name_downcase == swatch_name_clean %}{% assign is_swatch = true %}{% endif %}{% endfor %}{% endif %}
+    {% if block.settings.picker_type == 'buttons' or is_swatch %}
+      <fieldset class="product-variant-picker__group{% if is_swatch %} product-variant-picker__group--swatches product-variant-picker__group--{{ block.settings.swatch_shape }}{% endif %}" data-option-position="{{ option.position }}">
         <legend{% unless block.settings.show_option_labels %} class="visually-hidden"{% endunless %}>{{ option.name | escape }}{% if block.settings.show_option_labels and block.settings.show_selected_value %}: <span data-selected-option>{{ selected_value | escape }}</span>{% endif %}</legend>
         <div class="product-variant-picker__buttons">
-          {% for value in option.values %}{% assign value_id = option_id | append: '-' | append: forloop.index %}
-            <input class="product-variant-picker__radio" type="radio" id="{{ value_id }}" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" data-option-value data-option-position="{{ option.position }}"{% if value == selected_value %} checked{% endif %}>
-            <label class="product-variant-picker__button" for="{{ value_id }}"><span>{{ value | escape }}</span><span class="product-variant-picker__availability" data-option-availability></span></label>
+          {% for value in option.values %}{% assign value_name = value.name | default: value %}{% assign value_id = option_id | append: '-' | append: forloop.index %}{% assign swatch_image = value.swatch.image %}{% assign swatch_color = value.swatch.color %}{% assign option_index = option.position | minus: 1 %}
+            {% if swatch_image == blank and block.settings.use_variant_image %}{% for variant in product.variants %}{% if variant.options[option_index] == value_name and variant.featured_media != blank %}{% assign swatch_image = variant.featured_media.preview_image %}{% break %}{% endif %}{% endfor %}{% endif %}
+            <input class="product-variant-picker__radio" type="radio" id="{{ value_id }}" name="options[{{ option.name | escape }}]" value="{{ value_name | escape }}" data-option-value data-option-position="{{ option.position }}"{% if value_name == selected_value %} checked{% endif %}>
+            <label class="product-variant-picker__button{% if is_swatch %} product-variant-picker__swatch{% endif %}" for="{{ value_id }}">
+              {% if is_swatch %}
+                <span class="product-variant-picker__swatch-sample" aria-hidden="true"{% if swatch_image != blank %} style="background-image:url('{{ swatch_image | image_url: width: 96 }}');"{% elsif swatch_color != blank %} style="background-color:{{ swatch_color }};"{% endif %}>{% if swatch_image == blank and swatch_color == blank %}{{ value_name | escape }}{% endif %}</span>
+                {% if swatch_image == blank and swatch_color == blank %}
+                  <span class="visually-hidden">{{ value_name | escape }}</span>
+                {% elsif block.settings.show_swatch_labels %}
+                  <span class="product-variant-picker__value-label">{{ value_name | escape }}</span>
+                {% else %}
+                  <span class="visually-hidden">{{ value_name | escape }}</span>
+                {% endif %}
+              {% else %}
+                <span class="product-variant-picker__value-label">{{ value_name | escape }}</span>
+              {% endif %}
+              <span class="product-variant-picker__availability" data-option-availability></span>
+            </label>
           {% endfor %}
         </div>
       </fieldset>
     {% else %}
       <div class="product-variant-picker__group" data-option-position="{{ option.position }}">
         {% if block.settings.show_option_labels %}<label for="{{ option_id }}">{{ option.name | escape }}{% if block.settings.show_selected_value %}: <span data-selected-option>{{ selected_value | escape }}</span>{% endif %}</label>{% endif %}
-        <select id="{{ option_id }}" name="options[{{ option.name | escape }}]" data-option-value data-option-position="{{ option.position }}"{% unless block.settings.show_option_labels %} aria-label="{{ option.name | escape }}"{% endunless %}>
-          {% for value in option.values %}<option value="{{ value | escape }}"{% if value == selected_value %} selected{% endif %}>{{ value | escape }}</option>{% endfor %}
-        </select>
+        <select id="{{ option_id }}" name="options[{{ option.name | escape }}]" data-option-value data-option-position="{{ option.position }}"{% unless block.settings.show_option_labels %} aria-label="{{ option.name | escape }}"{% endunless %}>{% for value in option.values %}{% assign value_name = value.name | default: value %}<option value="{{ value_name | escape }}"{% if value_name == selected_value %} selected{% endif %}>{{ value_name | escape }}</option>{% endfor %}</select>
       </div>
     {% endif %}
   {% endfor %}
