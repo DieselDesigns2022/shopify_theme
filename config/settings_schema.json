@@ -932,5 +932,40 @@
         "default": "You may qualify for free shipping."
       }
     ]
+  },
+  {
+    "name": "Localization",
+    "settings": [
+      {
+        "type": "select",
+        "id": "localization_placement",
+        "label": "Localization selector placement",
+        "default": "footer",
+        "options": [
+          {
+            "value": "none",
+            "label": "Do not show"
+          },
+          {
+            "value": "header",
+            "label": "Header"
+          },
+          {
+            "value": "footer",
+            "label": "Footer"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SEO and social sharing",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "seo_social_image",
+        "label": "Default social sharing image"
+      }
+    ]
   }
 ]

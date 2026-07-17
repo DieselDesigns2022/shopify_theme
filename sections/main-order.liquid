@@ -1,0 +1,28 @@
+<section class="customer-page page-width">
+  <h1>Order {{ order.name | escape }}</h1>
+  <p>Placed {{ order.created_at | date: '%B %d, %Y' }} · {{ order.financial_status_label | escape }} · {{ order.fulfillment_status_label | escape }}</p>
+  {% if order.cancelled %}<p role="status">Cancelled {{ order.cancelled_at | date: '%B %d, %Y' }}{% if order.cancel_reason != blank %}: {{ order.cancel_reason | escape }}{% endif %}</p>{% endif %}
+  <div class="table-scroll"><table><thead><tr><th>Product</th><th>Quantity</th><th>Price</th><th>Total</th></tr></thead><tbody>{% for line_item in order.line_items %}<tr><td>{{ line_item.title | escape }}{% if line_item.variant.title != blank %}<br><small>{{ line_item.variant.title | escape }}</small>{% endif %}{% if line_item.sku != blank %}<br><small>SKU: {{ line_item.sku | escape }}</small>{% endif %}{% if line_item.selling_plan_allocation %}<br><small>{{ line_item.selling_plan_allocation.selling_plan.name | escape }}</small>{% endif %}{% for discount in line_item.line_level_discount_allocations %}<br><small>Discount: {{ discount.discount_application.title | escape }} (-{{ discount.amount | money }})</small>{% endfor %}{% for property in line_item.properties %}{% assign first = property.first | slice: 0 %}{% assign value = property.last %}{% unless first == '_' or value == blank %}<br><small>{{ property.first | escape }}: {% assign upload_https = value | slice: 0, 24 %}{% assign upload_http = value | slice: 0, 23 %}{% assign upload_path = value | slice: 0, 9 %}{% if upload_https == 'https://cdn.shopify.com/' or upload_http == 'http://cdn.shopify.com/' or upload_path == '/uploads/' %}<a href="{{ value | escape }}" target="_blank" rel="noopener noreferrer">{{ value | split: '/' | last | escape }}</a>{% else %}{{ value | escape }}{% endif %}</small>{% endunless %}{% endfor %}</td><td>{{ line_item.quantity }}</td><td>{{ line_item.final_price | money }}</td><td>{% if line_item.original_line_price != line_item.final_line_price %}<s>{{ line_item.original_line_price | money }}</s> {% endif %}{{ line_item.final_line_price | money }}</td></tr>{% endfor %}</tbody></table></div>
+  {% for fulfillment in order.fulfillments %}{% if fulfillment.tracking_number != blank %}<p>Tracking: {% if fulfillment.tracking_url != blank %}<a href="{{ fulfillment.tracking_url }}" target="_blank" rel="noopener noreferrer">{{ fulfillment.tracking_number | escape }}</a>{% else %}{{ fulfillment.tracking_number | escape }}{% endif %}</p>{% endif %}{% endfor %}
+  <dl class="order-totals">
+    <div><dt>Subtotal</dt><dd>{{ order.line_items_subtotal_price | money }}</dd></div>
+    {% for discount in order.cart_level_discount_applications %}<div><dt>Discount — {{ discount.title | escape }}</dt><dd>-{{ discount.total_allocated_amount | money }}</dd></div>{% endfor %}
+    {% for shipping_line in order.shipping_methods %}<div><dt>{{ shipping_line.title | escape }}</dt><dd>{{ shipping_line.price | money }}</dd></div>{% endfor %}
+    {% for tax_line in order.tax_lines %}<div><dt>{{ tax_line.title | escape }}</dt><dd>{{ tax_line.price | money }}</dd></div>{% endfor %}
+    {% if order.total_duties > 0 %}<div><dt>Duties</dt><dd>{{ order.total_duties | money }}</dd></div>{% endif %}
+    <div><dt>Original total</dt><dd>{{ order.total_price | money }}</dd></div>
+    {% if order.total_refunded_amount > 0 %}<div><dt>Refunded</dt><dd>-{{ order.total_refunded_amount | money }}</dd></div>{% endif %}
+    {% if order.total_refunded_amount > 0 and order.total_net_amount != blank %}<div><dt>Total after refunds</dt><dd>{{ order.total_net_amount | money }}</dd></div>{% endif %}
+  </dl>
+  {% if order.total_refunded_amount > 0 %}
+    <h2>Refunds</h2>
+    {% for transaction in order.transactions %}
+      {% if transaction.kind == 'refund' %}
+        <p>{% if transaction.name != blank %}{{ transaction.name | escape }}: {% endif %}{{ transaction.amount | money }}</p>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  {% for label in 'Billing,Shipping' | split: ',' %}{% if label == 'Billing' %}{% assign address = order.billing_address %}{% else %}{% assign address = order.shipping_address %}{% endif %}{% if address %}<h2>{{ label }} address</h2><address>{% if address.first_name != blank or address.last_name != blank %}{{ address.first_name | escape }} {{ address.last_name | escape }}<br>{% endif %}{% if address.company != blank %}{{ address.company | escape }}<br>{% endif %}{% if address.address1 != blank %}{{ address.address1 | escape }}<br>{% endif %}{% if address.address2 != blank %}{{ address.address2 | escape }}<br>{% endif %}{% capture locality %}{% if address.city != blank %}{{ address.city | escape }}{% endif %}{% if address.province != blank %}{% if address.city != blank %}, {% endif %}{{ address.province | escape }}{% endif %}{% if address.zip != blank %}{% if address.city != blank or address.province != blank %} {% endif %}{{ address.zip | escape }}{% endif %}{% endcapture %}{% if locality != blank %}{{ locality }}<br>{% endif %}{% if address.country != blank %}{{ address.country | escape }}{% endif %}{% if address.phone != blank %}<br>{{ address.phone | escape }}{% endif %}</address>{% endif %}{% endfor %}
+  <p><a href="{{ routes.account_url }}">Back to account</a></p>
+</section>
+{% schema %}{"name":"Customer order"}{% endschema %}

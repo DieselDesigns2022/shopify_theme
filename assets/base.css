@@ -447,3 +447,16 @@ body[data-show-search='false'] .header-action--search, body[data-show-account='f
 .blog-featured { margin-bottom: 2rem; }
 .blog-featured .article-card { grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 750px) { .blog-featured .article-card { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+/* Phase 14 customer systems and progressive enhancements */
+.customer-page { padding-block: var(--section-spacing); max-width: var(--content-width-standard); }
+.customer-page form, .localization-form { display: grid; gap: .75rem; max-width: 42rem; }
+.customer-page input, .customer-page select, .localization-form select { min-height: 2.75rem; padding: .625rem; border: 1px solid var(--color-input-border); background: var(--color-input-background); color: var(--color-input-text); border-radius: var(--input-radius); }
+.table-scroll { overflow-x: auto; } .table-scroll table { min-width: 38rem; width: 100%; border-collapse: collapse; } .table-scroll th, .table-scroll td { padding: .75rem; border-bottom: 1px solid var(--color-border); text-align: left; }
+.promotion-dialog[hidden] { display: none; } .promotion-dialog { position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; padding: 1rem; } .promotion-dialog__overlay { position: absolute; inset: 0; background: rgb(0 0 0 / .55); } .promotion-dialog__content { position: relative; z-index: 1; width: min(100%, 38rem); max-height: calc(100vh - 2rem); overflow: auto; padding: 2rem; background: var(--color-background); color: var(--color-text); border-radius: var(--card-radius); } .promotion-dialog__content img { width: 100%; height: auto; } .promotion-dialog__close { position: absolute; top: .5rem; right: .5rem; min-width: 2.75rem; min-height: 2.75rem; }
+.privacy-banner { position: fixed; z-index: 40; left: 1rem; right: 1rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1rem; background: var(--color-background-secondary); border: 1px solid var(--color-border); } .privacy-banner--bottom { bottom: 1rem; } .privacy-banner--top { top: 1rem; } body.dialog-open { overflow: hidden; }
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .promotion-dialog__content { scroll-behavior: auto; } }
+.promotion-dialog__body { min-width: 0; overflow-wrap: anywhere; }
+.promotion-dialog__content > img { display: block; max-width: 100%; height: auto; }
+.promotion-dialog__cta { margin: 1rem 0 0; }
+@media (min-width: 750px) { .promotion-dialog__content--image-left, .promotion-dialog__content--image-right { width: min(100%, 52rem); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } .promotion-dialog__content--image-right > img { order: 2; } .promotion-dialog__content--image-right > .promotion-dialog__body { order: 1; } }

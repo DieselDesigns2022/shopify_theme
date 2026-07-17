@@ -16,6 +16,7 @@
         {% endfor %}
       </div>
     {% endif %}
+    {% if settings.localization_placement == 'footer' %}{% render 'localization-form', id: section.id %}{% endif %}
     <div class="site-footer__bottom">
       <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</small>
       <p class="site-footer__attribution">Website by <a href="https://www.dieseldesigns.co">Diesel Designs</a></p>

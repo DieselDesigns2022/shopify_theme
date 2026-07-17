@@ -1,0 +1,14 @@
+{% liquid
+  assign meta_title = page_title | default: shop.name
+  if current_page > 1
+    assign meta_title = meta_title | append: ' – Page ' | append: current_page
+  endif
+  unless meta_title contains shop.name
+    assign meta_title = meta_title | append: ' – ' | append: shop.name
+  endunless
+  assign meta_description = page_description | default: shop.description | strip_html | strip | truncate: 160
+%}
+<title>{{ meta_title | escape }}</title>
+{% if meta_description != blank %}<meta name="description" content="{{ meta_description | escape }}">{% endif %}
+<link rel="canonical" href="{{ canonical_url }}">
+{% render 'social-meta-tags', title: meta_title, description: meta_description %}

@@ -1,0 +1,15 @@
+<section class="customer-page page-width">
+  <h1>Account</h1>
+  <p>{{ customer.name | escape }}<br>{{ customer.email | escape }}</p>
+  <h2>Default address</h2>
+  {% if customer.default_address %}
+    {% assign address = customer.default_address %}
+    <address>{% if address.first_name != blank or address.last_name != blank %}{{ address.first_name | escape }} {{ address.last_name | escape }}<br>{% endif %}{% if address.company != blank %}{{ address.company | escape }}<br>{% endif %}{{ address.address1 | escape }}{% if address.address2 != blank %}<br>{{ address.address2 | escape }}{% endif %}<br>{{ address.city | escape }}{% if address.province != blank %}, {{ address.province | escape }}{% endif %} {{ address.zip | escape }}<br>{{ address.country | escape }}{% if address.phone != blank %}<br>{{ address.phone | escape }}{% endif %}</address>
+  {% else %}<p>You do not have a saved address yet.</p>{% endif %}
+  <p><a href="{{ routes.account_addresses_url }}">Manage addresses</a> · <a href="{{ routes.account_logout_url }}">Sign out</a> · <a href="{{ routes.root_url }}">Return to store</a></p>
+  <h2>Order history</h2>
+  {% paginate customer.orders by 20 %}
+    {% if customer.orders.size > 0 %}<div class="table-scroll"><table><thead><tr><th>Order</th><th>Date</th><th>Payment</th><th>Fulfillment</th><th>Total</th></tr></thead><tbody>{% for order in customer.orders %}<tr><td><a href="{{ order.customer_url }}">{{ order.name | escape }}</a></td><td>{{ order.created_at | date: '%B %d, %Y' }}</td><td>{{ order.financial_status_label | escape }}</td><td>{{ order.fulfillment_status_label | escape }}</td><td>{{ order.total_price | money }}</td></tr>{% endfor %}</tbody></table></div>{% if paginate.pages > 1 %}{{ paginate | default_pagination }}{% endif %}{% else %}<p>You have not placed any orders yet.</p>{% endif %}
+  {% endpaginate %}
+</section>
+{% schema %}{"name":"Customer account"}{% endschema %}
