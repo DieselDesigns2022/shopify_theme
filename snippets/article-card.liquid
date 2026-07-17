@@ -1,0 +1,23 @@
+{% assign card_loading = image_loading | default: 'lazy' %}
+{% unless card_loading == 'lazy' or card_loading == 'eager' %}{% assign card_loading = 'lazy' %}{% endunless %}
+{% if show_image == nil %}{% assign show_image = true %}{% endif %}
+<article class="article-card">
+  {% if show_image %}
+    <a class="article-card__image" href="{{ article.url }}">
+      {% if article.image != blank %}
+        {{ article.image | image_url: width: 900 | image_tag: widths: '320, 480, 640, 900', loading: card_loading, width: article.image.width, height: article.image.height, alt: article.image.alt }}
+        {% if article.image.alt == blank %}<span class="visually-hidden">{{ article.title | escape }}</span>{% endif %}
+      {% else %}
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+        <span class="visually-hidden">{{ article.title | escape }}</span>
+      {% endif %}
+    </a>
+  {% endif %}
+  <div class="article-card__content">
+    <h2><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+    {% if show_meta %}<p class="article-meta">{% if show_author %}{{ article.author | escape }} · {% endif %}{{ article.published_at | date: '%B %-d, %Y' }}</p>{% endif %}
+    {% if show_excerpt %}<p>{{ article.excerpt_or_content | strip_html | truncatewords: 28 | escape }}</p>{% endif %}
+    {% if show_tags and article.tags.size > 0 %}<p class="article-tags">{% for tag in article.tags limit: 4 %}{{ tag | escape }}{% unless forloop.last %}, {% endunless %}{% endfor %}</p>{% endif %}
+    <a class="article-card__link" href="{{ article.url }}">Read article<span class="visually-hidden">: {{ article.title | escape }}</span></a>
+  </div>
+</article>
