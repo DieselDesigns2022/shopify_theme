@@ -1,1 +1,43 @@
-{"sections":{"hero":{"type":"hero-slideshow","blocks":{"slide_1":{"type":"slide","settings":{"heading":"Welcome to our store","text":"<p>Use this space to introduce your newest collection.</p>"}}},"block_order":["slide_1"],"settings":{}},"features":{"type":"feature-list","settings":{}},"image_text":{"type":"image-with-text","settings":{}},"cards":{"type":"promo-card-grid","settings":{}},"newsletter":{"type":"newsletter-signup","settings":{}}},"order":["hero","features","image_text","cards","newsletter"]}
+{
+  "sections": {
+    "hero": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Welcome to our store",
+            "text": "<p>Use this space to introduce your newest collection.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1"
+      ],
+      "settings": {}
+    },
+    "features": {
+      "type": "feature-list",
+      "settings": {}
+    },
+    "image_text": {
+      "type": "image-with-text",
+      "settings": {}
+    },
+    "cards": {
+      "type": "promo-card-grid",
+      "settings": {}
+    },
+    "newsletter": {
+      "type": "newsletter-signup",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "features",
+    "image_text",
+    "cards",
+    "newsletter"
+  ]
+}
