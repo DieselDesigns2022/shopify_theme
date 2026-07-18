@@ -1,0 +1,86 @@
+{{ 'collection-list.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  case section.settings.image_ratio
+    when 'portrait'
+      assign card_ratio = '4 / 5'
+    when 'landscape'
+      assign card_ratio = '4 / 3'
+    else
+      assign card_ratio = '1 / 1'
+  endcase
+%}
+
+{% paginate collections by section.settings.collections_per_page %}
+  <section
+    class="collection-list-page"
+    style="--collection-list-pt: {{ section.settings.top_spacing }}px; --collection-list-pb: {{ section.settings.bottom_spacing }}px; --desktop-columns: {{ section.settings.desktop_columns }}; --mobile-columns: {{ section.settings.mobile_columns }}; --collection-card-ratio: {{ card_ratio }};"
+  >
+    <div class="content-width--{{ section.settings.content_width }}">
+      <header class="collection-list-header collection-list-header--{{ section.settings.text_alignment }}">
+        {% if section.settings.eyebrow != blank %}<p class="collection-list-header__eyebrow">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+        <h1>{{ section.settings.heading | default: 'Shop collections' | escape }}</h1>
+        {% if section.settings.intro != blank %}<div class="collection-list-header__text rte">{{ section.settings.intro }}</div>{% endif %}
+      </header>
+
+      {% if collections.size > 0 %}
+        <div class="collection-list-grid">
+          {% for collection in collections %}
+            {% assign card_image = collection.image | default: collection.products.first.featured_image %}
+            <article class="collection-list-card card">
+              <a class="collection-list-card__link" href="{{ collection.url }}">
+                <div class="collection-list-card__media">
+                  {% if card_image != blank %}
+                    <img
+                      src="{{ card_image | image_url: width: 1000 }}"
+                      srcset="{{ card_image | image_url: width: 400 }} 400w, {{ card_image | image_url: width: 700 }} 700w, {{ card_image | image_url: width: 1000 }} 1000w"
+                      sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 100vw"
+                      alt="{{ card_image.alt | default: collection.title | escape }}"
+                      loading="lazy"
+                      width="{{ card_image.width }}"
+                      height="{{ card_image.height }}"
+                    >
+                  {% else %}
+                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                <div class="collection-list-card__content text-{{ section.settings.text_alignment }}">
+                  <h2>{{ collection.title | escape }}</h2>
+                  {% if section.settings.show_product_count %}<p class="collection-list-card__count">{{ collection.all_products_count }} products</p>{% endif %}
+                  {% if section.settings.show_description and collection.description != blank %}<div class="collection-list-card__description">{{ collection.description | strip_html | truncate: 150 | escape }}</div>{% endif %}
+                </div>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+        {% render 'pagination', paginate: paginate %}
+      {% else %}
+        <div class="browse-empty">
+          <h2>No collections found</h2>
+          <p>Create a collection in Shopify to display it here.</p>
+        </div>
+      {% endif %}
+    </div>
+  </section>
+{% endpaginate %}
+
+{% schema %}
+{
+  "name": "Collection list",
+  "settings": [
+    {"type":"text","id":"eyebrow","label":"Eyebrow","default":"SHOP BY CATEGORY"},
+    {"type":"text","id":"heading","label":"Heading","default":"Shop collections"},
+    {"type":"richtext","id":"intro","label":"Introduction","default":"<p>Browse all product collections.</p>"},
+    {"type":"select","id":"content_width","label":"Content width","default":"wide","options":[{"value":"standard","label":"Standard"},{"value":"wide","label":"Wide"}]},
+    {"type":"range","id":"collections_per_page","label":"Collections per page","min":6,"max":48,"step":6,"default":24},
+    {"type":"range","id":"desktop_columns","label":"Desktop columns","min":2,"max":5,"step":1,"default":4},
+    {"type":"select","id":"mobile_columns","label":"Mobile columns","default":"1","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},
+    {"type":"select","id":"image_ratio","label":"Image ratio","default":"square","options":[{"value":"square","label":"Square"},{"value":"portrait","label":"Portrait"},{"value":"landscape","label":"Landscape"}]},
+    {"type":"select","id":"text_alignment","label":"Text alignment","default":"left","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"}]},
+    {"type":"checkbox","id":"show_product_count","label":"Show product count","default":true},
+    {"type":"checkbox","id":"show_description","label":"Show description","default":false},
+    {"type":"range","id":"top_spacing","label":"Top spacing","min":0,"max":96,"step":4,"unit":"px","default":48},
+    {"type":"range","id":"bottom_spacing","label":"Bottom spacing","min":0,"max":96,"step":4,"unit":"px","default":48}
+  ]
+}
+{% endschema %}
