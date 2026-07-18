@@ -28,132 +28,9 @@
             "opacity": 35,
             "background": "#3d2957"
           }
-        },
-        "slide_2": {
-          "type": "slide",
-          "settings": {
-            "eyebrow": "BUILT TO SELL",
-            "heading": "A storefront that works as hard as you do",
-            "text": "<p>Showcase physical products, digital products, personalized items, services, and mixed catalogs.</p>",
-            "primary_label": "Explore products",
-            "primary_link": "shopify://collections/all",
-            "position": "center",
-            "alignment": "left",
-            "text_color": "#ffffff",
-            "overlay": "#10151d",
-            "opacity": 30,
-            "background": "#0f6f78"
-          }
         }
       },
-      "block_order": [
-        "slide_1",
-        "slide_2"
-      ]
-    },
-    "features": {
-      "type": "feature-list",
-      "settings": {
-        "heading": "Everything your storefront needs",
-        "columns": 3,
-        "mobile_columns": 1,
-        "icon_size": 48,
-        "layout": "card",
-        "alignment": "center"
-      },
-      "blocks": {
-        "feature_1": {
-          "type": "feature",
-          "settings": {
-            "heading": "Flexible merchandising",
-            "text": "<p>Build product-focused pages with promotional sections, collections, banners, cards, testimonials, and more.</p>"
-          }
-        },
-        "feature_2": {
-          "type": "feature",
-          "settings": {
-            "heading": "Conversion-ready tools",
-            "text": "<p>Use product galleries, variants, swatches, personalization, cart tools, predictive search, and customer accounts.</p>"
-          }
-        },
-        "feature_3": {
-          "type": "feature",
-          "settings": {
-            "heading": "Designed to customize",
-            "text": "<p>Adjust colors, typography, spacing, cards, buttons, animation, layout widths, and content directly in the editor.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "feature_1",
-        "feature_2",
-        "feature_3"
-      ]
-    },
-    "image_text": {
-      "type": "image-with-text",
-      "settings": {
-        "eyebrow": "YOUR BRAND, YOUR WAY",
-        "heading": "Create a storefront that feels unmistakably yours",
-        "text": "<p>Pair strong visuals with your story, featured collection, promotion, or best-selling category. Replace this placeholder with your own image and copy.</p>",
-        "button_label": "Browse products",
-        "button_link": "shopify://collections/all",
-        "image_position": "left",
-        "width": "wide",
-        "image_width": 1,
-        "fit": "cover",
-        "alignment": "left",
-        "background": "#f4f0f7",
-        "text_color": "#1b1522"
-      }
-    },
-    "cards": {
-      "type": "promo-card-grid",
-      "settings": {
-        "heading": "Shop by category",
-        "width": "wide",
-        "columns": 3,
-        "mobile_columns": 1,
-        "ratio": "1",
-        "alignment": "left"
-      },
-      "blocks": {
-        "card_1": {
-          "type": "card",
-          "settings": {
-            "eyebrow": "FEATURED",
-            "heading": "Best sellers",
-            "text": "<p>Highlight the products customers love most.</p>",
-            "button_label": "Shop best sellers",
-            "button_link": "shopify://collections/all"
-          }
-        },
-        "card_2": {
-          "type": "card",
-          "settings": {
-            "eyebrow": "FRESH FINDS",
-            "heading": "New arrivals",
-            "text": "<p>Put your newest products front and center.</p>",
-            "button_label": "See what is new",
-            "button_link": "shopify://collections/all"
-          }
-        },
-        "card_3": {
-          "type": "card",
-          "settings": {
-            "eyebrow": "MADE FOR YOU",
-            "heading": "Custom and personalized",
-            "text": "<p>Feature personalized products, services, or made-to-order collections.</p>",
-            "button_label": "Explore options",
-            "button_link": "shopify://collections/all"
-          }
-        }
-      },
-      "block_order": [
-        "card_1",
-        "card_2",
-        "card_3"
-      ]
+      "block_order": ["slide_1"]
     },
     "newsletter": {
       "type": "newsletter-signup",
@@ -166,11 +43,5 @@
       }
     }
   },
-  "order": [
-    "hero",
-    "features",
-    "image_text",
-    "cards",
-    "newsletter"
-  ]
+  "order": ["hero", "newsletter"]
 }
