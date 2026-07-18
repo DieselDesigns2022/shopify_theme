@@ -1,5 +1,9 @@
 {
   "sections": {
+    "newsletter": {
+      "type": "newsletter-signup",
+      "settings": {}
+    },
     "hero": {
       "type": "hero-slideshow",
       "blocks": {
@@ -26,10 +30,6 @@
     },
     "cards": {
       "type": "promo-card-grid",
-      "settings": {}
-    },
-    "newsletter": {
-      "type": "newsletter-signup",
       "settings": {}
     }
   },
