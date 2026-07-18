@@ -1,0 +1,23 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-list-collections",
+      "settings": {
+        "eyebrow": "SHOP BY CATEGORY",
+        "heading": "Shop collections",
+        "intro": "<p>Browse all product collections.</p>",
+        "content_width": "wide",
+        "collections_per_page": 24,
+        "desktop_columns": 4,
+        "mobile_columns": "1",
+        "image_ratio": "square",
+        "text_alignment": "left",
+        "show_product_count": true,
+        "show_description": false,
+        "top_spacing": 48,
+        "bottom_spacing": 48
+      }
+    }
+  },
+  "order": ["main"]
+}
