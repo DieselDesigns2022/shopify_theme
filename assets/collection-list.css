@@ -1,0 +1,95 @@
+.collection-list-page {
+  padding-block: var(--collection-list-pt, 48px) var(--collection-list-pb, 48px);
+}
+
+.collection-list-header {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  max-width: 48rem;
+}
+
+.collection-list-header--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.collection-list-header__eyebrow {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.collection-list-header__text {
+  color: var(--color-text-muted);
+}
+
+.collection-list-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--mobile-columns, 1), minmax(0, 1fr));
+  gap: var(--grid-gap);
+}
+
+.collection-list-card {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.collection-list-card__link {
+  display: grid;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+.collection-list-card__media {
+  position: relative;
+  aspect-ratio: var(--collection-card-ratio, 1 / 1);
+  overflow: hidden;
+  background: var(--color-background-secondary);
+}
+
+.collection-list-card__media img,
+.collection-list-card__media .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--animation-duration) ease;
+}
+
+.collection-list-card__content {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+  padding: 1rem;
+}
+
+.collection-list-card__content h2 {
+  font-size: calc(1.1rem * var(--heading-scale));
+}
+
+.collection-list-card__count,
+.collection-list-card__description {
+  color: var(--color-text-muted);
+}
+
+.collection-list-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@media (min-width: 750px) {
+  .collection-list-grid {
+    grid-template-columns: repeat(var(--desktop-columns, 4), minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body[data-image-hover='true'] .collection-list-card:hover img {
+    transform: scale(1.03);
+  }
+}
