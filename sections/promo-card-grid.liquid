@@ -1,3 +1,63 @@
-{% comment %}Resynced after Shopify dependency validation.{% endcomment %}
-<section class="home-section promo-card-grid"><div class="content-width--{{ section.settings.width }} text-{{ section.settings.alignment }}">{% if section.settings.heading != blank %}<div class="section-heading"><h2>{{ section.settings.heading | escape }}</h2></div>{% endif %}<div class="promo-card-grid__grid" style="--desktop-columns:{{ section.settings.columns }};--mobile-columns:{{ section.settings.mobile_columns }}">{% if section.settings.mobile_columns == 2 %}{% assign mobile_size = '50vw' %}{% else %}{% assign mobile_size = '100vw' %}{% endif %}{% case section.settings.columns %}{% when 2 %}{% assign desktop_size = '50vw' %}{% when 4 %}{% assign desktop_size = '25vw' %}{% else %}{% assign desktop_size = '33vw' %}{% endcase %}{% assign card_sizes = '(min-width: 750px) ' | append: desktop_size | append: ', ' | append: mobile_size %}{% for block in section.blocks %}<article {{ block.shopify_attributes }} class="promo-card card">{% if block.settings.image != blank %}<div class="promo-card__image" style="--card-ratio:{{ section.settings.ratio }}">{{ block.settings.image | image_url:width:900 | image_tag: widths:'400,700,900',sizes: card_sizes,loading:'lazy' }}</div>{% endif %}<div class="promo-card__content">{% if block.settings.eyebrow != blank %}<p>{{ block.settings.eyebrow | escape }}</p>{% endif %}{% if block.settings.heading != blank %}<h3>{{ block.settings.heading | escape }}</h3>{% endif %}{% if block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% endif %}{% if block.settings.button_label != blank and block.settings.button_link != blank %}<a class="button" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>{% elsif block.settings.link != blank %}<a class="promo-card__full-link" href="{{ block.settings.link }}" aria-label="{{ block.settings.heading | default:'Promotion' | escape }}"></a>{% endif %}</div></article>{% endfor %}</div></div></section>
-{% schema %}{"name":"Promotional card grid","max_blocks":12,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Explore more"},{"type":"select","id":"width","label":"Width","default":"wide","options":[{"value":"narrow","label":"Narrow"},{"value":"standard","label":"Standard"},{"value":"wide","label":"Wide"}]},{"type":"range","id":"columns","label":"Desktop columns","min":2,"max":4,"step":1,"default":3},{"type":"range","id":"mobile_columns","label":"Mobile columns","min":1,"max":2,"step":1,"default":1},{"type":"select","id":"ratio","label":"Image ratio","default":"1","options":[{"value":"1","label":"Square"},{"value":"1.33","label":"Landscape"},{"value":"0.75","label":"Portrait"}]},{"type":"select","id":"alignment","label":"Alignment","default":"left","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]}],"blocks":[{"type":"card","name":"Card","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"eyebrow","label":"Eyebrow"},{"type":"text","id":"heading","label":"Heading","default":"Promotion"},{"type":"richtext","id":"text","label":"Text"},{"type":"text","id":"button_label","label":"Button label"},{"type":"url","id":"button_link","label":"Button link"},{"type":"url","id":"link","label":"Full card link"}]}],"presets":[{"name":"Promotional card grid","blocks":[{"type":"card"},{"type":"card"},{"type":"card"}]}]}{% endschema %}
+<section class="home-section promo-card-grid">
+  <div class="content-width--{{ section.settings.width }} text-{{ section.settings.alignment }}">
+    {% if section.settings.heading != blank %}<div class="section-heading"><h2>{{ section.settings.heading | escape }}</h2></div>{% endif %}
+    <div class="promo-card-grid__grid" style="--desktop-columns: {{ section.settings.columns }}; --mobile-columns: {{ section.settings.mobile_columns }};">
+      {% for block in section.blocks %}
+        <article class="promo-card card" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <div class="promo-card__image" style="--card-ratio: {{ section.settings.ratio }};">
+              <img
+                src="{{ block.settings.image | image_url: width: 900 }}"
+                alt="{{ block.settings.heading | escape }}"
+                loading="lazy"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+              >
+            </div>
+          {% endif %}
+          <div class="promo-card__content">
+            {% if block.settings.eyebrow != blank %}<p>{{ block.settings.eyebrow | escape }}</p>{% endif %}
+            {% if block.settings.heading != blank %}<h3>{{ block.settings.heading | escape }}</h3>{% endif %}
+            {% if block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% endif %}
+            {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+              <a class="button" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+            {% elsif block.settings.link != blank %}
+              <a class="promo-card__full-link" href="{{ block.settings.link }}" aria-label="{{ block.settings.heading | default: 'Promotion' | escape }}"></a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promotional card grid",
+  "max_blocks": 12,
+  "settings": [
+    {"type":"text","id":"heading","label":"Heading","default":"Explore more"},
+    {"type":"select","id":"width","label":"Width","default":"wide","options":[{"value":"narrow","label":"Narrow"},{"value":"standard","label":"Standard"},{"value":"wide","label":"Wide"}]},
+    {"type":"range","id":"columns","label":"Desktop columns","min":2,"max":4,"step":1,"default":3},
+    {"type":"range","id":"mobile_columns","label":"Mobile columns","min":1,"max":2,"step":1,"default":1},
+    {"type":"select","id":"ratio","label":"Image ratio","default":"1","options":[{"value":"1","label":"Square"},{"value":"1.33","label":"Landscape"},{"value":"0.75","label":"Portrait"}]},
+    {"type":"select","id":"alignment","label":"Alignment","default":"left","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]}
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {"type":"image_picker","id":"image","label":"Image"},
+        {"type":"text","id":"eyebrow","label":"Eyebrow"},
+        {"type":"text","id":"heading","label":"Heading","default":"Promotion"},
+        {"type":"richtext","id":"text","label":"Text"},
+        {"type":"text","id":"button_label","label":"Button label"},
+        {"type":"url","id":"button_link","label":"Button link"},
+        {"type":"url","id":"link","label":"Full card link"}
+      ]
+    }
+  ],
+  "presets": [{"name":"Promotional card grid","blocks":[{"type":"card"},{"type":"card"},{"type":"card"}]}]
+}
+{% endschema %}
