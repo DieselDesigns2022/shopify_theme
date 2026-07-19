@@ -59,61 +59,26 @@
         "show_other": true
       }
     },
-    "hero": {
-      "type": "hero-slideshow",
-      "blocks": {
-        "slide_YGTCTM": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/shopify_revamp.png",
-            "eyebrow": "",
-            "heading": "",
-            "text": "",
-            "primary_label": "",
-            "primary_link": "",
-            "secondary_label": "",
-            "secondary_link": "",
-            "position": "center",
-            "alignment": "left",
-            "text_color": "#ffffff",
-            "overlay": "#000000",
-            "opacity": 25,
-            "background": "#555555"
-          }
-        },
-        "slide_1": {
-          "type": "slide",
-          "settings": {
-            "image": "shopify://shop_images/welcome.png",
-            "eyebrow": "",
-            "heading": "",
-            "text": "",
-            "primary_label": "",
-            "primary_link": "shopify://collections/all",
-            "secondary_label": "",
-            "secondary_link": "",
-            "position": "center",
-            "alignment": "left",
-            "text_color": "#ffffff",
-            "overlay": "#120f18",
-            "opacity": 35,
-            "background": "#3d2957"
-          }
-        }
-      },
-      "block_order": [
-        "slide_YGTCTM",
-        "slide_1"
-      ],
+    "welcome_banner_YxWj7c": {
+      "type": "welcome-banner",
+      "name": "Welcome banner",
       "settings": {
-        "label": "",
-        "width": "full",
-        "autoplay": true,
-        "speed": 3,
-        "arrows": true,
-        "pagination": true,
-        "height": 620,
-        "mobile_height": 500
+        "desktop_image": "shopify://shop_images/welcome.png",
+        "heading": "",
+        "text": "",
+        "button_label": "",
+        "button_link": "",
+        "full_banner_link": "",
+        "width": "contained",
+        "content_alignment": "center",
+        "text_position": "center",
+        "show_overlay": false,
+        "overlay_opacity": 30,
+        "top_spacing": 24,
+        "bottom_spacing": 24,
+        "image_height": 500,
+        "mobile_image_height": 320,
+        "alt_text": ""
       }
     },
     "newsletter": {
@@ -170,11 +135,11 @@
         "alignment": "center"
       }
     },
-    "welcome_banner_YxWj7c": {
+    "welcome_banner_6GqLUb": {
       "type": "welcome-banner",
       "name": "Welcome banner",
       "settings": {
-        "desktop_image": "shopify://shop_images/check_us_out_on_fb.png",
+        "desktop_image": "shopify://shop_images/facebook_group.png",
         "heading": "",
         "text": "",
         "button_label": "",
@@ -187,17 +152,33 @@
         "overlay_opacity": 30,
         "top_spacing": 24,
         "bottom_spacing": 24,
-        "image_height": 240,
+        "image_height": 380,
         "mobile_image_height": 320,
         "alt_text": ""
+      }
+    },
+    "divider_banner_9byQyi": {
+      "type": "divider-banner",
+      "name": "Divider banner",
+      "settings": {
+        "desktop_image": "shopify://shop_images/new_this_month.png",
+        "full_banner_link": "",
+        "width": "contained",
+        "height": "standard",
+        "image_fit": "contain",
+        "top_spacing": 0,
+        "bottom_spacing": 0,
+        "alt_text": "",
+        "decorative_image": true
       }
     }
   },
   "order": [
     "announcement_bar_Ctc99C",
-    "hero",
+    "welcome_banner_YxWj7c",
     "newsletter",
     "testimonials_zF4tJR",
-    "welcome_banner_YxWj7c"
+    "welcome_banner_6GqLUb",
+    "divider_banner_9byQyi"
   ]
 }
