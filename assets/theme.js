@@ -900,6 +900,7 @@
   document.addEventListener('shopify:section:unload', function (event) {
     if (!event || !event.target) return;
     destroyDynamic(event.target);
+    syncCartDrawerTriggers();
     destroyAnnouncements(event.target);
     destroyPredictiveSearch(event.target);
     destroyHeaders(event.target);
