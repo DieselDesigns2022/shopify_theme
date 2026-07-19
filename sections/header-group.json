@@ -2,12 +2,36 @@
   "name": "Header group",
   "type": "header",
   "sections": {
+    "announcement_bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement": {
+          "type": "announcement",
+          "settings": {
+            "desktop_text": "Welcome to our shop.",
+            "mobile_text": "",
+            "link": "",
+            "icon": "shipping"
+          }
+        }
+      },
+      "block_order": [
+        "announcement"
+      ],
+      "settings": {}
+    },
     "header": {
       "type": "header",
+      "settings": {}
+    },
+    "cart_drawer": {
+      "type": "cart-drawer",
       "settings": {}
     }
   },
   "order": [
-    "header"
+    "announcement_bar",
+    "header",
+    "cart_drawer"
   ]
 }
