@@ -100,7 +100,8 @@
           "settings": {
             "quote": "<p>Share a customer review here.</p>",
             "name": "Customer name",
-            "detail": "",
+            "detail": "-Facebook",
+            "image": "shopify://shop_images/Western_Seamless_V1_Seamless.png",
             "rating": 5
           }
         },
