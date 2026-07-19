@@ -1,26 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero-slideshow",
-      "settings": {
-        "label": "Featured promotions",
-        "width": "full",
-        "autoplay": true,
-        "speed": 5,
-        "arrows": true,
-        "pagination": true,
-        "height": 620,
-        "mobile_height": 500
-      },
       "blocks": {
+        "slide_YGTCTM": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/shopify_revamp.png",
+            "eyebrow": "",
+            "heading": "New season, new ideas",
+            "text": "",
+            "primary_label": "",
+            "primary_link": "",
+            "secondary_label": "",
+            "secondary_link": "",
+            "position": "center",
+            "alignment": "left",
+            "text_color": "#ffffff",
+            "overlay": "#000000",
+            "opacity": 25,
+            "background": "#555555"
+          }
+        },
         "slide_1": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/welcome.png",
             "eyebrow": "NEW & NOTEWORTHY",
             "heading": "Make your products impossible to ignore",
             "text": "<p>Use bold imagery, clear calls to action, and flexible merchandising sections to tell your brand story.</p>",
             "primary_label": "Shop all",
             "primary_link": "shopify://collections/all",
+            "secondary_label": "",
+            "secondary_link": "",
             "position": "center",
             "alignment": "left",
             "text_color": "#ffffff",
@@ -30,7 +51,20 @@
           }
         }
       },
-      "block_order": ["slide_1"]
+      "block_order": [
+        "slide_YGTCTM",
+        "slide_1"
+      ],
+      "settings": {
+        "label": "Featured promotions",
+        "width": "full",
+        "autoplay": true,
+        "speed": 5,
+        "arrows": true,
+        "pagination": true,
+        "height": 620,
+        "mobile_height": 500
+      }
     },
     "newsletter": {
       "type": "newsletter-signup",
@@ -39,9 +73,13 @@
         "text": "<p>Share new releases, restocks, special offers, and brand updates with your customers.</p>",
         "button_label": "Subscribe",
         "success": "Thanks for subscribing.",
+        "disclaimer": "",
         "alignment": "center"
       }
     }
   },
-  "order": ["hero", "newsletter"]
+  "order": [
+    "hero",
+    "newsletter"
+  ]
 }
