@@ -9,6 +9,66 @@
  */
 {
   "sections": {
+    "announcement_bar_Ctc99C": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_gQmgyJ": {
+          "type": "announcement",
+          "settings": {
+            "desktop_text": "FREE SHIPPING ON ORDERS OVER $75",
+            "mobile_text": "",
+            "link": "",
+            "icon": "none"
+          }
+        },
+        "announcement_GRYiEf": {
+          "type": "announcement",
+          "settings": {
+            "desktop_text": "Welcome to our shop.",
+            "mobile_text": "",
+            "link": "",
+            "icon": "none"
+          }
+        },
+        "announcement_9ChVxj": {
+          "type": "announcement",
+          "settings": {
+            "desktop_text": "Welcome to our shop.",
+            "mobile_text": "",
+            "link": "",
+            "icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_gQmgyJ",
+        "announcement_GRYiEf",
+        "announcement_9ChVxj"
+      ],
+      "name": "Announcement bar",
+      "settings": {
+        "display_style": "static",
+        "background_color": "#111111",
+        "text_color": "#ffffff",
+        "link_color": "#ffffff",
+        "text_alignment": "center",
+        "rotation_speed": 5,
+        "scrolling_speed": 24,
+        "pause_on_hover": true,
+        "dismissible": false,
+        "hide_mobile": false,
+        "hide_desktop": false,
+        "visibility_scope": "all",
+        "show_product": true,
+        "show_collection": true,
+        "show_page": true,
+        "show_blog": true,
+        "show_article": true,
+        "show_search": true,
+        "show_cart": true,
+        "show_other": true
+      }
+    },
     "hero": {
       "type": "hero-slideshow",
       "blocks": {
@@ -17,7 +77,7 @@
           "settings": {
             "image": "shopify://shop_images/shopify_revamp.png",
             "eyebrow": "",
-            "heading": "New season, new ideas",
+            "heading": "",
             "text": "",
             "primary_label": "",
             "primary_link": "",
@@ -35,10 +95,10 @@
           "type": "slide",
           "settings": {
             "image": "shopify://shop_images/welcome.png",
-            "eyebrow": "NEW & NOTEWORTHY",
-            "heading": "Make your products impossible to ignore",
-            "text": "<p>Use bold imagery, clear calls to action, and flexible merchandising sections to tell your brand story.</p>",
-            "primary_label": "Shop all",
+            "eyebrow": "",
+            "heading": "",
+            "text": "",
+            "primary_label": "",
             "primary_link": "shopify://collections/all",
             "secondary_label": "",
             "secondary_link": "",
@@ -56,10 +116,10 @@
         "slide_1"
       ],
       "settings": {
-        "label": "Featured promotions",
+        "label": "",
         "width": "full",
         "autoplay": true,
-        "speed": 5,
+        "speed": 3,
         "arrows": true,
         "pagination": true,
         "height": 620,
@@ -69,17 +129,85 @@
     "newsletter": {
       "type": "newsletter-signup",
       "settings": {
-        "heading": "Stay in the know",
+        "heading": "sign up for newsletter",
         "text": "<p>Share new releases, restocks, special offers, and brand updates with your customers.</p>",
         "button_label": "Subscribe",
         "success": "Thanks for subscribing.",
         "disclaimer": "",
         "alignment": "center"
       }
+    },
+    "testimonials_zF4tJR": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_yeTwkB": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>Share a customer review here.</p>",
+            "name": "Customer name",
+            "detail": "",
+            "rating": 5
+          }
+        },
+        "testimonial_8gNNtL": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>Share a customer review here.</p>",
+            "name": "Customer name",
+            "detail": "",
+            "rating": 5
+          }
+        },
+        "testimonial_Fq4j4T": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>Share a customer review here.</p>",
+            "name": "Customer name",
+            "detail": "",
+            "rating": 5
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_yeTwkB",
+        "testimonial_8gNNtL",
+        "testimonial_Fq4j4T"
+      ],
+      "name": "Testimonials",
+      "settings": {
+        "heading": "Loved by customers",
+        "columns": 3,
+        "alignment": "center"
+      }
+    },
+    "welcome_banner_YxWj7c": {
+      "type": "welcome-banner",
+      "name": "Welcome banner",
+      "settings": {
+        "desktop_image": "shopify://shop_images/check_us_out_on_fb.png",
+        "heading": "",
+        "text": "",
+        "button_label": "",
+        "button_link": "",
+        "full_banner_link": "",
+        "width": "contained",
+        "content_alignment": "center",
+        "text_position": "center",
+        "show_overlay": false,
+        "overlay_opacity": 30,
+        "top_spacing": 24,
+        "bottom_spacing": 24,
+        "image_height": 240,
+        "mobile_image_height": 320,
+        "alt_text": ""
+      }
     }
   },
   "order": [
+    "announcement_bar_Ctc99C",
     "hero",
-    "newsletter"
+    "newsletter",
+    "testimonials_zF4tJR",
+    "welcome_banner_YxWj7c"
   ]
 }

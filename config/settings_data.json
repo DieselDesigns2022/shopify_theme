@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "logo": "",
@@ -49,8 +58,8 @@
     "heading_line_height": 1.2,
     "body_letter_spacing": 0,
     "heading_letter_spacing": 0,
-    "button_letter_spacing": 0.04,
-    "navigation_letter_spacing": 0.02,
+    "button_letter_spacing": 0.0,
+    "navigation_letter_spacing": 0.0,
     "button_font_size": 15,
     "button_font_weight": "700",
     "button_uppercase": false,
@@ -97,7 +106,54 @@
     "contact_phone": "",
     "show_search": true,
     "show_account": true,
-    "show_cart": true
+    "show_cart": true,
+    "sections": {
+      "newsletter-popup": {
+        "type": "newsletter-popup",
+        "settings": {
+          "enabled": false,
+          "heading": "Stay connected",
+          "text": "<p>Subscribe for updates and offers.</p>",
+          "image_position": "top",
+          "newsletter": true,
+          "cta_label": "",
+          "cta_link": "",
+          "cta_new_window": false,
+          "delay": 5,
+          "frequency": "session",
+          "dismiss_days": 14,
+          "homepage_only": false,
+          "disable_mobile": false,
+          "overlay": true,
+          "close_label": "Close popup"
+        }
+      },
+      "privacy-banner": {
+        "type": "privacy-banner",
+        "settings": {
+          "enabled": false,
+          "message": "<p>This notice can be dismissed after it has been read.</p>",
+          "dismiss_label": "Acknowledge",
+          "policy_link": "",
+          "position": "bottom",
+          "dismiss_days": 30
+        }
+      },
+      "age-verification": {
+        "type": "age-verification",
+        "settings": {
+          "enabled": false,
+          "heading": "Please confirm",
+          "statement": "Please confirm you meet the minimum age required to enter this store.",
+          "text": "<p>This is a simple confirmation and does not verify identity.</p>",
+          "confirm_label": "I confirm",
+          "exit_label": "Leave site",
+          "exit_url": "",
+          "remember_days": 30
+        }
+      }
+    },
+    "content_for_index": []
   },
   "presets": {
     "Clean": {
