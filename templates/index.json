@@ -29,21 +29,11 @@
             "link": "",
             "icon": "none"
           }
-        },
-        "announcement_9ChVxj": {
-          "type": "announcement",
-          "settings": {
-            "desktop_text": "Welcome to our shop.",
-            "mobile_text": "",
-            "link": "",
-            "icon": "none"
-          }
         }
       },
       "block_order": [
         "announcement_gQmgyJ",
-        "announcement_GRYiEf",
-        "announcement_9ChVxj"
+        "announcement_GRYiEf"
       ],
       "name": "Announcement bar",
       "settings": {
