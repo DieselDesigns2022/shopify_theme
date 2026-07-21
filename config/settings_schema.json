@@ -658,7 +658,7 @@
         "type": "range",
         "min": 8,
         "max": 24,
-        "step": 2,
+        "step": 1,
         "default": 12,
         "unit": "px"
       }
