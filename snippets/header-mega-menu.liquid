@@ -16,7 +16,7 @@
     assign promo_class = ' mega-menu__inner--has-promo mega-menu__inner--promo-' | append: block.settings.promo_placement
   endif
 %}
-<div id="{{ panel_id }}" class="mega-menu mega-menu--{{ block.settings.width }}" data-header-panel hidden {{ block.shopify_attributes }}>
+<div id="{{ panel_id }}" class="mega-menu mega-menu--{{ block.settings.width }}" data-header-panel data-color-block-id="{{ block.id }}" hidden {{ block.shopify_attributes }}>
   <div class="mega-menu__inner page-width{{ promo_class }}" style="--mega-columns: {{ block.settings.columns }};">
     <div class="mega-menu__columns">
       {% if block.settings.menu != blank %}{% for column_link in block.settings.menu.links limit: block.settings.columns %}<div class="mega-menu__column"><h3><a href="{{ column_link.url }}"{% if column_link.current %} aria-current="page"{% endif %}>{{ column_link.title | escape }}</a></h3>{% if column_link.links.size > 0 %}<ul>{% for child in column_link.links %}<li><a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>{% endfor %}</ul>{% endif %}</div>{% endfor %}{% endif %}

@@ -1,9 +1,10 @@
+{% render 'custom-color-scope', section: section %}
 <section class="home-section feature-list feature-list--{{ section.settings.layout }}">
   <div class="content-width--wide text-{{ section.settings.alignment }}">
     {% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}
     <div class="feature-list__grid" style="--desktop-columns: {{ section.settings.columns }}; --mobile-columns: {{ section.settings.mobile_columns }}; --icon-size: {{ section.settings.icon_size }}px;">
       {% for block in section.blocks %}
-        <article class="feature-list__item{% if section.settings.layout == 'card' %} card{% endif %}" {{ block.shopify_attributes }}>
+        <article class="feature-list__item{% if section.settings.layout == 'card' %} card{% endif %}" data-color-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
           {% if block.settings.image != blank %}<img class="feature-list__icon" src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.heading | escape }}" loading="lazy" width="200" height="200">{% endif %}
           {% if block.settings.heading != blank %}<h3>{{ block.settings.heading | escape }}</h3>{% endif %}
           {% if block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% endif %}
@@ -14,5 +15,279 @@
   </div>
 </section>
 {% schema %}
-{"name":"Feature list","max_blocks":8,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Why choose us"},{"type":"range","id":"columns","label":"Desktop columns","min":2,"max":4,"step":1,"default":3},{"type":"select","id":"mobile_columns","label":"Mobile columns","default":"1","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},{"type":"range","id":"icon_size","label":"Icon size","min":24,"max":96,"step":4,"unit":"px","default":48},{"type":"select","id":"layout","label":"Layout","default":"card","options":[{"value":"card","label":"Card"},{"value":"plain","label":"Plain"}]},{"type":"select","id":"alignment","label":"Alignment","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]}],"blocks":[{"type":"feature","name":"Feature","settings":[{"type":"image_picker","id":"image","label":"Icon image"},{"type":"text","id":"heading","label":"Heading","default":"Thoughtful details"},{"type":"richtext","id":"text","label":"Text"},{"type":"text","id":"link_label","label":"Link label"},{"type":"url","id":"link","label":"Link"}]}],"presets":[{"name":"Feature list","blocks":[{"type":"feature"},{"type":"feature"},{"type":"feature"}]}]}
+{
+  "name": "Feature list",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Why choose us"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 24,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "card",
+      "options": [
+        {
+          "value": "card",
+          "label": "Card"
+        },
+        {
+          "value": "plain",
+          "label": "Plain"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_text",
+      "label": "Card text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_heading",
+      "label": "Card heading",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_border",
+      "label": "Card border",
+      "default": "#dddddd"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_link",
+      "label": "Card link",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_link_hover",
+      "label": "Card link hover",
+      "default": "#555555"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon image"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Thoughtful details"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Custom block colors"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_block_colors",
+          "label": "Use custom block colors",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "block_text_color",
+          "label": "Text",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_heading_color",
+          "label": "Heading",
+          "default": "#111111"
+        },
+        {
+          "type": "color",
+          "id": "block_link_color",
+          "label": "Link",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_background_color",
+          "label": "Background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "block_border_color",
+          "label": "Border",
+          "default": "#dddddd"
+        },
+        {
+          "type": "color",
+          "id": "block_link_hover_color",
+          "label": "Link hover",
+          "default": "#555555"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature list",
+      "blocks": [
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}

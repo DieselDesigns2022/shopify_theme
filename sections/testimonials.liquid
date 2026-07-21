@@ -1,2 +1,230 @@
-<section class="home-section testimonials"><div class="content-width--wide text-{{ section.settings.alignment }}">{% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}<div class="testimonials__grid" style="--desktop-columns:{{ section.settings.columns }};--mobile-columns:1">{% for block in section.blocks %}<figure {{ block.shopify_attributes }} class="card feature-list__item">{% if block.settings.rating > 0 %}<p aria-label="{{ block.settings.rating }} out of 5 stars"><span aria-hidden="true">{% for i in (1..block.settings.rating) %}★{% endfor %}</span></p>{% endif %}<blockquote>{{ block.settings.quote }}</blockquote><figcaption>{% if block.settings.image != blank %}{{ block.settings.image | image_url:width:100 | image_tag: loading:'lazy', alt:'' }}{% endif %}<strong>{{ block.settings.name | escape }}</strong>{% if block.settings.detail != blank %}<span>{{ block.settings.detail | escape }}</span>{% endif %}</figcaption></figure>{% endfor %}</div></div></section>
-{% schema %}{"name":"Testimonials","max_blocks":8,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Loved by customers"},{"type":"range","id":"columns","label":"Desktop columns","min":1,"max":4,"step":1,"default":3},{"type":"select","id":"alignment","label":"Alignment","default":"center","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]}],"blocks":[{"type":"testimonial","name":"Testimonial","settings":[{"type":"richtext","id":"quote","label":"Quote","default":"<p>Share a customer review here.</p>"},{"type":"text","id":"name","label":"Customer name","default":"Customer name"},{"type":"text","id":"detail","label":"Customer detail"},{"type":"image_picker","id":"image","label":"Customer image"},{"type":"range","id":"rating","label":"Rating","min":0,"max":5,"step":1,"default":5}]}],"presets":[{"name":"Testimonials","blocks":[{"type":"testimonial"},{"type":"testimonial"},{"type":"testimonial"}]}]}{% endschema %}
+{% render 'custom-color-scope', section: section %}
+<section class="home-section testimonials"><div class="content-width--wide text-{{ section.settings.alignment }}">{% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}<div class="testimonials__grid" style="--desktop-columns:{{ section.settings.columns }};--mobile-columns:1">{% for block in section.blocks %}<figure data-color-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="card feature-list__item">{% if block.settings.rating > 0 %}<p aria-label="{{ block.settings.rating }} out of 5 stars"><span aria-hidden="true">{% for i in (1..block.settings.rating) %}★{% endfor %}</span></p>{% endif %}<blockquote>{{ block.settings.quote }}</blockquote><figcaption>{% if block.settings.image != blank %}{{ block.settings.image | image_url:width:100 | image_tag: loading:'lazy', alt:'' }}{% endif %}<strong>{{ block.settings.name | escape }}</strong>{% if block.settings.detail != blank %}<span>{{ block.settings.detail | escape }}</span>{% endif %}</figcaption></figure>{% endfor %}</div></div></section>
+{% schema %}
+{
+  "name": "Testimonials",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Loved by customers"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_muted_text",
+      "label": "Muted text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_text",
+      "label": "Card text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_heading",
+      "label": "Card heading",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_border",
+      "label": "Card border",
+      "default": "#dddddd"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_link",
+      "label": "Card link",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_link_hover",
+      "label": "Card link hover",
+      "default": "#555555"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>Share a customer review here.</p>"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer name",
+          "default": "Customer name"
+        },
+        {
+          "type": "text",
+          "id": "detail",
+          "label": "Customer detail"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Customer image"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "header",
+          "content": "Custom block colors"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_block_colors",
+          "label": "Use custom block colors",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "block_text_color",
+          "label": "Text",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_background_color",
+          "label": "Background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "block_border_color",
+          "label": "Border",
+          "default": "#dddddd"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

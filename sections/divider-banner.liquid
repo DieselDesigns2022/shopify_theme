@@ -1,3 +1,4 @@
+{% render 'custom-color-scope', section: section %}
 {% assign desktop_image = section.settings.desktop_image %}{% assign mobile_image = section.settings.mobile_image | default: desktop_image %}
 <section class="divider-banner divider-banner--{{ section.settings.width }} divider-banner--{{ section.settings.height }}" style="--divider-pt: {{ section.settings.top_spacing }}px; --divider-pb: {{ section.settings.bottom_spacing }}px; --divider-fit: {{ section.settings.image_fit }};">
   <div class="divider-banner__inner{% if section.settings.width == 'contained' %} page-width{% endif %}">
@@ -10,13 +11,169 @@
 {
   "name": "Divider banner",
   "settings": [
-    { "type": "image_picker", "id": "desktop_image", "label": "Desktop image" }, { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" }, { "type": "url", "id": "full_banner_link", "label": "Full banner link" },
-    { "type": "select", "id": "width", "label": "Width", "default": "contained", "options": [{"value":"contained","label":"Contained"},{"value":"full","label":"Full width"}] },
-    { "type": "select", "id": "height", "label": "Height", "default": "standard", "options": [{"value":"thin","label":"Thin"},{"value":"standard","label":"Standard"},{"value":"tall","label":"Tall"},{"value":"natural","label":"Natural"}] },
-    { "type": "select", "id": "image_fit", "label": "Image fit", "default": "contain", "options": [{"value":"contain","label":"Contain"},{"value":"cover","label":"Cover"}] },
-    { "type": "range", "id": "top_spacing", "label": "Top spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 16 }, { "type": "range", "id": "bottom_spacing", "label": "Bottom spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 16 },
-    { "type": "text", "id": "alt_text", "label": "Alt text" }, { "type": "checkbox", "id": "decorative_image", "label": "Decorative image", "default": true }
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "url",
+      "id": "full_banner_link",
+      "label": "Full banner link"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "contained",
+      "options": [
+        {
+          "value": "contained",
+          "label": "Contained"
+        },
+        {
+          "value": "full",
+          "label": "Full width"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "default": "standard",
+      "options": [
+        {
+          "value": "thin",
+          "label": "Thin"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "tall",
+          "label": "Tall"
+        },
+        {
+          "value": "natural",
+          "label": "Natural"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "contain",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "top_spacing",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "bottom_spacing",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "alt_text",
+      "label": "Alt text"
+    },
+    {
+      "type": "checkbox",
+      "id": "decorative_image",
+      "label": "Decorative image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    }
   ],
-  "presets": [{ "name": "Divider banner" }]
+  "presets": [
+    {
+      "name": "Divider banner"
+    }
+  ]
 }
 {% endschema %}

@@ -1,3 +1,4 @@
+{% render 'custom-color-scope', section: section %}
 {% liquid
   assign continue_url = section.settings.continue_shopping_link | default: routes.all_products_collection_url
 %}
@@ -21,5 +22,156 @@
   </aside>
 </section>
 {% schema %}
-{"name":"Cart drawer","settings":[{"type":"checkbox","id":"enable_free_shipping_progress","label":"Enable free-shipping progress","default":true},{"type":"checkbox","id":"show_cart_note","label":"Show cart note","default":true},{"type":"text","id":"empty_cart_heading","label":"Empty-cart heading","default":"Your cart is empty"},{"type":"textarea","id":"empty_cart_text","label":"Empty-cart text","default":"Browse our collection to find something you’ll love."},{"type":"url","id":"continue_shopping_link","label":"Continue-shopping link"}]}
+{
+  "name": "Cart drawer",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_free_shipping_progress",
+      "label": "Enable free-shipping progress",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_note",
+      "label": "Show cart note",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "empty_cart_heading",
+      "label": "Empty-cart heading",
+      "default": "Your cart is empty"
+    },
+    {
+      "type": "textarea",
+      "id": "empty_cart_text",
+      "label": "Empty-cart text",
+      "default": "Browse our collection to find something you’ll love."
+    },
+    {
+      "type": "url",
+      "id": "continue_shopping_link",
+      "label": "Continue-shopping link"
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_muted_text",
+      "label": "Muted text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_background",
+      "label": "Primary button background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_text",
+      "label": "Primary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_background",
+      "label": "Primary button hover background",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_text",
+      "label": "Primary button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Forms"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_background",
+      "label": "Input background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_text",
+      "label": "Input text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_border",
+      "label": "Input border",
+      "default": "#777777"
+    },
+    {
+      "type": "color",
+      "id": "custom_focus",
+      "label": "Focus color",
+      "default": "#2463eb"
+    }
+  ]
+}
 {% endschema %}

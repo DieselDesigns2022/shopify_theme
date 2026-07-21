@@ -1,3 +1,4 @@
+{% render 'custom-color-scope', section: section %}
 <section class="rich-text rich-text--{{ section.settings.width }} rich-text--{{ section.settings.text_alignment }}" style="--rich-pt: {{ section.settings.top_spacing }}px; --rich-pb: {{ section.settings.bottom_spacing }}px;">
   <div class="page-width rich-text__inner">
     {% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}
@@ -9,12 +10,173 @@
 {
   "name": "Rich text",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Tell your story" }, { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Use this section to welcome shoppers or explain what makes your products special.</p>" },
-    { "type": "text", "id": "button_label", "label": "Button label" }, { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "select", "id": "text_alignment", "label": "Text alignment", "default": "center", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}] },
-    { "type": "select", "id": "width", "label": "Width", "default": "standard", "options": [{"value":"narrow","label":"Narrow"},{"value":"standard","label":"Standard"}] },
-    { "type": "range", "id": "top_spacing", "label": "Top spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 40 }, { "type": "range", "id": "bottom_spacing", "label": "Bottom spacing", "min": 0, "max": 96, "step": 4, "unit": "px", "default": 40 }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Tell your story"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Use this section to welcome shoppers or explain what makes your products special.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "standard",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "top_spacing",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "bottom_spacing",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_background",
+      "label": "Primary button background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_text",
+      "label": "Primary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_background",
+      "label": "Primary button hover background",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_text",
+      "label": "Primary button hover text",
+      "default": "#ffffff"
+    }
   ],
-  "presets": [{ "name": "Rich text" }]
+  "presets": [
+    {
+      "name": "Rich text"
+    }
+  ]
 }
 {% endschema %}

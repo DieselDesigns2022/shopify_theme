@@ -1,1 +1,126 @@
-<section class="customer-page page-width"><h1>Create account</h1>{% form 'create_customer' %}{% if form.errors %}<div role="alert">{{ form.errors | default_errors }}</div>{% endif %}{% assign registration_fields = 'first_name,last_name,email,password' | split: ',' %}{% for item in registration_fields %}<label for="Register{{ item | capitalize }}-{{ section.id }}">{{ item | replace: '_', ' ' | capitalize }}</label><input id="Register{{ item | capitalize }}-{{ section.id }}" {% if item == 'email' %}type="email" autocomplete="email"{% elsif item == 'password' %}type="password" autocomplete="new-password"{% else %}type="text" autocomplete="{{ item | replace: 'first_name', 'given-name' | replace: 'last_name', 'family-name' }}"{% endif %} name="customer[{{ item }}]"{% if item != 'password' %} value="{{ form[item] | escape }}"{% endif %} required>{% endfor %}<button class="button">Create account</button>{% endform %}<p><a href="{{ routes.account_login_url }}">Sign in instead</a></p></section>{% schema %}{"name":"Customer registration"}{% endschema %}
+{% render 'custom-color-scope', section: section %}
+<section class="customer-page page-width"><h1>Create account</h1>{% form 'create_customer' %}{% if form.errors %}<div role="alert">{{ form.errors | default_errors }}</div>{% endif %}{% assign registration_fields = 'first_name,last_name,email,password' | split: ',' %}{% for item in registration_fields %}<label for="Register{{ item | capitalize }}-{{ section.id }}">{{ item | replace: '_', ' ' | capitalize }}</label><input id="Register{{ item | capitalize }}-{{ section.id }}" {% if item == 'email' %}type="email" autocomplete="email"{% elsif item == 'password' %}type="password" autocomplete="new-password"{% else %}type="text" autocomplete="{{ item | replace: 'first_name', 'given-name' | replace: 'last_name', 'family-name' }}"{% endif %} name="customer[{{ item }}]"{% if item != 'password' %} value="{{ form[item] | escape }}"{% endif %} required>{% endfor %}<button class="button">Create account</button>{% endform %}<p><a href="{{ routes.account_login_url }}">Sign in instead</a></p></section>{% schema %}
+{
+  "name": "Customer registration",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_muted_text",
+      "label": "Muted text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_background",
+      "label": "Primary button background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_text",
+      "label": "Primary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_background",
+      "label": "Primary button hover background",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_text",
+      "label": "Primary button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Forms"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_background",
+      "label": "Input background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_text",
+      "label": "Input text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_border",
+      "label": "Input border",
+      "default": "#777777"
+    },
+    {
+      "type": "color",
+      "id": "custom_focus",
+      "label": "Focus color",
+      "default": "#2463eb"
+    }
+  ]
+}
+{% endschema %}
