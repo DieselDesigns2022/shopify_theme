@@ -4,12 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% render 'meta-tags' %}
+    {% capture search_action_placeholder %}{search_term_string}{% endcapture %}
+    {% assign search_action_target = shop.url | append: routes.search_url | append: '?q=' | append: search_action_placeholder %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@graph": [
         {"@type":"Organization","name":{{ shop.name | json }},"url":{{ shop.url | append: routes.root_url | json }}},
-        {"@type":"WebSite","name":{{ shop.name | json }},"url":{{ shop.url | append: routes.root_url | json }},"potentialAction":{"@type":"SearchAction","target":{{ shop.url | append: routes.search_url | append: '?q={search_term_string}' | json }},"query-input":"required name=search_term_string"}}
+        {"@type":"WebSite","name":{{ shop.name | json }},"url":{{ shop.url | append: routes.root_url | json }},"potentialAction":{"@type":"SearchAction","target":{{ search_action_target | json }},"query-input":"required name=search_term_string"}}
       ]
     }
     </script>

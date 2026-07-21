@@ -7,10 +7,15 @@
     assign submenu_id = 'MobileSubmenu-' | append: section.id | append: '-' | append: prefix | append: '-' | append: forloop.index
     assign child_prefix = prefix | append: '-' | append: forloop.index
     assign mobile_mega_block = blank
+    assign has_mobile_mega_navigation = false
     assign has_mobile_promo = false
     if current_depth == 0
       for candidate in section.blocks
-        if candidate.type == 'mega_menu' and candidate.settings.trigger_title == link.title and candidate.settings.menu_scope == nav_scope
+        if candidate.type == 'mega_menu' and candidate.settings.trigger_title == link.title
+          assign mobile_mega_block = candidate
+          if candidate.settings.menu != blank and candidate.settings.menu.links.size > 0
+            assign has_mobile_mega_navigation = true
+          endif
           assign has_promo_button = false
           if candidate.settings.promo_link != blank and candidate.settings.promo_button_label != blank
             assign has_promo_button = true
@@ -20,7 +25,6 @@
             assign has_non_image_promo = true
           endif
           if has_non_image_promo or candidate.settings.promo_image != blank and candidate.settings.show_promo_mobile
-            assign mobile_mega_block = candidate
             assign has_mobile_promo = true
           endif
         endif
@@ -28,11 +32,18 @@
     endif
   %}
   <li class="mobile-menu__item">
-    {% if link.links.size > 0 or has_mobile_promo %}
+    {% if link.links.size > 0 or has_mobile_mega_navigation or has_mobile_promo %}
       <button type="button" class="mobile-menu__link" data-mobile-submenu-toggle aria-expanded="false" aria-controls="{{ submenu_id }}"><span>{{ link.title | escape }}</span>{% render 'icon-chevron-down' %}</button>
       <div id="{{ submenu_id }}" class="mobile-menu__submenu" hidden>
         <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
-        {% if link.links.size > 0 %}<ul>{% render 'mobile-menu-links', menu: link, prefix: child_prefix, nav_scope: nav_scope, depth: next_depth %}</ul>{% endif %}
+        {% if has_mobile_mega_navigation %}
+          <ul>
+            {% for column_link in mobile_mega_block.settings.menu.links limit: mobile_mega_block.settings.columns %}
+              {% assign mega_child_prefix = child_prefix | append: '-mega-' | append: forloop.index %}
+              <li><a href="{{ column_link.url }}"{% if column_link.current %} aria-current="page"{% endif %}>{{ column_link.title | escape }}</a>{% if column_link.links.size > 0 %}<ul>{% render 'mobile-menu-links', menu: column_link, prefix: mega_child_prefix, depth: next_depth %}</ul>{% endif %}</li>
+            {% endfor %}
+          </ul>
+        {% elsif link.links.size > 0 %}<ul>{% render 'mobile-menu-links', menu: link, prefix: child_prefix, depth: next_depth %}</ul>{% endif %}
         {% if has_mobile_promo %}{% render 'header-promo-content', block: mobile_mega_block, class: 'mobile-menu__promo', context: 'mobile' %}{% endif %}
       </div>
     {% else %}

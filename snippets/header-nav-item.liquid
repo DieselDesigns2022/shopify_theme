@@ -1,11 +1,11 @@
 {% liquid
   assign mega_block = blank
   for candidate in section.blocks
-    if candidate.type == 'mega_menu' and candidate.settings.trigger_title == link.title and candidate.settings.menu_scope == nav_scope
+    if candidate.type == 'mega_menu' and candidate.settings.trigger_title == link.title
       assign mega_block = candidate
     endif
   endfor
-  assign panel_id = 'HeaderPanel-' | append: section.id | append: '-' | append: nav_scope | append: '-' | append: index
+  assign panel_id = 'HeaderPanel-' | append: section.id | append: '-main-' | append: index
 %}
 <li class="site-header__nav-item{% if link.links.size > 0 or mega_block != blank %} site-header__nav-item--has-panel{% endif %}">
   {% if link.links.size > 0 or mega_block != blank %}
