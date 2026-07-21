@@ -6,7 +6,7 @@
 <section class="browse-section collection-page" data-browse-section style="--browse-pt:{{ section.settings.top_spacing }}px;--browse-pb:{{ section.settings.bottom_spacing }}px">
  <div class="content-width--{{ section.settings.content_width }}">
   <header class="collection-header">
-   {% if section.settings.show_collection_image and collection.image != blank %}{{ collection.image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1400', alt: collection.image.alt | default: collection.title | escape, class: 'collection-header__image' }}{% endif %}
+   {% if section.settings.show_collection_image and collection.image != blank %}{% assign collection_image_alt = collection.image.alt | default: collection.title %}{{ collection.image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1400', alt: collection_image_alt, class: 'collection-header__image' }}{% endif %}
    {% if section.settings.show_collection_description and collection.description != blank and section.settings.description_position == 'above' %}<div class="collection-header__description collection-header__description--above">{{ collection.description }}</div>{% endif %}
    <h1>{{ collection.title | escape }}</h1>
    {% if section.settings.show_collection_description and collection.description != blank and section.settings.description_position == 'below' %}<div class="collection-header__description collection-header__description--below">{{ collection.description }}</div>{% endif %}
