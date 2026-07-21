@@ -1,6 +1,7 @@
 {% liquid
   assign cart_product = item.product
   assign cart_image = item.image | default: cart_product.featured_image
+  assign cart_image_alt = cart_image.alt | default: item.product.title | default: item.title
   assign quantity_id = 'CartQuantity-' | append: section.id | append: '-' | append: item.key | md5
   assign line_is_discounted = false
   if item.original_line_price != item.final_line_price
@@ -21,7 +22,7 @@
     <div class="cart-item__media cart-item__media--{{ image_ratio }} cart-item__media--{{ image_fit }}"{% if image_ratio == 'adapt' and cart_image != blank %} style="--cart-image-ratio: {{ cart_image.aspect_ratio }}"{% endif %}>
       {% if cart_image != blank %}
         {% if item.url != blank %}<a class="cart-item__image-link" href="{{ item.url }}" aria-label="View {{ item.product.title | default: item.title | escape }}">{% endif %}
-        {{ cart_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '120, 180, 240, 360, 600', sizes: '(min-width: 750px) 180px, 120px', alt: cart_image.alt | default: item.product.title | default: item.title | escape, class: 'cart-item__image' }}
+        {{ cart_image | image_url: width: 600 | image_tag: loading: 'lazy', widths: '120, 180, 240, 360, 600', sizes: '(min-width: 750px) 180px, 120px', alt: cart_image_alt, class: 'cart-item__image' }}
         {% if item.url != blank %}</a>{% endif %}
       {% else %}
         <div class="cart-item__placeholder" role="img" aria-label="{{ item.title | escape }} image unavailable">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>

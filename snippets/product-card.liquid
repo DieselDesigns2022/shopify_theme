@@ -11,6 +11,10 @@
   assign only_available_variant = nil
   if card_image != blank
     assign card_media_ratio = card_image.aspect_ratio
+    assign card_image_alt = card_image.alt | default: card_product.title
+  endif
+  if second_image != blank
+    assign second_image_alt = second_image.alt | default: card_product.title
   endif
   for variant in card_product.variants
     if variant.compare_at_price > variant.price
@@ -27,8 +31,8 @@
     {% if show_sold_out_badge and card_product.available == false %}<span class="product-card__badge badge--sold-out">Sold out</span>{% elsif show_sale_badge and card_sale %}<span class="product-card__badge">Sale</span>{% endif %}
     {% if card_image != blank %}
       <a class="product-card__image-link" href="{{ card_product.url }}" aria-label="View {{ card_product.title | escape }}">
-        {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '240, 360, 540, 720, 900', sizes: '(min-width: 750px) 25vw, 50vw', alt: card_image.alt | default: card_product.title | escape, class: 'product-card__image' }}
-        {% if show_second_image and second_image != blank %}{{ second_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '240, 360, 540, 720, 900', sizes: '(min-width: 750px) 25vw, 50vw', alt: second_image.alt | default: card_product.title | escape, class: 'product-card__image product-card__image--secondary' }}{% endif %}
+        {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '240, 360, 540, 720, 900', sizes: '(min-width: 750px) 25vw, 50vw', alt: card_image_alt, class: 'product-card__image' }}
+        {% if show_second_image and second_image != blank %}{{ second_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '240, 360, 540, 720, 900', sizes: '(min-width: 750px) 25vw, 50vw', alt: second_image_alt, class: 'product-card__image product-card__image--secondary' }}{% endif %}
       </a>
     {% else %}
       <div class="product-card__placeholder" role="img" aria-label="{{ card_product.title | escape }} image unavailable">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
