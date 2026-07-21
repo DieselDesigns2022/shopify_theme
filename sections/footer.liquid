@@ -1,22 +1,34 @@
 <footer class="site-footer site-footer--{{ section.settings.text_alignment }}">
   <div class="page-width site-footer__inner">
-    {% if section.settings.footer_logo != blank %}{% assign footer_logo_height = section.settings.logo_width | divided_by: section.settings.footer_logo.aspect_ratio | round %}<img class="site-footer__logo" src="{{ section.settings.footer_logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name | escape }}" width="{{ section.settings.logo_width }}" height="{{ footer_logo_height }}" loading="lazy">{% endif %}
-    {% if section.settings.show_store_description and section.settings.store_description != blank %}<div class="site-footer__description">{{ section.settings.store_description }}</div>{% endif %}
-    {% if section.blocks.size > 0 %}
-      <div class="site-footer__blocks">
+    <div class="site-footer__primary">
+      <div class="site-footer__column site-footer__column--logo">
+        {% if section.settings.footer_logo != blank %}
+          {% assign footer_logo_source_width = section.settings.logo_width | times: 2 %}
+          {% assign footer_logo_height = section.settings.logo_width | divided_by: section.settings.footer_logo.aspect_ratio | round %}
+          {{ section.settings.footer_logo | image_url: width: footer_logo_source_width | image_tag: class: 'site-footer__logo', loading: 'lazy', widths: '160, 240, 320, 480, 640', width: section.settings.logo_width, height: footer_logo_height, alt: shop.name }}
+        {% endif %}
+      </div>
+      <div class="site-footer__column site-footer__column--text">
+        {% if section.settings.show_store_description and section.settings.store_description != blank %}<div class="site-footer__description">{{ section.settings.store_description }}</div>{% endif %}
         {% for block in section.blocks %}
-          <div class="site-footer__block" {{ block.shopify_attributes }}>
-            {% case block.type %}
-              {% when 'menu' %}
-                {% if block.settings.menu != blank %}<h2>{{ block.settings.heading | escape }}</h2><ul>{% for link in block.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}</ul>{% endif %}
-              {% when 'text' %}
-                {% if block.settings.heading != blank %}<h2>{{ block.settings.heading | escape }}</h2>{% endif %}{% if block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% endif %}
-            {% endcase %}
-          </div>
+          {% if block.type == 'text' %}
+            <div class="site-footer__block" {{ block.shopify_attributes }}>
+              {% if block.settings.heading != blank %}<h2>{{ block.settings.heading | escape }}</h2>{% endif %}{% if block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% endif %}
+            </div>
+          {% endif %}
         {% endfor %}
       </div>
-    {% endif %}
-    {% if settings.localization_placement == 'footer' %}{% render 'localization-form', id: section.id %}{% endif %}
+      <div class="site-footer__column site-footer__column--links">
+        {% for block in section.blocks %}
+          {% if block.type == 'menu' %}
+            <div class="site-footer__block" {{ block.shopify_attributes }}>
+              {% if block.settings.menu != blank %}<h2>{{ block.settings.heading | escape }}</h2><ul>{% for link in block.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}</ul>{% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    {% if settings.localization_placement == 'footer' %}<div class="site-footer__localization">{% render 'localization-form', id: section.id %}</div>{% endif %}
     <div class="site-footer__bottom">
       <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}</small>
       <p class="site-footer__attribution">Website by <a href="https://www.dieseldesigns.co">Diesel Designs</a></p>
