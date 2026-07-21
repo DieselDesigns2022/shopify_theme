@@ -9,6 +9,46 @@
  */
 {
   "sections": {
+    "announcement_bar_D6d3mB": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_CKkVbV": {
+          "type": "announcement",
+          "settings": {
+            "desktop_text": "Welcome to our shop.",
+            "mobile_text": "",
+            "link": "",
+            "icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_CKkVbV"
+      ],
+      "name": "Announcement bar",
+      "settings": {
+        "display_style": "static",
+        "background_color": "#111111",
+        "text_color": "#ffffff",
+        "link_color": "#ffffff",
+        "text_alignment": "center",
+        "rotation_speed": 5,
+        "scrolling_speed": 24,
+        "pause_on_hover": true,
+        "dismissible": false,
+        "hide_mobile": false,
+        "hide_desktop": false,
+        "visibility_scope": "all",
+        "show_product": true,
+        "show_collection": true,
+        "show_page": true,
+        "show_blog": true,
+        "show_article": true,
+        "show_search": true,
+        "show_cart": true,
+        "show_other": true
+      }
+    },
     "welcome_primary": {
       "type": "welcome-banner",
       "name": "Primary welcome banner",
@@ -222,8 +262,8 @@
         "heading": "",
         "text": "",
         "button_label": "",
-        "button_link": "",
-        "full_banner_link": "",
+        "button_link": "https://www.dieseldesigns.co",
+        "full_banner_link": "https://www.dieseldesigns.co",
         "width": "contained",
         "content_alignment": "center",
         "text_position": "center",
@@ -339,46 +379,6 @@
         "success": "Thanks for subscribing. Welcome to the list!",
         "disclaimer": "<p>You can unsubscribe at any time.</p>",
         "alignment": "center"
-      }
-    },
-    "announcement_bar_D6d3mB": {
-      "type": "announcement-bar",
-      "blocks": {
-        "announcement_CKkVbV": {
-          "type": "announcement",
-          "settings": {
-            "desktop_text": "Welcome to our shop.",
-            "mobile_text": "",
-            "link": "",
-            "icon": "none"
-          }
-        }
-      },
-      "block_order": [
-        "announcement_CKkVbV"
-      ],
-      "name": "Announcement bar",
-      "settings": {
-        "display_style": "static",
-        "background_color": "#111111",
-        "text_color": "#ffffff",
-        "link_color": "#ffffff",
-        "text_alignment": "center",
-        "rotation_speed": 5,
-        "scrolling_speed": 24,
-        "pause_on_hover": true,
-        "dismissible": false,
-        "hide_mobile": false,
-        "hide_desktop": false,
-        "visibility_scope": "all",
-        "show_product": true,
-        "show_collection": true,
-        "show_page": true,
-        "show_blog": true,
-        "show_article": true,
-        "show_search": true,
-        "show_cart": true,
-        "show_other": true
       }
     }
   },
