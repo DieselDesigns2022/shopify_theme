@@ -12,8 +12,9 @@
 {% endif %}
 {% if section.settings.enabled and has_content %}
   {% if section.settings.newsletter %}
+    {% assign newsletter_form_id = 'NewsletterPopupForm-' | append: section.id %}
     {% capture newsletter_form %}
-      {% form 'customer', id: 'NewsletterPopupForm-' | append: section.id %}
+      {% form 'customer', id: newsletter_form_id %}
         {% if form.posted_successfully? %}
           {% assign newsletter_success = true %}
         {% endif %}

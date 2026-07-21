@@ -105,8 +105,12 @@ input[type='text'], input[type='email'], input[type='tel'], input[type='url'], i
 .site-footer { background: var(--color-footer-bg); color: var(--color-footer-text); padding-block: var(--section-spacing); border-top: 1px solid var(--color-border); }
 .site-footer--center { text-align: center; }
 .site-footer__inner { display: grid; gap: 1.5rem; }
-.site-footer__blocks { display: grid; gap: 1.5rem; }
+.site-footer__primary { display: grid; gap: 1.5rem; align-items: start; }
+.site-footer__column { display: grid; gap: 1.5rem; align-content: start; min-width: 0; }
+.site-footer__logo { display: block; max-width: 100%; height: auto; }
+.site-footer--center .site-footer__logo { margin-inline: auto; }
 .site-footer__block ul { list-style: none; padding: 0; display: grid; gap: 0.4rem; }
+.site-footer__localization { width: 100%; }
 .site-footer__bottom { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; border-top: 1px solid var(--color-border); padding-top: 1rem; }
 .site-footer__attribution a { color: inherit; }
 
@@ -156,7 +160,7 @@ input[type='text'], input[type='email'], input[type='tel'], input[type='url'], i
   .site-header__nav { display: block; }
   .site-header__inner { grid-template-areas: "brand nav actions"; grid-template-columns: auto minmax(0, 1fr) auto; }
   .site-header__inner--center { grid-template-areas: "nav brand actions"; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
-  .site-footer__blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .site-footer__primary { grid-template-columns: minmax(10rem, .8fr) minmax(0, 1.4fr) minmax(10rem, 1fr); gap: clamp(1.5rem, 4vw, 4rem); }
   .banner__media, .banner__media img { min-height: var(--banner-height); height: var(--banner-height); }
   .banner__content { position: absolute; inset: 2rem; margin: 0; align-content: center; color: white; }
   .banner--top .banner__content { align-content: start; }
