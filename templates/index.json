@@ -33,7 +33,6 @@
     },
     "store_highlights": {
       "type": "marquee",
-      "name": "Store highlights",
       "blocks": {
         "message_1": {
           "type": "message",
@@ -66,12 +65,13 @@
         "message_3",
         "message_4"
       ],
+      "name": "Store highlights",
       "settings": {
         "accessibility_label": "Store highlights",
         "background_color": "#171717",
         "text_color": "#ffffff",
         "separator": "diamond",
-        "separator_text": "\u2022",
+        "separator_text": "•",
         "direction": "left",
         "speed": 25,
         "pause_on_hover": true,
@@ -82,7 +82,6 @@
     },
     "shop_by_category": {
       "type": "collection-showcase",
-      "name": "Shop by category",
       "blocks": {
         "category_1": {
           "type": "collection",
@@ -129,6 +128,7 @@
         "category_5",
         "category_6"
       ],
+      "name": "Shop by category",
       "settings": {
         "heading": "Shop by category",
         "intro": "<p>Browse our collections and find something made for your style.</p>",
@@ -238,22 +238,21 @@
     },
     "testimonials": {
       "type": "testimonials",
-      "name": "Testimonials",
       "blocks": {
         "review_1": {
           "type": "testimonial",
           "settings": {
-            "quote": "<p>\u201cAdd a customer story here that highlights what made their experience memorable.\u201d</p>",
+            "quote": "<p>“Add a customer story here that highlights what made their experience memorable.”</p>",
             "name": "Customer name",
             "detail": "Replace with a real review",
-            "rating": 5,
-            "image": "shopify://shop_images/Western_Seamless_V1_Seamless.png"
+            "image": "shopify://shop_images/Western_Seamless_V1_Seamless.png",
+            "rating": 5
           }
         },
         "review_2": {
           "type": "testimonial",
           "settings": {
-            "quote": "<p>\u201cUse this space for a thoughtful review about the product, service, or delivery experience.\u201d</p>",
+            "quote": "<p>“Use this space for a thoughtful review about the product, service, or delivery experience.”</p>",
             "name": "Customer name",
             "detail": "Replace with a real review",
             "rating": 5
@@ -262,7 +261,7 @@
         "review_3": {
           "type": "testimonial",
           "settings": {
-            "quote": "<p>\u201cReplace this sample with feedback that helps new shoppers feel confident choosing your store.\u201d</p>",
+            "quote": "<p>“Replace this sample with feedback that helps new shoppers feel confident choosing your store.”</p>",
             "name": "Customer name",
             "detail": "Replace with a real review",
             "rating": 5
@@ -274,6 +273,7 @@
         "review_2",
         "review_3"
       ],
+      "name": "Testimonials",
       "settings": {
         "heading": "Loved by customers",
         "columns": 3,
@@ -282,7 +282,6 @@
     },
     "service_highlights": {
       "type": "marquee",
-      "name": "Quality and service",
       "blocks": {
         "message_1": {
           "type": "message",
@@ -315,12 +314,13 @@
         "message_3",
         "message_4"
       ],
+      "name": "Quality and service",
       "settings": {
         "accessibility_label": "Quality and service",
         "background_color": "#f0f1f3",
         "text_color": "#202124",
         "separator": "diamond",
-        "separator_text": "\u2022",
+        "separator_text": "•",
         "direction": "left",
         "speed": 25,
         "pause_on_hover": true,
@@ -340,9 +340,50 @@
         "disclaimer": "<p>You can unsubscribe at any time.</p>",
         "alignment": "center"
       }
+    },
+    "announcement_bar_D6d3mB": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_CKkVbV": {
+          "type": "announcement",
+          "settings": {
+            "desktop_text": "Welcome to our shop.",
+            "mobile_text": "",
+            "link": "",
+            "icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_CKkVbV"
+      ],
+      "name": "Announcement bar",
+      "settings": {
+        "display_style": "static",
+        "background_color": "#111111",
+        "text_color": "#ffffff",
+        "link_color": "#ffffff",
+        "text_alignment": "center",
+        "rotation_speed": 5,
+        "scrolling_speed": 24,
+        "pause_on_hover": true,
+        "dismissible": false,
+        "hide_mobile": false,
+        "hide_desktop": false,
+        "visibility_scope": "all",
+        "show_product": true,
+        "show_collection": true,
+        "show_page": true,
+        "show_blog": true,
+        "show_article": true,
+        "show_search": true,
+        "show_cart": true,
+        "show_other": true
+      }
     }
   },
   "order": [
+    "announcement_bar_D6d3mB",
     "welcome_primary",
     "store_highlights",
     "shop_by_category",
