@@ -138,25 +138,25 @@
         "category_3": {
           "type": "collection",
           "settings": {
-            "collection": "automated-collection"
+            "collection": "tester-collection-4-copy"
           }
         },
         "category_4": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "tester-collection-1-copy"
           }
         },
         "category_5": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "tester-collection-2-copy"
           }
         },
         "category_6": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "tester-collection-3-copy"
           }
         }
       },
