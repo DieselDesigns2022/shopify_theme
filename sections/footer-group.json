@@ -18,14 +18,23 @@
           "type": "text",
           "settings": {
             "heading": "❤︎ A Note From Us ❤︎",
-            "text": "<p>Thank you so much for supporting my small business! 🖤 Creating amazing things for amazing people is truly my passion. If you have any questions, concerns, or feedback, please don’t hesitate to reach out. Your input helps us continue to grow and serve you better! ✨</p>"
+            "text": "<p>Thank you so much for supporting my small business! 🖤 Creating amazing things for amazing people is truly my passion. If you have any questions, concerns, or feedback, please don’t hesitate to reach out. Your input helps us continue to grow and serve you better! ✨</p>",
+            "use_custom_block_colors": false,
+            "block_text_color": "#222222",
+            "block_heading_color": "#111111",
+            "block_link_color": "#222222",
+            "block_link_hover_color": "#555555"
           }
         },
         "menu_dVqQQY": {
           "type": "menu",
           "settings": {
             "heading": "Menu",
-            "menu": "footer"
+            "menu": "footer",
+            "use_custom_block_colors": false,
+            "block_heading_color": "#F0D1D1",
+            "block_link_color": "#222222",
+            "block_link_hover_color": "#555555"
           }
         }
       },
@@ -38,7 +47,25 @@
         "logo_width": 80,
         "show_store_description": false,
         "store_description": "<p>Share a short description of your store.</p>",
-        "text_alignment": "left"
+        "text_alignment": "left",
+        "use_custom_colors": false,
+        "custom_background": "#ffffff",
+        "custom_background_secondary": "#f5f5f5",
+        "custom_text": "#222222",
+        "custom_muted_text": "#666666",
+        "custom_heading": "#111111",
+        "custom_link": "#222222",
+        "custom_link_hover": "#555555",
+        "custom_border": "#dddddd",
+        "custom_secondary_button_background": "#ffffff",
+        "custom_secondary_button_text": "#222222",
+        "custom_secondary_button_border": "#222222",
+        "custom_secondary_button_hover_background": "#eeeeee",
+        "custom_secondary_button_hover_text": "#111111",
+        "custom_input_background": "#ffffff",
+        "custom_input_text": "#222222",
+        "custom_input_border": "#777777",
+        "custom_focus": "#2463eb"
       }
     }
   },
