@@ -138,7 +138,7 @@
         "category_3": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "automated-collection"
           }
         },
         "category_4": {
