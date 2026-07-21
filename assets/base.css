@@ -503,3 +503,16 @@ body[data-show-search='false'] .header-action--search, body[data-show-account='f
   .marquee__group { min-width:100%; flex-wrap:wrap; justify-content:center; row-gap:.75rem; }
   .marquee__group[aria-hidden='true'] { display:none; }
 }
+
+
+/* Keep text-style buttons out of the primary-button hover cascade. */
+.button.button--text,
+body[data-button-hover='true'] .button.button--text:hover {
+  padding-inline: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+body[data-link-hover='true'] .button.button--text:hover { color: var(--color-link-hover); }
