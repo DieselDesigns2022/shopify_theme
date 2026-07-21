@@ -1,0 +1,52 @@
+{% liquid
+  assign marquee_label = section.settings.accessibility_label | default: 'Store highlights'
+  assign repeated_blocks = section.blocks | where: 'type', 'message'
+%}
+<section
+  class="marquee marquee--{{ section.settings.visibility }}{% if section.settings.pause_on_hover %} marquee--pausable{% endif %}"
+  style="--marquee-bg: {{ section.settings.background_color }}; --marquee-text: {{ section.settings.text_color }}; --marquee-speed: {{ section.settings.speed }}s; --marquee-direction: {% if section.settings.direction == 'right' %}reverse{% else %}normal{% endif %}; --marquee-pt: {{ section.settings.padding_top }}px; --marquee-pb: {{ section.settings.padding_bottom }}px;"
+  aria-label="{{ marquee_label | escape }}"
+>
+  <div class="marquee__viewport">
+    <div class="marquee__track">
+      {% for copy_index in (1..2) %}
+        <div class="marquee__group"{% if copy_index == 2 %} aria-hidden="true"{% endif %}>
+          {% if repeated_blocks.size > 0 %}
+            {% for block in repeated_blocks %}
+              <span class="marquee__item"{% if copy_index == 1 %} {{ block.shopify_attributes }}{% endif %}>{{ block.settings.text | escape }}</span>
+              {% unless section.settings.separator == 'none' %}<span class="marquee__separator" aria-hidden="true">{% case section.settings.separator %}{% when 'star' %}★{% when 'diamond' %}◆{% else %}{{ section.settings.separator_text | escape }}{% endcase %}</span>{% endunless %}
+            {% endfor %}
+          {% else %}
+            <span class="marquee__item">Made with care</span><span class="marquee__separator" aria-hidden="true">◆</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Marquee",
+  "tag": "section",
+  "class": "section-marquee",
+  "max_blocks": 12,
+  "settings": [
+    {"type":"text","id":"accessibility_label","label":"Accessible label","default":"Store highlights","info":"Describes the marquee for screen reader users."},
+    {"type":"color","id":"background_color","label":"Background","default":"#171717"},
+    {"type":"color","id":"text_color","label":"Text","default":"#ffffff"},
+    {"type":"select","id":"separator","label":"Separator","default":"diamond","options":[{"value":"none","label":"None"},{"value":"diamond","label":"Diamond"},{"value":"star","label":"Star"},{"value":"text","label":"Custom text"}]},
+    {"type":"text","id":"separator_text","label":"Custom separator text","default":"•"},
+    {"type":"select","id":"direction","label":"Direction","default":"left","options":[{"value":"left","label":"Left"},{"value":"right","label":"Right"}]},
+    {"type":"range","id":"speed","label":"Loop duration","min":10,"max":60,"step":5,"unit":"s","default":25},
+    {"type":"checkbox","id":"pause_on_hover","label":"Pause on hover","default":true},
+    {"type":"select","id":"visibility","label":"Visibility","default":"all","options":[{"value":"all","label":"Desktop and mobile"},{"value":"desktop","label":"Desktop only"},{"value":"mobile","label":"Mobile only"}]},
+    {"type":"range","id":"padding_top","label":"Top padding","min":8,"max":40,"step":4,"unit":"px","default":16},
+    {"type":"range","id":"padding_bottom","label":"Bottom padding","min":8,"max":40,"step":4,"unit":"px","default":16}
+  ],
+  "blocks": [
+    {"type":"message","name":"Message","settings":[{"type":"text","id":"text","label":"Text","default":"Thoughtfully made for everyday life"}]}
+  ],
+  "presets": [{"name":"Marquee","blocks":[{"type":"message","settings":{"text":"Thoughtfully made"}},{"type":"message","settings":{"text":"Designed for everyday life"}},{"type":"message","settings":{"text":"Discover something special"}}]}]
+}
+{% endschema %}
