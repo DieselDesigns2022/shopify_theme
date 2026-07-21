@@ -126,13 +126,13 @@
         "category_1": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "tester-collection-1"
           }
         },
         "category_2": {
           "type": "collection",
           "settings": {
-            "collection": ""
+            "collection": "hydrogen"
           }
         },
         "category_3": {
