@@ -117,7 +117,7 @@
       "newsletter-popup": {
         "type": "newsletter-popup",
         "settings": {
-          "enabled": false,
+          "enabled": true,
           "heading": "Stay connected",
           "text": "<p>Subscribe for updates and offers.</p>",
           "image_position": "top",
@@ -137,7 +137,7 @@
       "privacy-banner": {
         "type": "privacy-banner",
         "settings": {
-          "enabled": false,
+          "enabled": true,
           "message": "<p>This notice can be dismissed after it has been read.</p>",
           "dismiss_label": "Acknowledge",
           "policy_link": "",
