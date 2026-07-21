@@ -231,7 +231,7 @@
       "type": "featured-collection",
       "name": "Customer favorites",
       "settings": {
-        "collection": "all",
+        "collection": "automated-collection",
         "heading": "Customer favorites",
         "intro": "<p>Explore products shoppers return to again and again.</p>",
         "width": "wide",
