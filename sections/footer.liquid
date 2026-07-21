@@ -1,3 +1,4 @@
+{% render 'custom-color-scope', section: section %}
 <footer class="site-footer site-footer--{{ section.settings.text_alignment }}">
   <div class="page-width site-footer__inner">
     <div class="site-footer__primary">
@@ -12,7 +13,7 @@
         {% if section.settings.show_store_description and section.settings.store_description != blank %}<div class="site-footer__description">{{ section.settings.store_description }}</div>{% endif %}
         {% for block in section.blocks %}
           {% if block.type == 'text' %}
-            <div class="site-footer__block" {{ block.shopify_attributes }}>
+            <div class="site-footer__block" data-color-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
               {% if block.settings.heading != blank %}<h2>{{ block.settings.heading | escape }}</h2>{% endif %}{% if block.settings.text != blank %}<div>{{ block.settings.text }}</div>{% endif %}
             </div>
           {% endif %}
@@ -21,7 +22,7 @@
       <div class="site-footer__column site-footer__column--links">
         {% for block in section.blocks %}
           {% if block.type == 'menu' %}
-            <div class="site-footer__block" {{ block.shopify_attributes }}>
+            <div class="site-footer__block" data-color-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
               {% if block.settings.menu != blank %}<h2>{{ block.settings.heading | escape }}</h2><ul>{% for link in block.settings.menu.links %}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{% endfor %}</ul>{% endif %}
             </div>
           {% endif %}
@@ -39,15 +40,272 @@
 {
   "name": "Footer",
   "settings": [
-    { "type": "image_picker", "id": "footer_logo", "label": "Footer logo" },
-    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 80, "max": 320, "step": 10, "unit": "px", "default": 140 },
-    { "type": "checkbox", "id": "show_store_description", "label": "Show store description", "default": false },
-    { "type": "richtext", "id": "store_description", "label": "Store description", "default": "<p>Share a short description of your store.</p>" },
-    { "type": "select", "id": "text_alignment", "label": "Text alignment", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }] }
+    {
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "Footer logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo width",
+      "min": 80,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "default": 140
+    },
+    {
+      "type": "checkbox",
+      "id": "show_store_description",
+      "label": "Show store description",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "store_description",
+      "label": "Store description",
+      "default": "<p>Share a short description of your store.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_muted_text",
+      "label": "Muted text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_background",
+      "label": "Secondary button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_text",
+      "label": "Secondary button text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_border",
+      "label": "Secondary button border",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_hover_background",
+      "label": "Secondary button hover background",
+      "default": "#eeeeee"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_hover_text",
+      "label": "Secondary button hover text",
+      "default": "#111111"
+    },
+    {
+      "type": "header",
+      "content": "Forms"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_background",
+      "label": "Input background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_text",
+      "label": "Input text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_border",
+      "label": "Input border",
+      "default": "#777777"
+    },
+    {
+      "type": "color",
+      "id": "custom_focus",
+      "label": "Focus color",
+      "default": "#2463eb"
+    }
   ],
   "blocks": [
-    { "type": "menu", "name": "Menu", "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "Menu" }, { "type": "link_list", "id": "menu", "label": "Menu" }] },
-    { "type": "text", "name": "Text", "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "About" }, { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Add footer text.</p>" }] }
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Menu"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        },
+        {
+          "type": "header",
+          "content": "Custom block colors"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_block_colors",
+          "label": "Use custom block colors",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "block_heading_color",
+          "label": "Heading",
+          "default": "#111111"
+        },
+        {
+          "type": "color",
+          "id": "block_link_color",
+          "label": "Link",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_link_hover_color",
+          "label": "Link hover",
+          "default": "#555555"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "About"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add footer text.</p>"
+        },
+        {
+          "type": "header",
+          "content": "Custom block colors"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_block_colors",
+          "label": "Use custom block colors",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "block_text_color",
+          "label": "Text",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_heading_color",
+          "label": "Heading",
+          "default": "#111111"
+        },
+        {
+          "type": "color",
+          "id": "block_link_color",
+          "label": "Link",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_link_hover_color",
+          "label": "Link hover",
+          "default": "#555555"
+        }
+      ]
+    }
   ]
 }
 {% endschema %}

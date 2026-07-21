@@ -1,3 +1,4 @@
+{% render 'custom-color-scope', section: section %}
 {% if section.settings.enabled %}
 <section id="PrivacyBanner-{{ section.id }}" class="privacy-banner privacy-banner--{{ section.settings.position }}" data-privacy-banner data-design-mode="{{ request.design_mode }}" data-days="{{ section.settings.dismiss_days }}">
   <div>{{ section.settings.message }}</div>
@@ -5,4 +6,154 @@
   <button class="button button--secondary" type="button" data-privacy-dismiss>{{ section.settings.dismiss_label | default: 'Acknowledge' | escape }}</button>
 </section>
 {% endif %}
-{% schema %}{"name":"Privacy notice","settings":[{"type":"checkbox","id":"enabled","label":"Enable privacy notice","default":false},{"type":"richtext","id":"message","label":"Message","default":"<p>This notice can be dismissed after it has been read.</p>"},{"type":"text","id":"dismiss_label","label":"Dismissal label","default":"Acknowledge"},{"type":"url","id":"policy_link","label":"Privacy policy link"},{"type":"select","id":"position","label":"Position","default":"bottom","options":[{"value":"bottom","label":"Bottom"},{"value":"top","label":"Top"}]},{"type":"range","id":"dismiss_days","label":"Dismissal days","min":1,"max":90,"step":1,"default":30}]}{% endschema %}
+{% schema %}
+{
+  "name": "Privacy notice",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable privacy notice",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "message",
+      "label": "Message",
+      "default": "<p>This notice can be dismissed after it has been read.</p>"
+    },
+    {
+      "type": "text",
+      "id": "dismiss_label",
+      "label": "Dismissal label",
+      "default": "Acknowledge"
+    },
+    {
+      "type": "url",
+      "id": "policy_link",
+      "label": "Privacy policy link"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "default": "bottom",
+      "options": [
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "dismiss_days",
+      "label": "Dismissal days",
+      "min": 1,
+      "max": 90,
+      "step": 1,
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_background",
+      "label": "Primary button background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_text",
+      "label": "Primary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_background",
+      "label": "Primary button hover background",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_text",
+      "label": "Primary button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_background",
+      "label": "Secondary button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_text",
+      "label": "Secondary button text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_border",
+      "label": "Secondary button border",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_hover_background",
+      "label": "Secondary button hover background",
+      "default": "#eeeeee"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_hover_text",
+      "label": "Secondary button hover text",
+      "default": "#111111"
+    }
+  ]
+}
+{% endschema %}

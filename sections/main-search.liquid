@@ -1,3 +1,4 @@
+{% render 'custom-color-scope', section: section %}
 {% paginate search.results by section.settings.results_per_page %}
 {% assign has_active_filters = false %}
 {% for filter in search.filters %}
@@ -29,4 +30,360 @@
   </div>
 </section>
 {% endpaginate %}
-{% schema %}{"name":"Search","settings":[{"type":"range","id":"results_per_page","label":"Results per page","min":4,"max":48,"step":4,"default":12},{"type":"select","id":"content_width","label":"Content width","default":"wide","options":[{"value":"standard","label":"Standard"},{"value":"wide","label":"Wide"}]},{"type":"range","id":"desktop_columns","label":"Desktop product columns","min":2,"max":5,"step":1,"default":4},{"type":"select","id":"mobile_columns","label":"Mobile product columns","default":"2","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},{"type":"checkbox","id":"show_result_type_labels","label":"Show result type labels","default":true},{"type":"checkbox","id":"show_vendor","label":"Show vendor","default":true},{"type":"checkbox","id":"show_product_type","label":"Show product type","default":false},{"type":"checkbox","id":"show_description","label":"Show description excerpt","default":false},{"type":"checkbox","id":"show_second_image","label":"Show second image on hover","default":true},{"type":"checkbox","id":"show_sale_badge","label":"Show sale badge","default":true},{"type":"checkbox","id":"show_sold_out_badge","label":"Show sold-out badge","default":true},{"type":"checkbox","id":"enable_quick_add","label":"Enable quick add","default":false},{"type":"select","id":"image_ratio","label":"Image ratio","default":"adapt","options":[{"value":"adapt","label":"Adapt"},{"value":"square","label":"Square"},{"value":"portrait","label":"Portrait"},{"value":"landscape","label":"Landscape"}]},{"type":"select","id":"image_fit","label":"Image fit","default":"cover","options":[{"value":"contain","label":"Contain"},{"value":"cover","label":"Cover"}]},{"type":"select","id":"text_alignment","label":"Card text alignment","default":"left","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"}]},{"type":"range","id":"top_spacing","label":"Top spacing","min":0,"max":96,"step":4,"unit":"px","default":48},{"type":"range","id":"bottom_spacing","label":"Bottom spacing","min":0,"max":96,"step":4,"unit":"px","default":48}]}{% endschema %}
+{% schema %}
+{
+  "name": "Search",
+  "settings": [
+    {
+      "type": "range",
+      "id": "results_per_page",
+      "label": "Results per page",
+      "min": 4,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Content width",
+      "default": "wide",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "label": "Desktop product columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile product columns",
+      "default": "2",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_result_type_labels",
+      "label": "Show result type labels",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_type",
+      "label": "Show product type",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description excerpt",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_second_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sale_badge",
+      "label": "Show sale badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sold_out_badge",
+      "label": "Show sold-out badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_add",
+      "label": "Enable quick add",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image ratio",
+      "default": "adapt",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Card text alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "top_spacing",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "bottom_spacing",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 96,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_muted_text",
+      "label": "Muted text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_background",
+      "label": "Primary button background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_text",
+      "label": "Primary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_background",
+      "label": "Primary button hover background",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_text",
+      "label": "Primary button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_background",
+      "label": "Secondary button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_text",
+      "label": "Secondary button text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_border",
+      "label": "Secondary button border",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_hover_background",
+      "label": "Secondary button hover background",
+      "default": "#eeeeee"
+    },
+    {
+      "type": "color",
+      "id": "custom_secondary_button_hover_text",
+      "label": "Secondary button hover text",
+      "default": "#111111"
+    },
+    {
+      "type": "header",
+      "content": "Forms"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_background",
+      "label": "Input background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_text",
+      "label": "Input text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_input_border",
+      "label": "Input border",
+      "default": "#777777"
+    },
+    {
+      "type": "color",
+      "id": "custom_focus",
+      "label": "Focus color",
+      "default": "#2463eb"
+    },
+    {
+      "type": "header",
+      "content": "Badges and status"
+    },
+    {
+      "type": "color",
+      "id": "custom_badge_background",
+      "label": "Badge background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_badge_text",
+      "label": "Badge text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_sale",
+      "label": "Sale color",
+      "default": "#b42318"
+    },
+    {
+      "type": "color",
+      "id": "custom_sold_out",
+      "label": "Sold-out color",
+      "default": "#666666"
+    }
+  ]
+}
+{% endschema %}

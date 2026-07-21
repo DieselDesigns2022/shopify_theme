@@ -1,9 +1,10 @@
+{% render 'custom-color-scope', section: section %}
 <section class="home-section promo-card-grid">
   <div class="content-width--{{ section.settings.width }} text-{{ section.settings.alignment }}">
     {% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}
     <div class="promo-card-grid__grid" style="--desktop-columns: {{ section.settings.columns }}; --mobile-columns: {{ section.settings.mobile_columns }};">
       {% for block in section.blocks %}
-        <article class="promo-card card" {{ block.shopify_attributes }}>
+        <article class="promo-card card" data-color-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
           {% if block.settings.image != blank %}<img src="{{ block.settings.image | image_url: width: 900 }}" alt="{{ block.settings.heading | escape }}" loading="lazy" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}">{% endif %}
           <div class="promo-card__content">
             {% if block.settings.eyebrow != blank %}<p>{{ block.settings.eyebrow | escape }}</p>{% endif %}
@@ -17,5 +18,326 @@
   </div>
 </section>
 {% schema %}
-{"name":"Promotional card grid","max_blocks":12,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Explore more"},{"type":"select","id":"width","label":"Width","default":"wide","options":[{"value":"narrow","label":"Narrow"},{"value":"standard","label":"Standard"},{"value":"wide","label":"Wide"}]},{"type":"range","id":"columns","label":"Desktop columns","min":2,"max":4,"step":1,"default":3},{"type":"select","id":"mobile_columns","label":"Mobile columns","default":"1","options":[{"value":"1","label":"1 column"},{"value":"2","label":"2 columns"}]},{"type":"select","id":"ratio","label":"Image ratio","default":"1","options":[{"value":"1","label":"Square"},{"value":"1.33","label":"Landscape"},{"value":"0.75","label":"Portrait"}]},{"type":"select","id":"alignment","label":"Alignment","default":"left","options":[{"value":"left","label":"Left"},{"value":"center","label":"Center"},{"value":"right","label":"Right"}]}],"blocks":[{"type":"card","name":"Card","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"eyebrow","label":"Eyebrow"},{"type":"text","id":"heading","label":"Heading","default":"Promotion"},{"type":"richtext","id":"text","label":"Text"},{"type":"text","id":"button_label","label":"Button label"},{"type":"url","id":"button_link","label":"Button link"}]}],"presets":[{"name":"Promotional card grid","blocks":[{"type":"card"},{"type":"card"},{"type":"card"}]}]}
+{
+  "name": "Promotional card grid",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Explore more"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wide",
+      "options": [
+        {
+          "value": "narrow",
+          "label": "Narrow"
+        },
+        {
+          "value": "standard",
+          "label": "Standard"
+        },
+        {
+          "value": "wide",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile columns",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Image ratio",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "Square"
+        },
+        {
+          "value": "1.33",
+          "label": "Landscape"
+        },
+        {
+          "value": "0.75",
+          "label": "Portrait"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Custom colors"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "Use custom colors",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "custom_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_background_secondary",
+      "label": "Secondary background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Text and links"
+    },
+    {
+      "type": "color",
+      "id": "custom_text",
+      "label": "Text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_heading",
+      "label": "Headings",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_link",
+      "label": "Links",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_link_hover",
+      "label": "Link hover",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "custom_border",
+      "label": "Borders and dividers",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_background",
+      "label": "Primary button background",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_text",
+      "label": "Primary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_background",
+      "label": "Primary button hover background",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "custom_primary_button_hover_text",
+      "label": "Primary button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Cards"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_text",
+      "label": "Card text",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_heading",
+      "label": "Card heading",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_border",
+      "label": "Card border",
+      "default": "#dddddd"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_link",
+      "label": "Card link",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "custom_card_link_hover",
+      "label": "Card link hover",
+      "default": "#555555"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Promotion"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "header",
+          "content": "Custom block colors"
+        },
+        {
+          "type": "checkbox",
+          "id": "use_custom_block_colors",
+          "label": "Use custom block colors",
+          "default": false
+        },
+        {
+          "type": "color",
+          "id": "block_text_color",
+          "label": "Text",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_heading_color",
+          "label": "Heading",
+          "default": "#111111"
+        },
+        {
+          "type": "color",
+          "id": "block_background_color",
+          "label": "Background",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "block_border_color",
+          "label": "Border",
+          "default": "#dddddd"
+        },
+        {
+          "type": "color",
+          "id": "block_link_color",
+          "label": "Link",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "block_link_hover_color",
+          "label": "Link hover",
+          "default": "#555555"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promotional card grid",
+      "blocks": [
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        },
+        {
+          "type": "card"
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}

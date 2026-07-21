@@ -34,7 +34,7 @@
   <li class="mobile-menu__item">
     {% if link.links.size > 0 or has_mobile_mega_navigation or has_mobile_promo %}
       <button type="button" class="mobile-menu__link" data-mobile-submenu-toggle aria-expanded="false" aria-controls="{{ submenu_id }}"><span>{{ link.title | escape }}</span>{% render 'icon-chevron-down' %}</button>
-      <div id="{{ submenu_id }}" class="mobile-menu__submenu" hidden>
+      <div id="{{ submenu_id }}" class="mobile-menu__submenu"{% if mobile_mega_block != blank %} data-color-block-id="{{ mobile_mega_block.id }}" {{ mobile_mega_block.shopify_attributes }}{% endif %} hidden>
         <a href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>
         {% if has_mobile_mega_navigation %}
           <ul>
