@@ -10,7 +10,6 @@
 {
   "name": "Header group",
   "type": "header",
-
   "sections": {
     "announcement_bar": {
       "type": "announcement-bar",
@@ -21,22 +20,116 @@
             "desktop_text": "Welcome to our shop.",
             "mobile_text": "",
             "link": "",
-            "icon": "shipping"
+            "icon": "shipping",
+            "block_text_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         }
       },
       "block_order": [
         "announcement"
       ],
-      "settings": {}
+      "settings": {
+        "display_style": "static",
+        "background_color": "#111111",
+        "text_color": "#ffffff",
+        "link_color": "#ffffff",
+        "text_alignment": "center",
+        "rotation_speed": 5,
+        "scrolling_speed": 24,
+        "pause_on_hover": true,
+        "dismissible": false,
+        "hide_mobile": false,
+        "hide_desktop": false,
+        "visibility_scope": "all",
+        "show_product": true,
+        "show_collection": true,
+        "show_page": true,
+        "show_blog": true,
+        "show_article": true,
+        "show_search": true,
+        "show_cart": true,
+        "show_other": true,
+        "custom_background": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
+      }
     },
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "header_layout": "left-inline",
+        "compact_header": false,
+        "main_menu": "main-menu",
+        "sticky_behavior": "hide-on-scroll",
+        "transparent_home": false,
+        "transparent_product": false,
+        "transparent_collection": false,
+        "transparent_page": false,
+        "transparent_blog": false,
+        "transparent_article": false,
+        "transparent_search": false,
+        "transparent_cart": false,
+        "transparent_other": false,
+        "transparent_text_color": "#ffffff",
+        "transparent_icon_color": "#ffffff",
+        "transparent_nav_color": "#ffffff",
+        "solid_background_color": "#ffffff",
+        "solid_text_color": "#111827",
+        "transparent_scroll_threshold": 80,
+        "show_search": true,
+        "show_account": true,
+        "show_cart": true,
+        "enable_social_icons": false,
+        "enable_utility_links": false,
+        "location_label": "Store location",
+        "location_url": "",
+        "contact_label": "Contact",
+        "contact_url": "",
+        "phone_number": "",
+        "email_address": "",
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
+      }
     },
     "cart_drawer": {
       "type": "cart-drawer",
-      "settings": {}
+      "settings": {
+        "enable_free_shipping_progress": true,
+        "show_cart_note": true,
+        "empty_cart_heading": "Your cart is empty",
+        "empty_cart_text": "Browse our collection to find something you’ll love.",
+        "continue_shopping_link": "",
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_primary_button_background": "",
+        "custom_primary_button_text": "",
+        "custom_primary_button_hover_background": "",
+        "custom_primary_button_hover_text": "",
+        "custom_input_background": "",
+        "custom_input_text": "",
+        "custom_input_border": "",
+        "custom_focus": ""
+      }
     }
   },
   "order": [
