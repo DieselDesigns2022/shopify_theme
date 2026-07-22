@@ -21,6 +21,8 @@ for p in sorted((ROOT/'sections').glob('*.liquid')):
  count+=1
  if len(d.get('settings',[]))>50: fail(f'{p.name}: {len(d["settings"])} section settings exceeds 50')
  if "render 'custom-color-scope', section: section" not in p.read_text(): fail(f'{p.name}: missing shared scope')
+ for block in d.get('blocks',[]):
+  if block.get('type')=='@app' and 'settings' in block: fail(f'{p.name}/@app: settings key is not allowed')
  for owner,settings in [('section',d.get('settings',[]))]+[(b.get('type'),b.get('settings',[])) for b in d.get('blocks',[])]:
   if len(settings)>50: fail(f'{p.name}/{owner}: block settings exceeds 50')
   ids=[x.get('id') for x in settings if x.get('id')]
