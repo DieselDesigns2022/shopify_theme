@@ -1,6 +1,7 @@
 {
   "name": "Header group",
   "type": "header",
+
   "sections": {
     "announcement_bar": {
       "type": "announcement-bar",
