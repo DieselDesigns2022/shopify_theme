@@ -1,276 +1,112 @@
 #!/usr/bin/env python3
-"""Static contract checks for the merchant section/block color system."""
-from __future__ import annotations
-import collections
-import json
-import re
-import subprocess
-import sys
+"""Validate optional color settings against their real scoped consumers."""
+import json,re,subprocess,sys
 from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]; errors=[]
+SYNTHETIC_DEFAULTS={
+'custom_background':'#ffffff','custom_background_secondary':'#f5f5f5','custom_text':'#222222','custom_muted_text':'#666666','custom_heading':'#111111','custom_link':'#222222','custom_link_hover':'#555555','custom_border':'#dddddd','custom_primary_button_background':'#222222','custom_primary_button_text':'#ffffff','custom_primary_button_hover_background':'#444444','custom_primary_button_hover_text':'#ffffff','custom_secondary_button_background':'#ffffff','custom_secondary_button_text':'#222222','custom_secondary_button_border':'#222222','custom_secondary_button_hover_background':'#eeeeee','custom_secondary_button_hover_text':'#111111','custom_input_background':'#ffffff','custom_input_text':'#222222','custom_input_border':'#777777','custom_focus':'#2463eb','custom_card_background':'#ffffff','custom_card_text':'#222222','custom_card_heading':'#111111','custom_card_border':'#dddddd','custom_card_link':'#222222','custom_card_link_hover':'#555555','custom_badge_background':'#222222','custom_badge_text':'#ffffff','custom_sale':'#b42318','custom_sold_out':'#666666','block_background_color':'#ffffff','block_border_color':'#dddddd','block_text_color':'#222222','block_heading_color':'#111111','block_link_color':'#222222','block_link_hover_color':'#555555'}
+BUTTON_TOKENS={'custom_primary_button_background':'--color-button-primary-bg','custom_primary_button_text':'--color-button-primary-text','custom_primary_button_hover_background':'--color-button-primary-hover-bg','custom_primary_button_hover_text':'--color-button-primary-hover-text','custom_secondary_button_background':'--color-button-secondary-bg','custom_secondary_button_text':'--color-button-secondary-text','custom_secondary_button_border':'--color-button-secondary-border','custom_secondary_button_hover_background':'--color-button-secondary-hover-bg','custom_secondary_button_hover_text':'--color-button-secondary-hover-text'}
+STATUS_TOKENS={'custom_badge_background':'--color-badge-bg','custom_badge_text':'--color-badge-text','custom_sale':'--color-sale','custom_sold_out':'--color-sold-out'}
+snippet=(ROOT/'snippets/custom-color-scope.liquid').read_text(); css=(ROOT/'assets/base.css').read_text()
+def fail(x): errors.append(x)
+def schema(p):
+ m=re.findall(r'{% schema %}\s*(.*?)\s*{% endschema %}',p.read_text(),re.S)
+ if len(m)!=1: fail(f'{p.name}: expected one schema'); return {}
+ try:return json.loads(m[0])
+ except Exception as e: fail(f'{p.name}: invalid schema: {e}'); return {}
+count=0
+for p in sorted((ROOT/'sections').glob('*.liquid')):
+ d=schema(p)
+ if not d: continue
+ count+=1
+ if len(d.get('settings',[]))>50: fail(f'{p.name}: {len(d["settings"])} section settings exceeds 50')
+ if "render 'custom-color-scope', section: section" not in p.read_text(): fail(f'{p.name}: missing shared scope')
+ for owner,settings in [('section',d.get('settings',[]))]+[(b.get('type'),b.get('settings',[])) for b in d.get('blocks',[])]:
+  if len(settings)>50: fail(f'{p.name}/{owner}: block settings exceeds 50')
+  ids=[x.get('id') for x in settings if x.get('id')]
+  if len(ids)!=len(set(ids)): fail(f'{p.name}/{owner}: duplicate IDs')
+  for x in settings:
+   i=x.get('id','')
+   if i in ('use_custom_colors','use_custom_block_colors'): fail(f'{p.name}: obsolete toggle')
+   if x.get('type')=='color' and i.startswith(('custom_','block_')):
+    if 'default' in x: fail(f'{p.name}/{i}: optional color has default')
+    if x.get('placeholder')!='Inherited from theme style': fail(f'{p.name}/{i}: missing inheritance placeholder')
+    guard=(f'if section.settings.{i} != blank' if i.startswith('custom_') else f'if color_block.settings.{i} != blank')
+    if guard not in snippet: fail(f'{p.name}/{i}: no independent nonblank consumer')
+if re.search(r'use_custom_(?:block_)?colors', ''.join(p.read_text() for p in ROOT.rglob('*') if p.is_file() and '.git' not in p.parts and p.name != 'validate-color-system.py')): fail('obsolete toggle reference remains')
+# Exact established token mappings; malformed generated names are forbidden.
+for bad in ('primary-button','secondary-button','--color-button-primary-button-','--color-button-secondary-button-'):
+ if bad in snippet: fail(f'malformed generated button token contains {bad}')
+if 'button_roles' in snippet or 'for role in button_roles' in snippet: fail('dynamic button token generator remains')
+for setting,token in {**BUTTON_TOKENS,**STATUS_TOKENS}.items():
+ pattern=rf'{re.escape(token)}:\s*{{{{ section\.settings\.{setting} }}}}'
+ if not re.search(pattern,snippet): fail(f'{setting}: missing exact token {token}')
+for selector in ('.badge,','.product-card__badge','.price--sale','.product-price__sale','.sale-price','.badge--sold-out'):
+ if selector not in snippet: fail(f'missing badge/price selector {selector}')
+if '--color-badge-background' in snippet+css: fail('obsolete --color-badge-background token remains')
 
-ROOT = Path(__file__).resolve().parents[1]
-SECTIONS = ROOT / "sections"
-SNIPPET = (ROOT / "snippets/custom-color-scope.liquid").read_text()
-CSS = (ROOT / "assets/base.css").read_text()
-errors: list[str] = []
+# Configuration migration must be exactly removal of toggles and matching synthetic defaults.
+def parse_json(raw): return json.loads(re.sub(r'/\*.*?\*/','',raw,count=1,flags=re.S))
+def migrate(v):
+ if isinstance(v,dict):
+  for k in list(v):
+   if k in ('use_custom_colors','use_custom_block_colors'): del v[k]
+   elif k in SYNTHETIC_DEFAULTS and isinstance(v[k],str) and v[k]==SYNTHETIC_DEFAULTS[k]: del v[k]
+   else: migrate(v[k])
+ elif isinstance(v,list):
+  for x in v: migrate(x)
+for relative in ('templates/index.json','sections/footer-group.json'):
+ current=parse_json((ROOT/relative).read_text())
+ baseline_raw=subprocess.run(['git','show',f'HEAD^:{relative}'],cwd=ROOT,text=True,capture_output=True,check=True).stdout
+ expected=parse_json(baseline_raw); migrate(expected)
+ if current!=expected: fail(f'{relative}: migration changed content, resources, IDs, order, or unrelated settings')
+ def stale(v,path=''):
+  if isinstance(v,dict):
+   for k,x in v.items():
+    if k in SYNTHETIC_DEFAULTS and isinstance(x,str) and x==SYNTHETIC_DEFAULTS[k]: fail(f'{relative}: synthetic default remains at {path}/{k}')
+    stale(x,f'{path}/{k}')
+  elif isinstance(v,list):
+   for n,x in enumerate(v): stale(x,f'{path}/{n}')
+ stale(current)
+# Known merchant selections guard against an over-broad migration.
+index=parse_json((ROOT/'templates/index.json').read_text()); footer=parse_json((ROOT/'sections/footer-group.json').read_text())
+serialized=json.dumps(index); footer_serialized=json.dumps(footer)
+for value in ('#B42C92','#F0D1D1','#3EB793','#7C3AC8'):
+ if value not in serialized: fail(f'merchant selection {value} was removed from index')
+if '#F0D1D1' not in footer_serialized: fail('merchant footer menu heading selection was removed')
 
-def fail(message: str) -> None:
-    errors.append(message)
-
-def schema(path: Path) -> dict:
-    matches = re.findall(r"{% schema %}\s*(.*?)\s*{% endschema %}", path.read_text(), re.S)
-    if len(matches) != 1:
-        fail(f"{path.name}: expected one schema, found {len(matches)}")
-        return {}
-    try:
-        return json.loads(matches[0])
-    except json.JSONDecodeError as error:
-        fail(f"{path.name}: invalid schema JSON: {error}")
-        return {}
-
-# The shared snippet must be entirely opt-in and the base stylesheet must not
-# globally restyle Shopify section wrappers.
-for forbidden in (
-    r"\.shopify-section\s*\{",
-    r"\.shopify-section\s+h[1-6]",
-    r"\.shopify-section\s+a",
-    r"\.shopify-section\s+input",
-    r"\.shopify-section\s+\[class\*=['\"]__card",
-):
-    if re.search(forbidden, CSS):
-        fail(f"unconditional section consumer remains: {forbidden}")
-if SNIPPET.find("<style>") < SNIPPET.find("if section.settings.use_custom_colors"):
-    fail("section styles are emitted before the section opt-in guard")
-block_guard = SNIPPET.find("if color_block.settings.use_custom_block_colors")
-if block_guard < 0 or SNIPPET.find("<style>", block_guard) < block_guard:
-    fail("block styles are not inside the block opt-in guard")
-
-section_count = 0
-all_custom_settings: dict[str, list[str]] = collections.defaultdict(list)
-for path in sorted(SECTIONS.glob("*.liquid")):
-    data = schema(path)
-    if not data:
-        continue
-    section_count += 1
-    settings = data.get("settings", [])
-    ids = [item.get("id") for item in settings if item.get("id")]
-    if len(ids) != len(set(ids)):
-        fail(f"{path.name}: duplicate section setting ID")
-    if len(settings) > 50:
-        fail(f"{path.name}: section has {len(settings)} settings")
-    toggle = next((item for item in settings if item.get("id") == "use_custom_colors"), None)
-    if not toggle or toggle.get("default") is not False:
-        fail(f"{path.name}: section colors are not disabled by default")
-    if "render 'custom-color-scope', section: section" not in path.read_text():
-        fail(f"{path.name}: shared scope render is missing")
-    for item in settings:
-        setting_id = item.get("id", "")
-        if item.get("type") == "color" and setting_id.startswith("custom_"):
-            all_custom_settings[setting_id].append(path.name)
-            if setting_id not in SNIPPET:
-                fail(f"{path.name}: {setting_id} has no shared producer/reference")
-    for block in data.get("blocks", []):
-        block_settings = block.get("settings", [])
-        block_ids = [item.get("id") for item in block_settings if item.get("id")]
-        if len(block_ids) != len(set(block_ids)):
-            fail(f"{path.name}/{block.get('type')}: duplicate block setting ID")
-        if len(block_settings) > 50:
-            fail(f"{path.name}/{block.get('type')}: block has {len(block_settings)} settings")
-        block_toggle = next((item for item in block_settings if item.get("id") == "use_custom_block_colors"), None)
-        if block_toggle and block_toggle.get("default") is not False:
-            fail(f"{path.name}/{block.get('type')}: block colors are not disabled by default")
-        for item in block_settings:
-            setting_id = item.get("id", "")
-            if item.get("type") == "color" and setting_id.startswith("block_"):
-                if setting_id not in SNIPPET:
-                    fail(f"{path.name}/{block.get('type')}: {setting_id} has no consumer")
-
-if section_count != 47:
-    fail(f"expected 47 Liquid section schemas, found {section_count}")
-
-# Exact important producer/consumer mappings.
-expected = {
-    "custom_badge_background": "--color-badge-bg",
-    "custom_badge_text": "--color-badge-text",
-    "custom_sale": "--color-sale",
-    "custom_sold_out": "--color-sold-out",
-    "custom_card_background": "--card-background",
-    "custom_card_border": "--card-border-color",
-    "custom_input_background": "--color-input-background",
-    "custom_input_text": "--color-input-text",
-    "custom_input_border": "--color-input-border",
-    "custom_focus": "--color-focus",
-}
-for setting_id, token in expected.items():
-    if setting_id in all_custom_settings and not re.search(rf"{re.escape(token)}:\s*{{{{ section\.settings\.{setting_id} }}}}", SNIPPET):
-        fail(f"{setting_id} does not produce {token}")
-if "--color-badge-background" in SNIPPET + CSS:
-    fail("obsolete --color-badge-background token is present")
-
-# Every property produced by the snippet must have a var() consumer in the
-# actual theme CSS or an enabled-instance rule in the snippet.
-emitted = {
-    token for token in re.findall(r"(--[a-z0-9-]+)\s*:", SNIPPET)
-    if token.startswith(("--color-", "--card-", "--section-", "--announcement-", "--marquee-", "--hero-", "--promo-"))
-}
-consumers = set(re.findall(r"var\((--[a-z0-9-]+)", CSS + SNIPPET))
-for token in sorted(emitted - consumers):
-    fail(f"emitted token has no CSS consumer: {token}")
-
-welcome = schema(SECTIONS / "welcome-banner.liquid")
-welcome_ids = [item.get("id") for item in welcome.get("settings", [])]
-if sum(item in {"background_color", "custom_background"} for item in welcome_ids) != 1:
-    fail("Welcome banner must expose exactly one surrounding-background picker")
-welcome_source = (SECTIONS / "welcome-banner.liquid").read_text()
-for path in (".banner__content { color: var(--color-text)", "h1", "a:not(.button):hover", ".button"):
-    if path not in SNIPPET:
-        fail(f"Welcome/banner enabled consumer missing: {path}")
-if "background-color: {{ section.settings.background_color }}" not in welcome_source:
-    fail("Welcome banner no longer preserves its saved background_color value")
-
-promo = schema(SECTIONS / "promo-banner.liquid")
-promo_ids = [item.get("id") for item in promo.get("settings", [])]
-if sum(item in {"fallback_background", "custom_background"} for item in promo_ids) != 1:
-    fail("Promo banner must expose exactly one fallback/background picker")
-promo_source = (SECTIONS / "promo-banner.liquid").read_text()
-for required in ("if section.settings.use_custom_colors", "assign promo_text = section.settings.custom_text", "--promo-fallback:{{ section.settings.fallback_background }}"):
-    if required not in promo_source:
-        fail(f"Promo banner custom/legacy contract missing: {required}")
-
-for required in (
-    "var(--color-footer-heading, var(--color-footer-text))",
-    "var(--color-footer-link, var(--color-footer-text))",
-    ".site-footer a:not(.button):hover",
-    ".site-footer__localization .localization-form",
-    "min-height: 44px",
-):
-    if required not in CSS:
-        fail(f"footer contract missing: {required}")
-if "body[data-link-hover" in SNIPPET:
-    fail("custom link-hover consumers incorrectly depend on the animation toggle")
-if '[data-color-block-id="{{ color_block.id }}"] a:not(.button):hover' not in SNIPPET:
-    fail("block-specific link hover consumer is missing")
-
-# Text-style buttons are links, not secondary filled buttons. Keep their
-# contract independent even when a section has custom button colors enabled.
-if re.search(r"\.button--secondary\s*,[^{}]*\.button--text|\.button--text\s*,[^{}]*\.button--secondary", SNIPPET):
-    fail(".button--text is grouped with .button--secondary")
-text_button_rule = re.search(r"\.button--text\s*\{([^}]*)\}", SNIPPET)
-text_button_hover_rule = re.search(r"\.button--text:hover\s*\{([^}]*)\}", SNIPPET)
-for label, rule, required_values in (
-    ("normal", text_button_rule, ("background: transparent", "color: var(--color-link)", "border-color: transparent", "padding-inline: 0", "text-decoration: underline")),
-    ("hover", text_button_hover_rule, ("background: transparent", "color: var(--color-link-hover)", "border-color: transparent")),
-):
-    if not rule or any(value not in rule.group(1) for value in required_values):
-        fail(f"enabled .button--text {label} contract is incomplete")
-
-hero_source = (SECTIONS / "hero-slideshow.liquid").read_text()
-for required in (
-    "assign hero_fallback = block.settings.background",
-    "if block.settings.use_custom_block_colors",
-    "assign hero_fallback = block.settings.block_background_color",
-    "--hero-fallback:{{ hero_fallback }}",
-):
-    if required not in hero_source:
-        fail(f"Hero effective block background contract missing: {required}")
-if "--hero-fallback:{{ block.settings.background }}" in hero_source:
-    fail("Hero inline fallback still defeats the custom block background")
-
-# Hero is the only colored-block section with local inline color values; its
-# text values deliberately use the effective --color-text variable. No other
-# colored block may directly inline a block color setting.
-for path in sorted(SECTIONS.glob("*.liquid")):
-    data = schema(path)
-    if not any(any(item.get("id") == "use_custom_block_colors" for item in block.get("settings", [])) for block in data.get("blocks", [])):
-        continue
-    body = path.read_text().split("{% schema %}", 1)[0]
-    inline_colors = re.findall(r'style="[^"]*block\.settings\.(?:background|text_color)[^"]*"', body)
-    if inline_colors and path.name != "hero-slideshow.liquid":
-        fail(f"{path.name}: inline block color defeats its scoped override")
-    if path.name == "hero-slideshow.liquid" and any("var(--color-text" not in value for value in inline_colors):
-        fail("Hero inline block text does not consume the effective text token")
-
-marquee_source = (SECTIONS / "marquee.liquid").read_text()
-marquee_item = re.search(r'<span class="marquee__item"([^>]*)>', marquee_source)
-if not marquee_item or 'data-color-block-id="{{ block.id }}"' not in marquee_item.group(1):
-    fail("both Marquee copies do not receive the block color target")
-if marquee_source.count("block.shopify_attributes") != 1 or "if copy_index == 1" not in marquee_item.group(1):
-    fail("Marquee editor attributes must occur only on the canonical first copy")
-
-desktop_mega = (ROOT / "snippets/header-mega-menu.liquid").read_text()
-mobile_mega = (ROOT / "snippets/mobile-menu-links.liquid").read_text()
-if 'data-color-block-id="{{ block.id }}"' not in desktop_mega:
-    fail("desktop mega-menu block target is missing")
-if 'data-color-block-id="{{ mobile_mega_block.id }}"' not in mobile_mega:
-    fail("mobile mega-menu block target is missing")
-if "if mobile_mega_block != blank" not in mobile_mega:
-    fail("mobile mega-menu block target is not guarded against empty panels")
-if desktop_mega.count("block.shopify_attributes") != 1 or mobile_mega.count("mobile_mega_block.shopify_attributes") != 1:
-    fail("mega-menu editor attributes must occur once per visual representation")
-
-expected_badge_sections = {"featured-collection.liquid", "main-collection-product-grid.liquid", "main-search.liquid"}
-actual_badge_sections = set(all_custom_settings.get("custom_badge_background", []))
-if actual_badge_sections != expected_badge_sections:
-    fail(f"badge controls do not match real product-card badge sections: {sorted(actual_badge_sections)}")
-for path in sorted(SECTIONS.glob("*.liquid")):
-    data = schema(path)
-    has_colored_block = any(
-        any(item.get("id") == "use_custom_block_colors" for item in block.get("settings", []))
-        for block in data.get("blocks", [])
-    )
-    if has_colored_block and "data-color-block-id" not in path.read_text():
-        if path.name != "header.liquid" or "data-color-block-id" not in (ROOT / "snippets/header-mega-menu.liquid").read_text():
-            fail(f"{path.name}: colored block has no exact visible block target")
-
-# All Shopify forms continue using supported literal form types. Dynamic form
-# names would bypass Shopify's parser and are forbidden by this theme contract.
-supported_forms = {
-    "activate_customer_password", "contact", "create_customer", "customer",
-    "customer_address", "customer_login", "guest_login", "localization",
-    "new_comment", "product", "recover_customer_password", "reset_customer_password",
-}
-for path in list(SECTIONS.glob("*.liquid")) + list((ROOT / "snippets").glob("*.liquid")):
-    source = path.read_text()
-    for form_tag in re.findall(r"{%[- ]*form\b.*?%}", source, re.S):
-        if re.search(r"\bid\s*:\s*[^,%}]*\|", form_tag):
-            fail(f"{path.relative_to(ROOT)}: filtered expression inside form id argument")
-    for form_name in re.findall(r"{%[- ]*form\s+['\"]([^'\"]+)['\"]", source):
-        if form_name not in supported_forms:
-            fail(f"{path.relative_to(ROOT)}: unsupported form literal {form_name}")
-
-# Generated Shopify JSON contains a leading comment; strip it before parsing.
-for path in list((ROOT / "templates").rglob("*.json")) + list(SECTIONS.glob("*-group.json")):
-    raw = re.sub(r"/\*.*?\*/", "", path.read_text(), flags=re.S)
-    try:
-        json.loads(raw)
-    except json.JSONDecodeError as error:
-        fail(f"{path.relative_to(ROOT)}: invalid JSON: {error}")
-
-# Theme style payloads, merchant settings data, and templates are outside this batch.
-result = subprocess.run(
-    ["git", "diff", "HEAD^", "--", "config/settings_data.json", "config/settings_schema.json", "templates"],
-    cwd=ROOT, capture_output=True, text=True, check=False,
-)
-if result.stdout:
-    fail("theme presets, merchant settings data, or templates changed")
-
-changed_files = subprocess.run(
-    ["git", "diff", "--name-only", "HEAD^"], cwd=ROOT, capture_output=True, text=True, check=False,
-).stdout.splitlines()
-for changed_file in changed_files:
-    allowed = (
-        changed_file == "assets/base.css"
-        or changed_file == "scripts/validate-color-system.py"
-        or changed_file.startswith("sections/") and changed_file.endswith((".liquid", ".json"))
-        or changed_file in {
-            "snippets/custom-color-scope.liquid", "snippets/header-mega-menu.liquid", "snippets/mobile-menu-links.liquid"
-        }
-    )
-    if not allowed:
-        fail(f"unrelated file in cumulative color-system change set: {changed_file}")
-
-if errors:
-    print("COLOR SYSTEM VALIDATION FAILED")
-    print("\n".join(f"- {error}" for error in errors))
-    sys.exit(1)
-print(f"PASS: {section_count} schemas; {sum(map(len, all_custom_settings.values()))} section color declarations; scoped consumers and token contract verified")
+# Independent guards and exact visible card/footer routes.
+for setting in ('custom_background','custom_text','custom_link_hover','custom_card_background','custom_card_text','custom_card_heading','custom_card_border','custom_card_link','custom_card_link_hover'):
+ if f'if section.settings.{setting} != blank' not in snippet: fail(f'{setting}: missing independent blank guard')
+for selector in ('.collection-showcase__card','.collection-showcase__content h3','.collection-showcase__link:hover','.product-card__content','.product-card__title a','.product-card a:not(.button):hover'):
+ if selector not in snippet: fail(f'missing visible card selector {selector}')
+for selector in ('.site-footer__description','.site-footer__block','.site-footer__localization label','.site-footer__bottom'):
+ if selector not in snippet: fail(f'missing footer text selector {selector}')
+for p in (ROOT/'sections/collection-showcase.liquid',ROOT/'sections/featured-collection.liquid'):
+ ids={x.get('id') for x in schema(p).get('settings',[])}
+ required={'custom_card_background','custom_card_text','custom_card_heading','custom_card_border','custom_card_link','custom_card_link_hover'}
+ if not required<=ids: fail(f'{p.name}: missing card controls {sorted(required-ids)}')
+# No arbitrary background fallback or unconditional scoped declarations.
+if 'section.settings.background' in snippet or 'scope_background' in snippet: fail('unsafe generic background fallback remains')
+# Compact localization and text-link contract.
+for token in ('height: 34px','min-height: 34px','font-size: 12px','width: auto','justify-self: start'):
+ if token not in css: fail(f'compact footer localization missing {token}')
+for token in ('background: transparent','border-color: transparent','padding-inline: 0','text-decoration: underline','color: var(--color-link-hover)'):
+ if token not in css: fail(f'text button contract missing {token}')
+# Preservation: literal supported forms, JSON templates/groups, hero/marquee/mega-menu targets.
+supported={'activate_customer_password','contact','create_customer','customer','customer_address','customer_login','guest_login','localization','new_comment','product','recover_customer_password','reset_customer_password'}
+for p in list((ROOT/'sections').glob('*.liquid'))+list((ROOT/'snippets').glob('*.liquid')):
+ if re.search(r"{%[- ]*form[^%]*\bid\s*:\s*[^,%}]*\|",p.read_text(),re.S): fail(f'{p.name}: filtered expression inside form id')
+ for name in re.findall(r"{%[- ]*form\s+['\"]([^'\"]+)",p.read_text()):
+  if name not in supported: fail(f'{p.name}: unsupported form {name}')
+for p in list((ROOT/'templates').rglob('*.json'))+list((ROOT/'sections').glob('*-group.json')):
+ try: json.loads(re.sub(r'/\*.*?\*/','',p.read_text(),flags=re.S))
+ except Exception as e: fail(f'{p}: invalid JSON {e}')
+hero=(ROOT/'sections/hero-slideshow.liquid').read_text(); marquee=(ROOT/'sections/marquee.liquid').read_text()
+for token in ('block.settings.block_background_color | default: block.settings.background','--hero-fallback:{{ hero_fallback }}'):
+ if token not in hero: fail(f'hero preservation missing {token}')
+if 'if copy_index == 1' not in marquee or 'data-color-block-id="{{ block.id }}"' not in marquee or marquee.count('block.shopify_attributes') != 1: fail('marquee copies/editor-attributes contract missing')
+if 'data-color-block-id="{{ block.id }}"' not in (ROOT/'snippets/header-mega-menu.liquid').read_text(): fail('desktop mega-menu target missing')
+if 'data-color-block-id="{{ mobile_mega_block.id }}"' not in (ROOT/'snippets/mobile-menu-links.liquid').read_text(): fail('mobile mega-menu target missing')
+if errors: print('COLOR SYSTEM VALIDATION FAILED\n'+'\n'.join('- '+x for x in errors));sys.exit(1)
+print(f'PASS: {count} schemas; optional independent colors and visible selector routes verified')

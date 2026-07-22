@@ -18,13 +18,7 @@
             "desktop_text": "Welcome to our shop.",
             "mobile_text": "",
             "link": "",
-            "icon": "none",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_link_color": "#222222",
-            "block_link_hover_color": "#555555",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "icon": "none"
           }
         }
       },
@@ -52,15 +46,7 @@
         "show_article": true,
         "show_search": true,
         "show_cart": true,
-        "show_other": true,
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_text": "#222222",
-        "custom_muted_text": "#666666",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd"
+        "show_other": true
       }
     },
     "welcome_primary": {
@@ -83,18 +69,7 @@
         "bottom_spacing": 24,
         "image_height": 500,
         "mobile_image_height": 320,
-        "alt_text": "Welcome to our store",
-        "use_custom_colors": false,
-        "custom_background_secondary": "#f5f5f5",
-        "custom_text": "#222222",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd",
-        "custom_primary_button_background": "#222222",
-        "custom_primary_button_text": "#ffffff",
-        "custom_primary_button_hover_background": "#444444",
-        "custom_primary_button_hover_text": "#ffffff"
+        "alt_text": "Welcome to our store"
       }
     },
     "store_highlights": {
@@ -103,41 +78,25 @@
         "message_1": {
           "type": "message",
           "settings": {
-            "text": "Fresh finds for every day",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "Fresh finds for every day"
           }
         },
         "message_2": {
           "type": "message",
           "settings": {
-            "text": "Thoughtfully selected",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "Thoughtfully selected"
           }
         },
         "message_3": {
           "type": "message",
           "settings": {
-            "text": "Easy, secure checkout",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "Easy, secure checkout"
           }
         },
         "message_4": {
           "type": "message",
           "settings": {
-            "text": "Friendly customer care",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "Friendly customer care"
           }
         }
       },
@@ -159,15 +118,7 @@
         "pause_on_hover": true,
         "visibility": "all",
         "padding_top": 16,
-        "padding_bottom": 16,
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_text": "#222222",
-        "custom_muted_text": "#666666",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd"
+        "padding_bottom": 16
       }
     },
     "shop_by_category": {
@@ -176,67 +127,37 @@
         "category_1": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-1",
-            "use_custom_block_colors": false,
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd",
-            "block_link_color": "#222222",
-            "block_link_hover_color": "#555555"
+            "collection": "tester-collection-1"
           }
         },
         "category_2": {
           "type": "collection",
           "settings": {
-            "collection": "hydrogen",
-            "use_custom_block_colors": false,
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd",
-            "block_link_color": "#222222",
-            "block_link_hover_color": "#555555"
+            "collection": "hydrogen"
           }
         },
         "category_3": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-4-copy",
-            "use_custom_block_colors": false,
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd",
-            "block_link_color": "#222222",
-            "block_link_hover_color": "#555555"
+            "collection": "tester-collection-4-copy"
           }
         },
         "category_4": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-1-copy",
-            "use_custom_block_colors": false,
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd",
-            "block_link_color": "#222222",
-            "block_link_hover_color": "#555555"
+            "collection": "tester-collection-1-copy"
           }
         },
         "category_5": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-2-copy",
-            "use_custom_block_colors": false,
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd",
-            "block_link_color": "#222222",
-            "block_link_hover_color": "#555555"
+            "collection": "tester-collection-2-copy"
           }
         },
         "category_6": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-3-copy",
-            "use_custom_block_colors": false,
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd",
-            "block_link_color": "#222222",
-            "block_link_hover_color": "#555555"
+            "collection": "tester-collection-3-copy"
           }
         }
       },
@@ -263,21 +184,8 @@
         "link_label": "Explore collection",
         "padding_top": 64,
         "padding_bottom": 64,
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_background_secondary": "#f5f5f5",
-        "custom_text": "#222222",
-        "custom_muted_text": "#666666",
         "custom_heading": "#B42C92",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd",
-        "custom_card_background": "#ffffff",
-        "custom_card_text": "#B42C92",
-        "custom_card_heading": "#111111",
-        "custom_card_border": "#dddddd",
-        "custom_card_link": "#222222",
-        "custom_card_link_hover": "#555555"
+        "custom_card_text": "#B42C92"
       }
     },
     "new_arrivals": {
@@ -305,28 +213,12 @@
         "enable_quick_add": false,
         "padding_top": 64,
         "padding_bottom": 64,
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_background_secondary": "#f5f5f5",
         "custom_text": "#B42C92",
         "custom_muted_text": "#F0D1D1",
         "custom_heading": "#B42C92",
         "custom_link": "#F0D1D1",
         "custom_link_hover": "#3EB793",
-        "custom_border": "#7C3AC8",
-        "custom_primary_button_background": "#222222",
-        "custom_primary_button_text": "#ffffff",
-        "custom_primary_button_hover_background": "#444444",
-        "custom_primary_button_hover_text": "#ffffff",
-        "custom_secondary_button_background": "#ffffff",
-        "custom_secondary_button_text": "#222222",
-        "custom_secondary_button_border": "#222222",
-        "custom_secondary_button_hover_background": "#eeeeee",
-        "custom_secondary_button_hover_text": "#111111",
-        "custom_badge_background": "#222222",
-        "custom_badge_text": "#ffffff",
-        "custom_sale": "#b42318",
-        "custom_sold_out": "#666666"
+        "custom_border": "#7C3AC8"
       }
     },
     "promotional_divider": {
@@ -341,15 +233,7 @@
         "top_spacing": 0,
         "bottom_spacing": 0,
         "alt_text": "New this month",
-        "decorative_image": false,
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_background_secondary": "#f5f5f5",
-        "custom_text": "#222222",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd"
+        "decorative_image": false
       }
     },
     "customer_favorites": {
@@ -376,29 +260,7 @@
         "show_sold_out_badge": true,
         "enable_quick_add": false,
         "padding_top": 64,
-        "padding_bottom": 64,
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_background_secondary": "#f5f5f5",
-        "custom_text": "#222222",
-        "custom_muted_text": "#666666",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd",
-        "custom_primary_button_background": "#222222",
-        "custom_primary_button_text": "#ffffff",
-        "custom_primary_button_hover_background": "#444444",
-        "custom_primary_button_hover_text": "#ffffff",
-        "custom_secondary_button_background": "#ffffff",
-        "custom_secondary_button_text": "#222222",
-        "custom_secondary_button_border": "#222222",
-        "custom_secondary_button_hover_background": "#eeeeee",
-        "custom_secondary_button_hover_text": "#111111",
-        "custom_badge_background": "#222222",
-        "custom_badge_text": "#ffffff",
-        "custom_sale": "#b42318",
-        "custom_sold_out": "#666666"
+        "padding_bottom": 64
       }
     },
     "community_banner": {
@@ -421,18 +283,7 @@
         "bottom_spacing": 24,
         "image_height": 380,
         "mobile_image_height": 320,
-        "alt_text": "Connect with our community",
-        "use_custom_colors": false,
-        "custom_background_secondary": "#f5f5f5",
-        "custom_text": "#222222",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd",
-        "custom_primary_button_background": "#222222",
-        "custom_primary_button_text": "#ffffff",
-        "custom_primary_button_hover_background": "#444444",
-        "custom_primary_button_hover_text": "#ffffff"
+        "alt_text": "Connect with our community"
       }
     },
     "testimonials": {
@@ -445,11 +296,7 @@
             "name": "Customer name",
             "detail": "Replace with a real review",
             "image": "shopify://shop_images/Western_Seamless_V1_Seamless.png",
-            "rating": 5,
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "rating": 5
           }
         },
         "review_2": {
@@ -458,11 +305,7 @@
             "quote": "<p>“Use this space for a thoughtful review about the product, service, or delivery experience.”</p>",
             "name": "Customer name",
             "detail": "Replace with a real review",
-            "rating": 5,
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "rating": 5
           }
         },
         "review_3": {
@@ -471,11 +314,7 @@
             "quote": "<p>“Replace this sample with feedback that helps new shoppers feel confident choosing your store.”</p>",
             "name": "Customer name",
             "detail": "Replace with a real review",
-            "rating": 5,
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "rating": 5
           }
         }
       },
@@ -488,22 +327,7 @@
       "settings": {
         "heading": "Loved by customers",
         "columns": 3,
-        "alignment": "center",
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_background_secondary": "#f5f5f5",
-        "custom_text": "#222222",
-        "custom_muted_text": "#666666",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd",
-        "custom_card_background": "#ffffff",
-        "custom_card_text": "#222222",
-        "custom_card_heading": "#111111",
-        "custom_card_border": "#dddddd",
-        "custom_card_link": "#222222",
-        "custom_card_link_hover": "#555555"
+        "alignment": "center"
       }
     },
     "service_highlights": {
@@ -512,41 +336,25 @@
         "message_1": {
           "type": "message",
           "settings": {
-            "text": "Quality you can feel",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "Quality you can feel"
           }
         },
         "message_2": {
           "type": "message",
           "settings": {
-            "text": "Helpful service when you need it",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "Helpful service when you need it"
           }
         },
         "message_3": {
           "type": "message",
           "settings": {
-            "text": "New releases added regularly",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "New releases added regularly"
           }
         },
         "message_4": {
           "type": "message",
           "settings": {
-            "text": "Made to be enjoyed",
-            "use_custom_block_colors": false,
-            "block_text_color": "#222222",
-            "block_background_color": "#ffffff",
-            "block_border_color": "#dddddd"
+            "text": "Made to be enjoyed"
           }
         }
       },
@@ -568,15 +376,7 @@
         "pause_on_hover": true,
         "visibility": "all",
         "padding_top": 16,
-        "padding_bottom": 16,
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_text": "#222222",
-        "custom_muted_text": "#666666",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd"
+        "padding_bottom": 16
       }
     },
     "newsletter": {
@@ -588,24 +388,7 @@
         "button_label": "Subscribe",
         "success": "Thanks for subscribing. Welcome to the list!",
         "disclaimer": "<p>You can unsubscribe at any time.</p>",
-        "alignment": "center",
-        "use_custom_colors": false,
-        "custom_background": "#ffffff",
-        "custom_background_secondary": "#f5f5f5",
-        "custom_text": "#222222",
-        "custom_muted_text": "#666666",
-        "custom_heading": "#111111",
-        "custom_link": "#222222",
-        "custom_link_hover": "#555555",
-        "custom_border": "#dddddd",
-        "custom_primary_button_background": "#222222",
-        "custom_primary_button_text": "#ffffff",
-        "custom_primary_button_hover_background": "#444444",
-        "custom_primary_button_hover_text": "#ffffff",
-        "custom_input_background": "#ffffff",
-        "custom_input_text": "#222222",
-        "custom_input_border": "#777777",
-        "custom_focus": "#2463eb"
+        "alignment": "center"
       }
     }
   },
