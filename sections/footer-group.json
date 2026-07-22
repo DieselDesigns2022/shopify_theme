@@ -18,7 +18,13 @@
           "type": "text",
           "settings": {
             "heading": "❤︎ A Note From Us ❤︎",
-            "text": "<p>Thank you so much for supporting my small business! 🖤 Creating amazing things for amazing people is truly my passion. If you have any questions, concerns, or feedback, please don’t hesitate to reach out. Your input helps us continue to grow and serve you better! ✨</p>"
+            "text": "<p>Thank you so much for supporting my small business! 🖤 Creating amazing things for amazing people is truly my passion. If you have any questions, concerns, or feedback, please don’t hesitate to reach out. Your input helps us continue to grow and serve you better! ✨</p>",
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_text_color": "",
+            "block_heading_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         },
         "menu_dVqQQY": {
@@ -26,7 +32,11 @@
           "settings": {
             "heading": "Menu",
             "menu": "footer",
-            "block_heading_color": "#F0D1D1"
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_heading_color": "#f0d1d1",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         }
       },
@@ -36,10 +46,27 @@
       ],
       "settings": {
         "footer_logo": "shopify://shop_images/Submark_With_Name.png",
-        "logo_width": 80,
+        "logo_width": 200,
         "show_store_description": false,
         "store_description": "<p>Share a short description of your store.</p>",
-        "text_alignment": "left"
+        "text_alignment": "left",
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_secondary_button_background": "",
+        "custom_secondary_button_text": "",
+        "custom_secondary_button_border": "",
+        "custom_secondary_button_hover_background": "",
+        "custom_secondary_button_hover_text": "",
+        "custom_input_background": "",
+        "custom_input_text": "",
+        "custom_input_border": "",
+        "custom_focus": ""
       }
     }
   },
