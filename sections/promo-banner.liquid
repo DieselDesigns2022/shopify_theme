@@ -1,10 +1,7 @@
 {% render 'custom-color-scope', section: section %}
 {% liquid
   assign fallback = section.settings.image | default: section.settings.mobile_image
-  assign promo_text = section.settings.text_color
-  if section.settings.use_custom_colors
-    assign promo_text = section.settings.custom_text
-  endif
+  assign promo_text = section.settings.custom_text | default: section.settings.text_color
 %}
 {% if section.settings.width == 'page' %}{% assign banner_sizes = 'min(100vw, 1400px)' %}{% else %}{% assign banner_sizes = '100vw' %}{% endif %}<section class="home-section{% if section.settings.width == 'page' %} page-width{% endif %}"><div class="promo-banner" style="color:{{ promo_text }};--promo-fallback:{{ section.settings.fallback_background }};--promo-height:{{ section.settings.height }}px;--promo-mobile-height:{{ section.settings.mobile_height }}px;--promo-overlay:{{ section.settings.overlay }};--section-text:{{ promo_text }};--promo-overlay-opacity:{{ section.settings.opacity | divided_by:100.0 }}">{% if fallback != blank %}<picture class="promo-banner__media">{% if section.settings.mobile_image != blank %}<source media="(max-width:749px)" srcset="{{ section.settings.mobile_image | image_url:width:375 }} 375w, {{ section.settings.mobile_image | image_url:width:750 }} 750w, {{ section.settings.mobile_image | image_url:width:900 }} 900w">{% endif %}{{ fallback | image_url:width:2000 | image_tag: widths:'750,1200,2000', loading:'lazy', sizes:banner_sizes }}</picture>{% endif %}<span class="promo-banner__overlay" aria-hidden="true"></span><div class="promo-banner__content promo-banner__content--{{ section.settings.alignment }}" style="--promo-position:{{ section.settings.position }}">{% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}{% if section.settings.text != blank %}<div>{{ section.settings.text }}</div>{% endif %}<div class="button-group">{% if section.settings.button_label != blank and section.settings.button_link != blank %}<a class="button" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>{% endif %}{% if section.settings.button_2_label != blank and section.settings.button_2_link != blank %}<a class="button button--text" href="{{ section.settings.button_2_link }}">{{ section.settings.button_2_label | escape }}</a>{% endif %}</div></div></div></section>
 {% schema %}
@@ -161,16 +158,10 @@
       "content": "Custom colors"
     },
     {
-      "type": "checkbox",
-      "id": "use_custom_colors",
-      "label": "Use custom colors",
-      "default": false
-    },
-    {
       "type": "color",
       "id": "custom_background_secondary",
       "label": "Secondary background",
-      "default": "#f5f5f5"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "header",
@@ -180,31 +171,31 @@
       "type": "color",
       "id": "custom_text",
       "label": "Text",
-      "default": "#222222"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_heading",
       "label": "Headings",
-      "default": "#111111"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_link",
       "label": "Links",
-      "default": "#222222"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_link_hover",
       "label": "Link hover",
-      "default": "#555555"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_border",
       "label": "Borders and dividers",
-      "default": "#dddddd"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "header",
@@ -214,55 +205,55 @@
       "type": "color",
       "id": "custom_primary_button_background",
       "label": "Primary button background",
-      "default": "#222222"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_primary_button_text",
       "label": "Primary button text",
-      "default": "#ffffff"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_primary_button_hover_background",
       "label": "Primary button hover background",
-      "default": "#444444"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_primary_button_hover_text",
       "label": "Primary button hover text",
-      "default": "#ffffff"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_secondary_button_background",
       "label": "Secondary button background",
-      "default": "#ffffff"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_secondary_button_text",
       "label": "Secondary button text",
-      "default": "#222222"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_secondary_button_border",
       "label": "Secondary button border",
-      "default": "#222222"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_secondary_button_hover_background",
       "label": "Secondary button hover background",
-      "default": "#eeeeee"
+      "placeholder": "Inherited from theme style"
     },
     {
       "type": "color",
       "id": "custom_secondary_button_hover_text",
       "label": "Secondary button hover text",
-      "default": "#111111"
+      "placeholder": "Inherited from theme style"
     }
   ],
   "presets": [

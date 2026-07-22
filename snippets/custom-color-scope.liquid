@@ -1,129 +1,78 @@
 {%- comment -%}
-  Opt-in instance color contract. No CSS is emitted while the section and block
-  toggles are disabled, leaving the theme's original cascade untouched.
+  Optional instance color overrides. Every role is deliberately independent:
+  blank settings emit no CSS and therefore retain the active native theme style.
 {%- endcomment -%}
-{%- liquid
-  assign scope_background = section.settings.custom_background
-  if scope_background == blank
-    assign scope_background = section.settings.background_color
-  endif
-  if scope_background == blank
-    assign scope_background = section.settings.fallback_background
-  endif
-  if scope_background == blank
-    assign scope_background = section.settings.background
-  endif
--%}
-{%- if section.settings.use_custom_colors -%}
-  <style>
-    #shopify-section-{{ section.id }} {
-      --color-background: {{ scope_background }};
-      --color-background-secondary: {{ section.settings.custom_background_secondary }};
-      --color-text: {{ section.settings.custom_text }};
-      --color-text-muted: {{ section.settings.custom_muted_text }};
-      --color-heading: {{ section.settings.custom_heading }};
-      --color-link: {{ section.settings.custom_link }};
-      --color-link-hover: {{ section.settings.custom_link_hover }};
-      --color-border: {{ section.settings.custom_border }};
-      --section-bg: {{ scope_background }};
-      --section-text: {{ section.settings.custom_text }};
-      --announcement-bg: {{ scope_background }};
-      --announcement-text: {{ section.settings.custom_text }};
-      --announcement-link: {{ section.settings.custom_link }};
-      --marquee-bg: {{ scope_background }};
-      --marquee-text: {{ section.settings.custom_text }};
-      --hero-fallback: {{ scope_background }};
-      --promo-fallback: {{ scope_background }};
-      --color-footer-bg: {{ scope_background }};
-      --color-footer-text: {{ section.settings.custom_text }};
-      --color-footer-heading: {{ section.settings.custom_heading }};
-      --color-footer-link: {{ section.settings.custom_link }};
-      --color-footer-link-hover: {{ section.settings.custom_link_hover }};
-      {%- if section.settings.custom_primary_button_background != blank %}--color-button-primary-bg: {{ section.settings.custom_primary_button_background }};{% endif -%}
-      {%- if section.settings.custom_primary_button_text != blank %}--color-button-primary-text: {{ section.settings.custom_primary_button_text }};{% endif -%}
-      {%- if section.settings.custom_primary_button_hover_background != blank %}--color-button-primary-hover-bg: {{ section.settings.custom_primary_button_hover_background }};{% endif -%}
-      {%- if section.settings.custom_primary_button_hover_text != blank %}--color-button-primary-hover-text: {{ section.settings.custom_primary_button_hover_text }};{% endif -%}
-      {%- if section.settings.custom_secondary_button_background != blank %}--color-button-secondary-bg: {{ section.settings.custom_secondary_button_background }};{% endif -%}
-      {%- if section.settings.custom_secondary_button_text != blank %}--color-button-secondary-text: {{ section.settings.custom_secondary_button_text }};{% endif -%}
-      {%- if section.settings.custom_secondary_button_border != blank %}--color-button-secondary-border: {{ section.settings.custom_secondary_button_border }};{% endif -%}
-      {%- if section.settings.custom_secondary_button_hover_background != blank %}--color-button-secondary-hover-bg: {{ section.settings.custom_secondary_button_hover_background }};{% endif -%}
-      {%- if section.settings.custom_secondary_button_hover_text != blank %}--color-button-secondary-hover-text: {{ section.settings.custom_secondary_button_hover_text }};{% endif -%}
-      {%- if section.settings.custom_input_background != blank %}--color-input-background: {{ section.settings.custom_input_background }};{% endif -%}
-      {%- if section.settings.custom_input_text != blank %}--color-input-text: {{ section.settings.custom_input_text }};{% endif -%}
-      {%- if section.settings.custom_input_border != blank %}--color-input-border: {{ section.settings.custom_input_border }};{% endif -%}
-      {%- if section.settings.custom_focus != blank %}--color-focus: {{ section.settings.custom_focus }};{% endif -%}
-      {%- if section.settings.custom_card_background != blank %}--card-background: {{ section.settings.custom_card_background }};{% endif -%}
-      {%- if section.settings.custom_card_text != blank %}--color-card-text: {{ section.settings.custom_card_text }};{% endif -%}
-      {%- if section.settings.custom_card_heading != blank %}--color-card-heading: {{ section.settings.custom_card_heading }};{% endif -%}
-      {%- if section.settings.custom_card_border != blank %}--card-border-color: {{ section.settings.custom_card_border }};{% endif -%}
-      {%- if section.settings.custom_card_link != blank %}--color-card-link: {{ section.settings.custom_card_link }};{% endif -%}
-      {%- if section.settings.custom_card_link_hover != blank %}--color-card-link-hover: {{ section.settings.custom_card_link_hover }};{% endif -%}
-      {%- if section.settings.custom_badge_background != blank %}--color-badge-bg: {{ section.settings.custom_badge_background }};{% endif -%}
-      {%- if section.settings.custom_badge_text != blank %}--color-badge-text: {{ section.settings.custom_badge_text }};{% endif -%}
-      {%- if section.settings.custom_sale != blank %}--color-sale: {{ section.settings.custom_sale }};{% endif -%}
-      {%- if section.settings.custom_sold_out != blank %}--color-sold-out: {{ section.settings.custom_sold_out }};{% endif -%}
-    }
-    #shopify-section-{{ section.id }} > :not(style) { background-color: var(--color-background); color: var(--color-text); }
-    #shopify-section-{{ section.id }} .announcement-bar { background-color: var(--announcement-bg); color: var(--announcement-text); }
-    #shopify-section-{{ section.id }} .announcement-bar__item, #shopify-section-{{ section.id }} .announcement-bar__control,
-    #shopify-section-{{ section.id }} .announcement-bar__dismiss { color: var(--announcement-text); }
-    #shopify-section-{{ section.id }} .announcement-bar__link { color: var(--announcement-link); }
-    #shopify-section-{{ section.id }} .marquee { background-color: var(--marquee-bg); color: var(--marquee-text); }
-    #shopify-section-{{ section.id }} .promo-banner { background-color: var(--promo-fallback); color: var(--color-text); }
-    #shopify-section-{{ section.id }} .promo-banner__content, #shopify-section-{{ section.id }} .banner__content { color: var(--color-text); }
-    #shopify-section-{{ section.id }} .promotion-dialog__content, #shopify-section-{{ section.id }} .cart-drawer__drawer,
-    #shopify-section-{{ section.id }} .mobile-menu, #shopify-section-{{ section.id }} .predictive-search__panel,
-    #shopify-section-{{ section.id }} .banner__media, #shopify-section-{{ section.id }} .product-gallery__stage,
-    #shopify-section-{{ section.id }} .browse-empty, #shopify-section-{{ section.id }} .service-process,
-    #shopify-section-{{ section.id }} .content-empty { background-color: var(--color-background-secondary); }
-    #shopify-section-{{ section.id }} .article-meta, #shopify-section-{{ section.id }} .product-vendor,
-    #shopify-section-{{ section.id }} .product-tax-message, #shopify-section-{{ section.id }} .product-card__vendor,
-    #shopify-section-{{ section.id }} .product-card__type, #shopify-section-{{ section.id }} .product-card__description,
-    #shopify-section-{{ section.id }} .search-result__type { color: var(--color-text-muted); }
-    #shopify-section-{{ section.id }} h1, #shopify-section-{{ section.id }} h2, #shopify-section-{{ section.id }} h3,
-    #shopify-section-{{ section.id }} h4, #shopify-section-{{ section.id }} h5, #shopify-section-{{ section.id }} h6 { color: var(--color-heading); }
-    #shopify-section-{{ section.id }} a:not(.button) { color: var(--color-link); }
-    #shopify-section-{{ section.id }} a:not(.button):hover { color: var(--color-link-hover); }
-    #shopify-section-{{ section.id }} .button:not(.button--secondary):not(.button--text) { background: var(--color-button-primary-bg); color: var(--color-button-primary-text); border-color: var(--color-button-primary-bg); }
-    #shopify-section-{{ section.id }} .button:not(.button--secondary):not(.button--text):hover { background: var(--color-button-primary-hover-bg); color: var(--color-button-primary-hover-text); }
-    #shopify-section-{{ section.id }} .button--secondary { background: var(--color-button-secondary-bg); color: var(--color-button-secondary-text); border-color: var(--color-button-secondary-border); }
-    #shopify-section-{{ section.id }} .button--secondary:hover { background: var(--color-button-secondary-hover-bg); color: var(--color-button-secondary-hover-text); }
-    #shopify-section-{{ section.id }} .button--text { background: transparent; color: var(--color-link); border-color: transparent; padding-inline: 0; text-decoration: underline; }
-    #shopify-section-{{ section.id }} .button--text:hover { background: transparent; color: var(--color-link-hover); border-color: transparent; }
-    #shopify-section-{{ section.id }} input, #shopify-section-{{ section.id }} textarea, #shopify-section-{{ section.id }} select { background-color: var(--color-input-background); color: var(--color-input-text); border-color: var(--color-input-border); }
-    #shopify-section-{{ section.id }} input:focus-visible, #shopify-section-{{ section.id }} textarea:focus-visible, #shopify-section-{{ section.id }} select:focus-visible,
-    #shopify-section-{{ section.id }} button:focus-visible, #shopify-section-{{ section.id }} a:focus-visible { outline-color: var(--color-focus); }
-    #shopify-section-{{ section.id }} .card, #shopify-section-{{ section.id }} .card-utility, #shopify-section-{{ section.id }} .product-card,
-    #shopify-section-{{ section.id }} .article-card, #shopify-section-{{ section.id }} .promo-card, #shopify-section-{{ section.id }} .collection-showcase__card,
-    #shopify-section-{{ section.id }} .search-result, #shopify-section-{{ section.id }} .collection-list-card,
-    #shopify-section-{{ section.id }} .customer-page article, #shopify-section-{{ section.id }} .feature-list__item, #shopify-section-{{ section.id }} .testimonials figure { background-color: var(--card-background); color: var(--color-card-text); border-color: var(--card-border-color); }
-    #shopify-section-{{ section.id }} .card h2, #shopify-section-{{ section.id }} .card h3, #shopify-section-{{ section.id }} .product-card h2,
-    #shopify-section-{{ section.id }} .article-card h2, #shopify-section-{{ section.id }} .promo-card h2 { color: var(--color-card-heading); }
-    #shopify-section-{{ section.id }} .card a:not(.button), #shopify-section-{{ section.id }} .product-card a:not(.button),
-    #shopify-section-{{ section.id }} .article-card a:not(.button), #shopify-section-{{ section.id }} .promo-card a:not(.button) { color: var(--color-card-link); }
-    #shopify-section-{{ section.id }} .card a:not(.button):hover, #shopify-section-{{ section.id }} .product-card a:not(.button):hover,
-    #shopify-section-{{ section.id }} .article-card a:not(.button):hover, #shopify-section-{{ section.id }} .promo-card a:not(.button):hover { color: var(--color-card-link-hover); }
-    #shopify-section-{{ section.id }} .site-footer h1, #shopify-section-{{ section.id }} .site-footer h2, #shopify-section-{{ section.id }} .site-footer h3 { color: var(--color-footer-heading); }
-    #shopify-section-{{ section.id }} .site-footer a:not(.button) { color: var(--color-footer-link); }
-    #shopify-section-{{ section.id }} .site-footer a:not(.button):hover { color: var(--color-footer-link-hover); }
-  </style>
+<style>
+{%- if section.settings.custom_background != blank -%}
+#shopify-section-{{ section.id }} { --color-background: {{ section.settings.custom_background }}; --section-bg: {{ section.settings.custom_background }}; --color-footer-bg: {{ section.settings.custom_background }}; }
+#shopify-section-{{ section.id }} > :not(style), #shopify-section-{{ section.id }} .site-footer { background-color: {{ section.settings.custom_background }}; }
 {%- endif -%}
-{%- for color_block in section.blocks -%}
-  {%- if color_block.settings.use_custom_block_colors -%}
-    <style>
-      #shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] {
-        {%- if color_block.settings.block_background_color != blank %}--color-background: {{ color_block.settings.block_background_color }}; --card-background: {{ color_block.settings.block_background_color }}; --hero-fallback: {{ color_block.settings.block_background_color }}; background-color: var(--color-background);{% endif -%}
-        {%- if color_block.settings.block_border_color != blank %}--color-border: {{ color_block.settings.block_border_color }}; --card-border-color: {{ color_block.settings.block_border_color }}; border-color: var(--color-border);{% endif -%}
-        {%- if color_block.settings.block_text_color != blank %}--color-text: {{ color_block.settings.block_text_color }}; color: var(--color-text);{% endif -%}
-        {%- if color_block.settings.block_heading_color != blank %}--color-heading: {{ color_block.settings.block_heading_color }};{% endif -%}
-        {%- if color_block.settings.block_link_color != blank %}--color-link: {{ color_block.settings.block_link_color }};{% endif -%}
-        {%- if color_block.settings.block_link_hover_color != blank %}--color-link-hover: {{ color_block.settings.block_link_hover_color }};{% endif -%}
-      }
-      #shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] h1,
-      #shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] h2,
-      #shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] h3 { color: var(--color-heading); }
-      #shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] a:not(.button) { color: var(--color-link); }
-      #shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] a:not(.button):hover { color: var(--color-link-hover); }
-    </style>
-  {%- endif -%}
-{%- endfor -%}
+{%- if section.settings.custom_background_secondary != blank -%}
+#shopify-section-{{ section.id }} { --color-background-secondary: {{ section.settings.custom_background_secondary }}; }
+#shopify-section-{{ section.id }} .product-card__media, #shopify-section-{{ section.id }} .collection-showcase__media, #shopify-section-{{ section.id }} .site-footer__localization { background-color: {{ section.settings.custom_background_secondary }}; }
+{%- endif -%}
+{%- if section.settings.custom_text != blank -%}
+#shopify-section-{{ section.id }} { --color-text: {{ section.settings.custom_text }}; --section-text: {{ section.settings.custom_text }}; --color-footer-text: {{ section.settings.custom_text }}; }
+#shopify-section-{{ section.id }} > :not(style), #shopify-section-{{ section.id }} .site-footer, #shopify-section-{{ section.id }} .site-footer__description, #shopify-section-{{ section.id }} .site-footer__block, #shopify-section-{{ section.id }} .site-footer__localization label, #shopify-section-{{ section.id }} .site-footer__bottom { color: {{ section.settings.custom_text }}; }
+{%- endif -%}
+{%- if section.settings.custom_muted_text != blank -%}
+#shopify-section-{{ section.id }} { --color-text-muted: {{ section.settings.custom_muted_text }}; }
+#shopify-section-{{ section.id }} .product-card__vendor, #shopify-section-{{ section.id }} .product-card__type, #shopify-section-{{ section.id }} .product-card__description, #shopify-section-{{ section.id }} .collection-showcase__content p, #shopify-section-{{ section.id }} .site-footer__attribution, #shopify-section-{{ section.id }} .site-footer__bottom small { color: {{ section.settings.custom_muted_text }}; }
+{%- endif -%}
+{%- if section.settings.custom_heading != blank -%}
+#shopify-section-{{ section.id }} { --color-heading: {{ section.settings.custom_heading }}; --color-footer-heading: {{ section.settings.custom_heading }}; }
+#shopify-section-{{ section.id }} h1, #shopify-section-{{ section.id }} h2, #shopify-section-{{ section.id }} h3, #shopify-section-{{ section.id }} h4, #shopify-section-{{ section.id }} h5, #shopify-section-{{ section.id }} h6 { color: {{ section.settings.custom_heading }}; }
+{%- endif -%}
+{%- if section.settings.custom_link != blank -%}
+#shopify-section-{{ section.id }} { --color-link: {{ section.settings.custom_link }}; --color-footer-link: {{ section.settings.custom_link }}; }
+#shopify-section-{{ section.id }} a:not(.button), #shopify-section-{{ section.id }} .button--text { color: {{ section.settings.custom_link }}; }
+{%- endif -%}
+{%- if section.settings.custom_link_hover != blank -%}
+#shopify-section-{{ section.id }} { --color-link-hover: {{ section.settings.custom_link_hover }}; --color-footer-link-hover: {{ section.settings.custom_link_hover }}; }
+#shopify-section-{{ section.id }} a:not(.button):hover, #shopify-section-{{ section.id }} .button--text:hover { color: {{ section.settings.custom_link_hover }}; }
+{%- endif -%}
+{%- if section.settings.custom_border != blank -%}
+#shopify-section-{{ section.id }} { --color-border: {{ section.settings.custom_border }}; }
+#shopify-section-{{ section.id }} .site-footer, #shopify-section-{{ section.id }} .site-footer__bottom, #shopify-section-{{ section.id }} .featured-collection__header { border-color: {{ section.settings.custom_border }}; }
+{%- endif -%}
+{%- if section.settings.custom_primary_button_background != blank -%}#shopify-section-{{ section.id }} { --color-button-primary-bg: {{ section.settings.custom_primary_button_background }}; }{%- endif -%}
+{%- if section.settings.custom_primary_button_text != blank -%}#shopify-section-{{ section.id }} { --color-button-primary-text: {{ section.settings.custom_primary_button_text }}; }{%- endif -%}
+{%- if section.settings.custom_primary_button_hover_background != blank -%}#shopify-section-{{ section.id }} { --color-button-primary-hover-bg: {{ section.settings.custom_primary_button_hover_background }}; }{%- endif -%}
+{%- if section.settings.custom_primary_button_hover_text != blank -%}#shopify-section-{{ section.id }} { --color-button-primary-hover-text: {{ section.settings.custom_primary_button_hover_text }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_background != blank -%}#shopify-section-{{ section.id }} { --color-button-secondary-bg: {{ section.settings.custom_secondary_button_background }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_text != blank -%}#shopify-section-{{ section.id }} { --color-button-secondary-text: {{ section.settings.custom_secondary_button_text }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_border != blank -%}#shopify-section-{{ section.id }} { --color-button-secondary-border: {{ section.settings.custom_secondary_button_border }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_hover_background != blank -%}#shopify-section-{{ section.id }} { --color-button-secondary-hover-bg: {{ section.settings.custom_secondary_button_hover_background }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_hover_text != blank -%}#shopify-section-{{ section.id }} { --color-button-secondary-hover-text: {{ section.settings.custom_secondary_button_hover_text }}; }{%- endif -%}
+{%- if section.settings.custom_primary_button_background != blank -%}#shopify-section-{{ section.id }} .button:not(.button--secondary):not(.button--text) { background:{{ section.settings.custom_primary_button_background }};border-color:{{ section.settings.custom_primary_button_background }}; }{%- endif -%}
+{%- if section.settings.custom_primary_button_text != blank -%}#shopify-section-{{ section.id }} .button:not(.button--secondary):not(.button--text) { color:{{ section.settings.custom_primary_button_text }}; }{%- endif -%}
+{%- if section.settings.custom_primary_button_hover_background != blank -%}#shopify-section-{{ section.id }} .button:not(.button--secondary):not(.button--text):hover { background:{{ section.settings.custom_primary_button_hover_background }};border-color:{{ section.settings.custom_primary_button_hover_background }}; }{%- endif -%}
+{%- if section.settings.custom_primary_button_hover_text != blank -%}#shopify-section-{{ section.id }} .button:not(.button--secondary):not(.button--text):hover { color:{{ section.settings.custom_primary_button_hover_text }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_background != blank -%}#shopify-section-{{ section.id }} .button--secondary { background:{{ section.settings.custom_secondary_button_background }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_text != blank -%}#shopify-section-{{ section.id }} .button--secondary { color:{{ section.settings.custom_secondary_button_text }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_border != blank -%}#shopify-section-{{ section.id }} .button--secondary { border-color:{{ section.settings.custom_secondary_button_border }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_hover_background != blank -%}#shopify-section-{{ section.id }} .button--secondary:hover { background:{{ section.settings.custom_secondary_button_hover_background }}; }{%- endif -%}
+{%- if section.settings.custom_secondary_button_hover_text != blank -%}#shopify-section-{{ section.id }} .button--secondary:hover { color:{{ section.settings.custom_secondary_button_hover_text }}; }{%- endif -%}
+{%- if section.settings.custom_input_background != blank -%}#shopify-section-{{ section.id }} {--color-input-background:{{ section.settings.custom_input_background }};}#shopify-section-{{ section.id }} input,#shopify-section-{{ section.id }} textarea,#shopify-section-{{ section.id }} select{background-color:{{ section.settings.custom_input_background }};}{%- endif -%}
+{%- if section.settings.custom_input_text != blank -%}#shopify-section-{{ section.id }} {--color-input-text:{{ section.settings.custom_input_text }};}#shopify-section-{{ section.id }} input,#shopify-section-{{ section.id }} textarea,#shopify-section-{{ section.id }} select{color:{{ section.settings.custom_input_text }};}{%- endif -%}
+{%- if section.settings.custom_input_border != blank -%}#shopify-section-{{ section.id }} {--color-input-border:{{ section.settings.custom_input_border }};}#shopify-section-{{ section.id }} input,#shopify-section-{{ section.id }} textarea,#shopify-section-{{ section.id }} select{border-color:{{ section.settings.custom_input_border }};}{%- endif -%}
+{%- if section.settings.custom_focus != blank -%}#shopify-section-{{ section.id }} {--color-focus:{{ section.settings.custom_focus }};}{%- endif -%}
+{%- if section.settings.custom_card_background != blank -%}#shopify-section-{{ section.id }} {--card-background:{{ section.settings.custom_card_background }};}#shopify-section-{{ section.id }} .card,#shopify-section-{{ section.id }} .product-card,#shopify-section-{{ section.id }} .collection-showcase__card{background-color:{{ section.settings.custom_card_background }};}{%- endif -%}
+{%- if section.settings.custom_card_text != blank -%}#shopify-section-{{ section.id }} {--color-card-text:{{ section.settings.custom_card_text }};}#shopify-section-{{ section.id }} .product-card__content,#shopify-section-{{ section.id }} .collection-showcase__content{color:{{ section.settings.custom_card_text }};}{%- endif -%}
+{%- if section.settings.custom_card_heading != blank -%}#shopify-section-{{ section.id }} {--color-card-heading:{{ section.settings.custom_card_heading }};}#shopify-section-{{ section.id }} .product-card__title,#shopify-section-{{ section.id }} .product-card__title a,#shopify-section-{{ section.id }} .collection-showcase__content h3{color:{{ section.settings.custom_card_heading }};}{%- endif -%}
+{%- if section.settings.custom_card_border != blank -%}#shopify-section-{{ section.id }} {--card-border-color:{{ section.settings.custom_card_border }};}#shopify-section-{{ section.id }} .product-card,#shopify-section-{{ section.id }} .collection-showcase__card{border-color:{{ section.settings.custom_card_border }};border-style:solid;}{%- endif -%}
+{%- if section.settings.custom_card_link != blank -%}#shopify-section-{{ section.id }} {--color-card-link:{{ section.settings.custom_card_link }};}#shopify-section-{{ section.id }} .product-card a:not(.button),#shopify-section-{{ section.id }} .collection-showcase__link{color:{{ section.settings.custom_card_link }};}{%- endif -%}
+{%- if section.settings.custom_card_link_hover != blank -%}#shopify-section-{{ section.id }} {--color-card-link-hover:{{ section.settings.custom_card_link_hover }};}#shopify-section-{{ section.id }} .product-card a:not(.button):hover,#shopify-section-{{ section.id }} .collection-showcase__link:hover{color:{{ section.settings.custom_card_link_hover }};}{%- endif -%}
+{%- if section.settings.custom_badge_background != blank -%}#shopify-section-{{ section.id }}{--color-badge-bg:{{ section.settings.custom_badge_background }};}#shopify-section-{{ section.id }} .badge,#shopify-section-{{ section.id }} .product-card__badge{background:{{ section.settings.custom_badge_background }};}{%- endif -%}
+{%- if section.settings.custom_badge_text != blank -%}#shopify-section-{{ section.id }}{--color-badge-text:{{ section.settings.custom_badge_text }};}#shopify-section-{{ section.id }} .badge,#shopify-section-{{ section.id }} .product-card__badge{color:{{ section.settings.custom_badge_text }};}{%- endif -%}
+{%- if section.settings.custom_sale != blank -%}#shopify-section-{{ section.id }}{--color-sale:{{ section.settings.custom_sale }};}#shopify-section-{{ section.id }} .price--sale,#shopify-section-{{ section.id }} .product-price__sale,#shopify-section-{{ section.id }} .sale-price,#shopify-section-{{ section.id }} .product-card__badge:not(.badge--sold-out){color:{{ section.settings.custom_sale }};}{%- endif -%}
+{%- if section.settings.custom_sold_out != blank -%}#shopify-section-{{ section.id }}{--color-sold-out:{{ section.settings.custom_sold_out }};}#shopify-section-{{ section.id }} .badge--sold-out{background:{{ section.settings.custom_sold_out }};}{%- endif -%}
+</style>
+{%- for color_block in section.blocks -%}<style>
+{%- if color_block.settings.block_background_color != blank -%}#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"]{--color-background:{{ color_block.settings.block_background_color }};--card-background:{{ color_block.settings.block_background_color }};--hero-fallback:{{ color_block.settings.block_background_color }};background-color:{{ color_block.settings.block_background_color }};}{%- endif -%}
+{%- if color_block.settings.block_border_color != blank -%}#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"]{--color-border:{{ color_block.settings.block_border_color }};--card-border-color:{{ color_block.settings.block_border_color }};border-color:{{ color_block.settings.block_border_color }};border-style:solid;}{%- endif -%}
+{%- if color_block.settings.block_text_color != blank -%}#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"]{color:{{ color_block.settings.block_text_color }};}{%- endif -%}
+{%- if color_block.settings.block_heading_color != blank -%}#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] h1,#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] h2,#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] h3{color:{{ color_block.settings.block_heading_color }};}{%- endif -%}
+{%- if color_block.settings.block_link_color != blank -%}#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] a:not(.button){color:{{ color_block.settings.block_link_color }};}{%- endif -%}
+{%- if color_block.settings.block_link_hover_color != blank -%}#shopify-section-{{ section.id }} [data-color-block-id="{{ color_block.id }}"] a:not(.button):hover{color:{{ color_block.settings.block_link_hover_color }};}{%- endif -%}
+</style>{%- endfor -%}
