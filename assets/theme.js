@@ -776,16 +776,14 @@
     function restoreFocus(){ if(opener && opener.isConnected && typeof opener.focus==='function') opener.focus(); }
     function hasFreshSuccess(){ return !isAge && root.dataset.formSuccess==='true' && !phase14PresentedSuccess[root.id]; } function shouldSuppress(){ if(hasFreshSuccess()) return false; if(phase14VisitDismissals[root.id]) return true; if(root.dataset.homeOnly==='true' && root.dataset.isHomepage !== 'true') return true; if(root.dataset.disableMobile==='true' && window.matchMedia('(max-width: 749px)').matches) return true; if(designMode) return false; var value=readStore(store,key); if(isAge) { if(validTimestamp(value,days)) return true; if(value) safeStore(localStorage,key,null); return false; } if(frequency==='session') return value==='1'; if(frequency==='days') { if(validTimestamp(value,days)) return true; if(value) safeStore(localStorage,key,null); } return false; }
     function openDialog(){ if(destroyed || !root.isConnected || open) return; root.hidden=false; open=true; if(hasFreshSuccess()) phase14PresentedSuccess[root.id]=true; lockPhase14Dialog(); document.addEventListener('keydown',handleKeydown); if(dialog) dialog.focus(); }
-    function closeDialog(){ if(destroyed || !open) return; root.hidden=true; open=false; unlockPhase14Dialog(); document.removeEventListener('keydown',handleKeydown); if(!isAge){ phase14VisitDismissals[root.id]=true; if(frequency==='session' && !designMode) safeStore(sessionStorage,key,'1'); else if(frequency==='days' && !designMode) safeStore(localStorage,key,String(Date.now())); } restoreFocus(); }
+    function closeDialog(){ if(destroyed || !open) return; root.hidden=true; open=false; unlockPhase14Dialog(); document.removeEventListener('keydown',handleKeydown); if(!isAge && !designMode){ phase14VisitDismissals[root.id]=true; if(frequency==='session') safeStore(sessionStorage,key,'1'); else if(frequency==='days') safeStore(localStorage,key,String(Date.now())); } restoreFocus(); }
     function handleKeydown(event){ if(destroyed || !open) return; if(event.key==='Escape' && !isAge){ closeDialog(); return; } if(event.key!=='Tab') return; var items=getFocusable(dialog); if(!items.length) return; if(event.shiftKey && document.activeElement===items[0]){event.preventDefault();items[items.length-1].focus();}else if(!event.shiftKey && document.activeElement===items[items.length-1]){event.preventDefault();items[0].focus();} }
     function handleClose(){ closeDialog(); }
     function handleOverlayClick(){ closeDialog(); }
     function handleAgeConfirm(){ if(destroyed) return; if(!designMode) safeStore(localStorage,key,String(Date.now())); closeDialog(); }
-    if(shouldSuppress()) return;
     if(close) close.addEventListener('click',handleClose); if(overlay) overlay.addEventListener('click',handleOverlayClick); if(confirm) confirm.addEventListener('click',handleAgeConfirm);
-    var delay=isAge||hasFreshSuccess()?0:Math.max(0,Number(root.dataset.delay)||0)*1000;
-    timer=window.setTimeout(openDialog,delay);
-    overlayControllers.set(root,{destroy:function(){if(destroyed)return;destroyed=true;window.clearTimeout(timer);document.removeEventListener('keydown',handleKeydown);if(close)close.removeEventListener('click',handleClose);if(overlay)overlay.removeEventListener('click',handleOverlayClick);if(confirm)confirm.removeEventListener('click',handleAgeConfirm);if(open)unlockPhase14Dialog();open=false;root.hidden=true;overlayControllers.delete(root);}});
+    if((!designMode || isAge) && !shouldSuppress()) { var delay=isAge||hasFreshSuccess()?0:Math.max(0,Number(root.dataset.delay)||0)*1000; timer=window.setTimeout(openDialog,delay); }
+    overlayControllers.set(root,{open:openDialog,close:closeDialog,destroy:function(){if(destroyed)return;destroyed=true;if(timer!==null)window.clearTimeout(timer);document.removeEventListener('keydown',handleKeydown);if(close)close.removeEventListener('click',handleClose);if(overlay)overlay.removeEventListener('click',handleOverlayClick);if(confirm)confirm.removeEventListener('click',handleAgeConfirm);if(open)unlockPhase14Dialog();open=false;root.hidden=true;overlayControllers.delete(root);}});
   }
   function initPrivacy(root) { if (!root || overlayControllers.has(root)) return; var destroyed=false, button=root.querySelector('[data-privacy-dismiss]'), designMode=root.dataset.designMode==='true', days=Math.max(0,Number(root.dataset.days)||0), value=readStore(localStorage,'theme-privacy-dismissed'); if(!designMode && validTimestamp(value,days)) { root.hidden=true; return; } if(value && !validTimestamp(value,days)) safeStore(localStorage,'theme-privacy-dismissed',null); function dismiss(){if(destroyed)return;root.hidden=true;if(!designMode)safeStore(localStorage,'theme-privacy-dismissed',String(Date.now()));} if(button)button.addEventListener('click',dismiss);overlayControllers.set(root,{destroy:function(){destroyed=true;if(button)button.removeEventListener('click',dismiss);overlayControllers.delete(root);}}); }
   function initLocalization(form) { if (!form || overlayControllers.has(form)) return; function handler(){form.submit();} form.querySelectorAll('[data-localization-select]').forEach(function(input){input.addEventListener('change',handler);});overlayControllers.set(form,{destroy:function(){form.querySelectorAll('[data-localization-select]').forEach(function(input){input.removeEventListener('change',handler);});overlayControllers.delete(form);}}); }
@@ -895,6 +893,20 @@
 
   document.addEventListener('shopify:section:load', function (event) {
     if (event && event.target) init(event.target);
+  });
+
+  document.addEventListener('shopify:section:select', function (event) {
+    if (!event || !event.target) return;
+    var popup = event.target.matches && event.target.matches('[data-promotion-popup]') ? event.target : event.target.querySelector('[data-promotion-popup]');
+    var controller = popup && overlayControllers.get(popup);
+    if (controller && popup.dataset.designMode === 'true') controller.open();
+  });
+
+  document.addEventListener('shopify:section:deselect', function (event) {
+    if (!event || !event.target) return;
+    var popup = event.target.matches && event.target.matches('[data-promotion-popup]') ? event.target : event.target.querySelector('[data-promotion-popup]');
+    var controller = popup && overlayControllers.get(popup);
+    if (controller && popup.dataset.designMode === 'true') controller.close();
   });
 
   document.addEventListener('shopify:section:unload', function (event) {

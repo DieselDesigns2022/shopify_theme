@@ -475,6 +475,7 @@ body[data-show-search='false'] .header-action--search, body[data-show-account='f
 @media (prefers-reduced-motion: reduce) { .promotion-dialog__content { scroll-behavior: auto; } }
 .promotion-dialog__body { min-width: 0; overflow-wrap: anywhere; }
 .promotion-dialog__content > img { display: block; max-width: 100%; height: auto; }
+.promotion-dialog__close { z-index: 2; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; min-width: 2.75rem; min-height: 2.75rem; margin: 0; padding: 0; line-height: 1; }
 .promotion-dialog__cta { margin: 1rem 0 0; }
 @media (min-width: 750px) { .promotion-dialog__content--image-left, .promotion-dialog__content--image-right { width: min(100%, 52rem); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } .promotion-dialog__content--image-right > img { order: 2; } .promotion-dialog__content--image-right > .promotion-dialog__body { order: 1; } }
 
