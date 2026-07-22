@@ -1,0 +1,105 @@
+{% layout none %}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex">
+    <title>{{ shop.name | escape }} gift card — {{ gift_card.balance | money_without_trailing_zeros }}</title>
+    {{ content_for_header }}
+    {% assign body_font = settings.font_body %}
+    {% assign heading_font = settings.font_heading %}
+    {% assign body_weight_font = body_font | font_modify: 'weight', settings.body_font_weight %}
+    {% assign heading_weight_font = heading_font | font_modify: 'weight', settings.heading_font_weight %}
+    <style>
+      {% if body_font != blank %}{{ body_font | font_face: font_display: 'swap' }}{% endif %}
+      {% if body_weight_font != blank and body_weight_font != body_font %}{{ body_weight_font | font_face: font_display: 'swap' }}{% endif %}
+      {% if heading_font != blank and heading_font != body_font %}{{ heading_font | font_face: font_display: 'swap' }}{% endif %}
+      {% if heading_weight_font != blank and heading_weight_font != heading_font %}{{ heading_weight_font | font_face: font_display: 'swap' }}{% endif %}
+      :root {
+        --color-background: {{ settings.color_background }};
+        --color-background-secondary: {{ settings.color_background_secondary }};
+        --color-text: {{ settings.color_text }};
+        --color-text-muted: {{ settings.color_text_muted }};
+        --color-heading: {{ settings.color_heading }};
+        --color-link: {{ settings.color_link }};
+        --color-link-hover: {{ settings.color_link_hover }};
+        --color-border: {{ settings.color_border }};
+        --color-focus: {{ settings.color_focus }};
+        --color-error: {{ settings.color_error }};
+        --color-button-primary-bg: {{ settings.color_button_primary_bg }};
+        --color-button-primary-text: {{ settings.color_button_primary_text }};
+        --color-button-primary-hover-bg: {{ settings.color_button_primary_hover_bg }};
+        --color-button-primary-hover-text: {{ settings.color_button_primary_hover_text }};
+        --color-button-secondary-bg: {{ settings.color_button_secondary_bg }};
+        --color-button-secondary-text: {{ settings.color_button_secondary_text }};
+        --color-button-secondary-border: {{ settings.color_button_secondary_border }};
+        --color-button-secondary-hover-bg: {{ settings.color_button_secondary_hover_bg }};
+        --color-button-secondary-hover-text: {{ settings.color_button_secondary_hover_text }};
+        --font-body-family: {{ settings.font_body.family | default: 'system-ui' }}, {{ settings.font_body.fallback_families | default: 'sans-serif' }};
+        --font-heading-family: {{ settings.font_heading.family | default: 'system-ui' }}, {{ settings.font_heading.fallback_families | default: 'sans-serif' }};
+        --base-font-size: {{ settings.base_font_size }}px;
+        --line-height: {{ settings.line_height }};
+        --heading-line-height: {{ settings.heading_line_height }};
+        --body-font-weight: {{ settings.body_font_weight }};
+        --heading-font-weight: {{ settings.heading_font_weight }};
+        --body-letter-spacing: {{ settings.body_letter_spacing | divided_by: 100.0 }}em;
+        --heading-letter-spacing: {{ settings.heading_letter_spacing | divided_by: 100.0 }}em;
+        --page-width: {{ settings.page_width }}px;
+        --content-width-narrow: {{ settings.content_width_narrow }}px;
+        --page-padding-desktop: {{ settings.page_padding_desktop }}px;
+        --page-padding-mobile: {{ settings.page_padding_mobile }}px;
+        --button-radius: {{ settings.button_radius }}px;
+        --button-border-thickness: {{ settings.button_border_thickness }}px;
+        --button-padding-horizontal: {{ settings.button_padding_horizontal }}px;
+        --button-padding-vertical: {{ settings.button_padding_vertical }}px;
+        --card-radius: {{ settings.card_radius }}px;
+        --image-radius: {{ settings.image_radius }}px;
+        --card-border-width: {{ settings.card_border_width }}px;
+        --card-border-color: {{ settings.card_border_color }};
+        --card-background: {{ settings.card_background }};
+        --card-shadow: {% case settings.card_shadow_style %}{% when 'none' %}none{% when 'medium' %}0 .75rem 2rem rgb(0 0 0 / .12){% when 'strong' %}0 1rem 3rem rgb(0 0 0 / .18){% else %}0 .25rem 1rem rgb(0 0 0 / .06){% endcase %};
+      }
+    </style>
+    {{ 'gift-card.css' | asset_url | stylesheet_tag }}
+  </head>
+  <body>
+    <main class="gift-card-page" aria-labelledby="GiftCardTitle">
+      <header class="gift-card-header">
+        {% if settings.logo != blank %}
+          {% assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio | round %}
+          {{ settings.logo | image_url: width: 640 | image_tag: class: 'gift-card-logo', widths: '160, 240, 320, 480, 640', sizes: '(max-width: 749px) 140px, 180px', width: settings.logo_width, height: logo_height, alt: shop.name, loading: 'eager' }}
+        {% else %}
+          <a class="gift-card-shop-name" href="{{ shop.url }}">{{ shop.name | escape }}</a>
+        {% endif %}
+      </header>
+
+      <article class="gift-card">
+        <p class="gift-card-eyebrow">Gift card</p>
+        <h1 id="GiftCardTitle">{{ gift_card.balance | money }}</h1>
+        <p class="gift-card-description">Use this gift card online at {{ shop.name | escape }}. Enter the code during checkout or scan the QR code.</p>
+
+        {% if gift_card.expired or gift_card.enabled == false %}
+          <p class="gift-card-status" role="status">
+            {% if gift_card.expired %}This gift card has expired.{% else %}This gift card is disabled.{% endif %}
+          </p>
+        {% endif %}
+
+        <div class="gift-card-code" aria-label="Gift card code">{{ gift_card.code | format_code }}</div>
+        <div class="gift-card-qr" aria-label="QR code for this gift card">{{ gift_card.qr_identifier | qr_code }}</div>
+
+        {% if gift_card.expires_on %}
+          <p class="gift-card-expiry">Expires {{ gift_card.expires_on | date: format: 'date' }}</p>
+        {% endif %}
+
+        <div class="gift-card-actions">
+          <button class="gift-card-button gift-card-button--primary" type="button" onclick="window.print()">Print gift card</button>
+          <a class="gift-card-button gift-card-button--secondary" href="{{ shop.url }}">Continue shopping</a>
+          {% if gift_card.pass_url %}
+            <a class="gift-card-wallet" href="{{ gift_card.pass_url }}">Add to Apple Wallet</a>
+          {% endif %}
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

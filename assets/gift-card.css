@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+html { font-size: var(--base-font-size); }
+body { margin: 0; background: var(--color-background-secondary); color: var(--color-text); font-family: var(--font-body-family); font-weight: var(--body-font-weight); letter-spacing: var(--body-letter-spacing); line-height: var(--line-height); }
+a { color: var(--color-link); }
+a:hover { color: var(--color-link-hover); }
+button, a { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.gift-card-page { display: grid; align-content: center; min-height: 100vh; width: min(100%, var(--page-width)); margin: 0 auto; padding: clamp(2rem, 6vw, 5rem) var(--page-padding-desktop); }
+.gift-card-header { display: flex; justify-content: center; margin-bottom: 1.5rem; }
+.gift-card-logo { display: block; width: auto; max-width: min(18rem, 70vw); height: auto; object-fit: contain; }
+.gift-card-shop-name { color: var(--color-heading); font-family: var(--font-heading-family); font-size: clamp(1.35rem, 4vw, 1.75rem); font-weight: var(--heading-font-weight); text-decoration: none; }
+.gift-card { width: min(100%, var(--content-width-narrow)); margin: 0 auto; padding: clamp(1.5rem, 5vw, 3rem); overflow: hidden; text-align: center; background: var(--card-background); border: var(--card-border-width) solid var(--card-border-color); border-radius: var(--card-radius); box-shadow: var(--card-shadow); }
+.gift-card h1 { margin: .25rem 0 1rem; color: var(--color-heading); font-family: var(--font-heading-family); font-size: clamp(2rem, 8vw, 3.25rem); font-weight: var(--heading-font-weight); letter-spacing: var(--heading-letter-spacing); line-height: var(--heading-line-height); overflow-wrap: anywhere; }
+.gift-card-eyebrow { margin: 0; color: var(--color-text-muted); font-size: .875rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.gift-card-description { max-width: 35rem; margin: 0 auto 1.5rem; color: var(--color-text-muted); }
+.gift-card-status { margin: 0 auto 1.5rem; padding: .75rem 1rem; color: var(--color-error); border: 1px solid currentcolor; border-radius: var(--image-radius); font-weight: 700; }
+.gift-card-code { margin: 0 auto 1.5rem; padding: 1rem; overflow-wrap: anywhere; color: var(--color-heading); background: var(--color-background-secondary); border: 1px dashed var(--color-border); border-radius: var(--image-radius); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(1.05rem, 4vw, 1.5rem); letter-spacing: .08em; }
+.gift-card-qr { display: grid; place-items: center; margin: 0 auto 1rem; }
+.gift-card-qr svg { display: block; width: min(10rem, 55vw); max-width: 100%; height: auto; padding: .5rem; background: #fff; border-radius: var(--image-radius); }
+.gift-card-expiry { margin: 0 0 1.5rem; color: var(--color-text-muted); }
+.gift-card-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .75rem; }
+.gift-card-button { max-width: 100%; padding: var(--button-padding-vertical) var(--button-padding-horizontal); border-style: solid; border-width: var(--button-border-thickness); border-radius: var(--button-radius); font: inherit; font-weight: 700; line-height: 1.2; text-align: center; text-decoration: none; cursor: pointer; }
+.gift-card-button--primary { color: var(--color-button-primary-text); background: var(--color-button-primary-bg); border-color: var(--color-button-primary-bg); }
+.gift-card-button--primary:hover { color: var(--color-button-primary-hover-text); background: var(--color-button-primary-hover-bg); border-color: var(--color-button-primary-hover-bg); }
+.gift-card-button--secondary { color: var(--color-button-secondary-text); background: var(--color-button-secondary-bg); border-color: var(--color-button-secondary-border); }
+.gift-card-button--secondary:hover { color: var(--color-button-secondary-hover-text); background: var(--color-button-secondary-hover-bg); }
+.gift-card-wallet { flex-basis: 100%; margin-top: .25rem; overflow-wrap: anywhere; }
+@media (max-width: 749px) { .gift-card-page { padding-right: var(--page-padding-mobile); padding-left: var(--page-padding-mobile); } .gift-card-button { width: 100%; } }
+@media print { body { background: #fff; color: #000; } .gift-card-page { min-height: auto; padding: 0; } .gift-card-header { margin-bottom: 1rem; } .gift-card { width: 100%; max-width: 42rem; border: 1px solid #777; box-shadow: none; } .gift-card-actions { display: none; } }
