@@ -18,12 +18,7 @@
             "desktop_text": "Welcome to our shop.",
             "mobile_text": "",
             "link": "",
-            "icon": "megaphone",
-            "block_text_color": "#fffaf0",
-            "block_link_color": "",
-            "block_link_hover_color": "",
-            "block_background_color": "",
-            "block_border_color": ""
+            "icon": "megaphone"
           }
         }
       },
@@ -51,14 +46,7 @@
         "show_article": true,
         "show_search": true,
         "show_cart": true,
-        "show_other": true,
-        "custom_background": "#c18975",
-        "custom_text": "#222222",
-        "custom_muted_text": "",
-        "custom_heading": "",
-        "custom_link": "",
-        "custom_link_hover": "",
-        "custom_border": ""
+        "show_other": true
       }
     },
     "welcome_primary": {
@@ -81,6 +69,10 @@
         "bottom_spacing": 24,
         "image_height": 500,
         "mobile_image_height": 320,
+        "desktop_image_fit": "contain",
+        "desktop_image_position": "center center",
+        "mobile_image_fit": "contain",
+        "mobile_image_position": "center center",
         "alt_text": "Welcome to our store",
         "custom_background_secondary": "",
         "custom_text": "",
@@ -448,6 +440,10 @@
         "bottom_spacing": 24,
         "image_height": 380,
         "mobile_image_height": 320,
+        "desktop_image_fit": "cover",
+        "desktop_image_position": "center center",
+        "mobile_image_fit": "cover",
+        "mobile_image_position": "center center",
         "alt_text": "Connect with our community",
         "custom_background_secondary": "",
         "custom_text": "",

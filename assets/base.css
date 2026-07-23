@@ -127,7 +127,7 @@ input[type='text'], input[type='email'], input[type='tel'], input[type='url'], i
 .banner { padding-block: var(--banner-pt) var(--banner-pb); }
 .banner__inner { position: relative; }
 .banner__media { position: relative; min-height: var(--banner-mobile-height); background: var(--color-border); background: color-mix(in srgb, var(--color-border), transparent 50%); border-radius: var(--corner-radius); overflow: hidden; }
-.banner__media img { width: 100%; height: var(--banner-mobile-height); object-fit: cover; }
+.banner__media img { width: 100%; height: var(--banner-mobile-height); object-fit: var(--banner-mobile-fit, cover); object-position: var(--banner-mobile-position, center center); }
 .banner__overlay { position: absolute; inset: 0; background: rgb(0 0 0 / var(--overlay-opacity)); }
 .banner__full-link { position: absolute; inset: 0; z-index: 1; border-radius: var(--corner-radius); }
 .banner__full-link:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
@@ -171,6 +171,7 @@ input[type='text'], input[type='email'], input[type='tel'], input[type='url'], i
   .site-header__inner--center { grid-template-areas: "nav brand actions"; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
   .site-footer__primary { grid-template-columns: minmax(10rem, .8fr) minmax(0, 1.4fr) minmax(10rem, 1fr); gap: clamp(1.5rem, 4vw, 4rem); }
   .banner__media, .banner__media img { min-height: var(--banner-height); height: var(--banner-height); }
+  .banner__media img { object-fit: var(--banner-desktop-fit, cover); object-position: var(--banner-desktop-position, center center); }
   .banner__content { position: absolute; inset: 2rem; margin: 0; align-content: center; color: white; }
   .banner--top .banner__content { align-content: start; }
   .banner--bottom .banner__content { align-content: end; }

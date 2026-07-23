@@ -1,4 +1,3 @@
-{% render 'custom-color-scope', section: section %}
 {%- liquid
   assign scope = section.settings.visibility_scope
   assign render_section = true
@@ -246,56 +245,6 @@
       "id": "show_other",
       "label": "Other template types",
       "default": true
-    },
-    {
-      "type": "header",
-      "content": "Custom colors"
-    },
-    {
-      "type": "color",
-      "id": "custom_background",
-      "label": "Background",
-      "placeholder": "Inherited from theme style"
-    },
-    {
-      "type": "header",
-      "content": "Text and links"
-    },
-    {
-      "type": "color",
-      "id": "custom_text",
-      "label": "Text",
-      "placeholder": "Inherited from theme style"
-    },
-    {
-      "type": "color",
-      "id": "custom_muted_text",
-      "label": "Muted text",
-      "placeholder": "Inherited from theme style"
-    },
-    {
-      "type": "color",
-      "id": "custom_heading",
-      "label": "Headings",
-      "placeholder": "Inherited from theme style"
-    },
-    {
-      "type": "color",
-      "id": "custom_link",
-      "label": "Links",
-      "placeholder": "Inherited from theme style"
-    },
-    {
-      "type": "color",
-      "id": "custom_link_hover",
-      "label": "Link hover",
-      "placeholder": "Inherited from theme style"
-    },
-    {
-      "type": "color",
-      "id": "custom_border",
-      "label": "Borders and dividers",
-      "placeholder": "Inherited from theme style"
     }
   ],
   "blocks": [
@@ -350,40 +299,6 @@
               "label": "Megaphone"
             }
           ]
-        },
-        {
-          "type": "header",
-          "content": "Custom block colors"
-        },
-        {
-          "type": "color",
-          "id": "block_text_color",
-          "label": "Text",
-          "placeholder": "Inherited from theme style"
-        },
-        {
-          "type": "color",
-          "id": "block_link_color",
-          "label": "Link",
-          "placeholder": "Inherited from theme style"
-        },
-        {
-          "type": "color",
-          "id": "block_link_hover_color",
-          "label": "Link hover",
-          "placeholder": "Inherited from theme style"
-        },
-        {
-          "type": "color",
-          "id": "block_background_color",
-          "label": "Background",
-          "placeholder": "Inherited from theme style"
-        },
-        {
-          "type": "color",
-          "id": "block_border_color",
-          "label": "Border",
-          "placeholder": "Inherited from theme style"
         }
       ]
     }
