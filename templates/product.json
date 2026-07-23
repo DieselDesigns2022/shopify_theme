@@ -58,6 +58,23 @@
             "choices": "Yes\nNo\nMaybe"
           }
         },
+        "personalization_tdgMDL": {
+          "type": "personalization",
+          "settings": {
+            "heading": "Personalization",
+            "instructions": "<p>What personalization would you like?</p>",
+            "field_label": "",
+            "field_type": "short_text",
+            "required": false,
+            "maximum_characters": 100,
+            "placeholder": "",
+            "additional_price_notice": "+5.00",
+            "show_character_counter": true,
+            "block_heading_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
+          }
+        },
         "buy": {
           "type": "buy_buttons",
           "settings": {}
@@ -71,6 +88,7 @@
         "description",
         "quantity",
         "custom_product_option_WWGyRJ",
+        "personalization_tdgMDL",
         "buy"
       ],
       "settings": {
