@@ -7,7 +7,7 @@
 <section class="browse-section collection-page" data-browse-section style="--browse-pt:{{ section.settings.top_spacing }}px;--browse-pb:{{ section.settings.bottom_spacing }}px">
  <div class="content-width--{{ section.settings.content_width }}">
   <header class="collection-header">
-   {% if section.settings.show_collection_image and collection.image != blank %}{% assign collection_image_alt = collection.image.alt | default: collection.title %}{{ collection.image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1400', alt: collection_image_alt, class: 'collection-header__image' }}{% endif %}
+   {% if section.settings.show_collection_image and collection.image != blank %}{% assign collection_image_alt = collection.image.alt | default: collection.title %}{{ collection.image | image_url: width: 1400 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1400', alt: collection_image_alt, class: 'collection-header__image', style: '--collection-image-max-width: ' | append: section.settings.collection_image_max_width | append: 'px; --collection-image-desktop-height: ' | append: section.settings.collection_image_desktop_height | append: 'px; --collection-image-mobile-height: ' | append: section.settings.collection_image_mobile_height | append: 'px; --collection-image-fit: ' | append: section.settings.collection_image_fit | append: '; --collection-image-alignment: ' | append: section.settings.collection_image_alignment | append: ';' }}{% endif %}
    {% if section.settings.show_collection_description and collection.description != blank and section.settings.description_position == 'above' %}<div class="collection-header__description collection-header__description--above">{{ collection.description }}</div>{% endif %}
    <h1>{{ collection.title | escape }}</h1>
    {% if section.settings.show_collection_description and collection.description != blank and section.settings.description_position == 'below' %}<div class="collection-header__description collection-header__description--below">{{ collection.description }}</div>{% endif %}
@@ -82,6 +82,72 @@
       "id": "show_collection_image",
       "label": "Show collection image",
       "default": true
+    },
+    {
+      "type": "range",
+      "id": "collection_image_max_width",
+      "label": "Collection image maximum width",
+      "min": 320,
+      "max": 1400,
+      "step": 40,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "collection_image_desktop_height",
+      "label": "Collection image height on desktop",
+      "min": 160,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "collection_image_mobile_height",
+      "label": "Collection image height on mobile",
+      "min": 120,
+      "max": 400,
+      "step": 20,
+      "unit": "px",
+      "default": 180
+    },
+    {
+      "type": "select",
+      "id": "collection_image_fit",
+      "label": "Collection image fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "collection_image_alignment",
+      "label": "Collection image alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
     },
     {
       "type": "checkbox",
@@ -250,10 +316,6 @@
       "step": 4,
       "unit": "px",
       "default": 48
-    },
-    {
-      "type": "header",
-      "content": "Custom colors"
     },
     {
       "type": "color",
