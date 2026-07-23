@@ -1,0 +1,26 @@
+/* Business information image sizing
+   Keep uploaded artwork at its natural proportions instead of forcing it
+   into the section height or cropping important content. */
+.business-information__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-height: 0;
+}
+
+.business-information__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(560px, 70vh);
+  aspect-ratio: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 749px) {
+  .business-information__media img {
+    max-height: none;
+  }
+}
