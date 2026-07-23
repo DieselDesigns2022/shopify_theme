@@ -1,3 +1,4 @@
+# Trigger the one-time layout patch now that this workflow exists on the branch.
 name: One-time product description layout update
 
 on:
@@ -54,8 +55,9 @@ jobs:
         {% unless block.type == 'description' %}
           <div class="product-block product-block--{{ block.type }}" data-color-block-id="{{ block.id }}" {{ block.shopify_attributes }}>"""
 
-          if loop_anchor in section:
-              section = section.replace(loop_anchor, loop_replacement, 1)
+          if loop_anchor not in section:
+              raise SystemExit('Could not find product block loop')
+          section = section.replace(loop_anchor, loop_replacement, 1)
 
           loop_end_anchor = """          </div>
       {% endfor %}
@@ -65,8 +67,9 @@ jobs:
       {% endfor %}
       {% if section.settings.show_tax_shipping_message %}"""
 
-          if loop_end_anchor in section:
-              section = section.replace(loop_end_anchor, loop_end_replacement, 1)
+          if loop_end_anchor not in section:
+              raise SystemExit('Could not find product block loop ending')
+          section = section.replace(loop_end_anchor, loop_end_replacement, 1)
 
           section_path.write_text(section)
 
