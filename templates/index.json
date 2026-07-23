@@ -582,6 +582,46 @@
         "custom_input_border": "",
         "custom_focus": ""
       }
+    },
+    "business_information": {
+      "type": "business-information",
+      "name": "Business information",
+      "settings": {
+        "image_position": "left",
+        "image_fit": "cover",
+        "heading": "Visit or get in touch",
+        "intro": "<p>We’re here to help with product questions, orders, and recommendations. Reach out or stop by during our business hours.</p>",
+        "hours_label": "Business hours",
+        "hours": "<p>Monday–Friday, 9:00 AM–5:00 PM</p>",
+        "phone_label": "Phone",
+        "phone": "",
+        "email_label": "Email",
+        "email": "",
+        "address_label": "Address",
+        "address": "",
+        "address_link": "",
+        "button_label": "Contact us",
+        "button_link": "",
+        "content_width": "wide",
+        "desktop_alignment": "left",
+        "mobile_alignment": "left",
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "mobile_padding_top": 40,
+        "mobile_padding_bottom": 40,
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_primary_button_background": "",
+        "custom_primary_button_text": "",
+        "custom_primary_button_hover_background": "",
+        "custom_primary_button_hover_text": ""
+      }
     }
   },
   "order": [
@@ -595,6 +635,7 @@
     "community_banner",
     "testimonials",
     "service_highlights",
+    "business_information",
     "newsletter"
   ]
 }

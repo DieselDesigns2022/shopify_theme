@@ -119,19 +119,6 @@
             "block_text_color": "#7c3ac8"
           }
         },
-        "inquiry_xDyigb": {
-          "type": "inquiry",
-          "settings": {
-            "inquiry_heading": "Heading",
-            "inquiry_text": "<p>Text</p>",
-            "inquiry_label": "",
-            "inquiry_link": "",
-            "block_text_color": "",
-            "block_heading_color": "",
-            "block_link_color": "",
-            "block_link_hover_color": ""
-          }
-        },
         "variant_picker_96ETt3": {
           "type": "variant_picker",
           "settings": {
@@ -165,7 +152,6 @@
         "size_chart_ygHMgb",
         "collapsible_row_tkq9mr",
         "text_anPdJT",
-        "inquiry_xDyigb",
         "variant_picker_96ETt3",
         "buy"
       ],
