@@ -65,14 +65,14 @@
       "type": "welcome-banner",
       "name": "Primary welcome banner",
       "settings": {
-        "desktop_image": "shopify://shop_images/welcome.png",
+        "desktop_image": "shopify://shop_images/welcome_banner.png",
         "background_color": "#000000",
         "heading": "",
         "text": "",
         "button_label": "",
         "button_link": "",
         "full_banner_link": "",
-        "width": "contained",
+        "width": "full",
         "content_alignment": "center",
         "text_position": "center",
         "show_overlay": false,
@@ -360,7 +360,7 @@
       "type": "divider-banner",
       "name": "Promotional divider",
       "settings": {
-        "desktop_image": "shopify://shop_images/new_this_month.png",
+        "desktop_image": "shopify://shop_images/new_arrivals.png",
         "full_banner_link": "",
         "width": "contained",
         "height": "standard",
@@ -383,8 +383,8 @@
       "name": "Customer favorites",
       "settings": {
         "collection": "automated-collection",
-        "heading": "Customer favorites",
-        "intro": "<p>Explore products shoppers return to again and again.</p>",
+        "heading": "",
+        "intro": "",
         "width": "wide",
         "alignment": "left",
         "product_limit": 8,
@@ -432,8 +432,8 @@
       "type": "welcome-banner",
       "name": "Community banner",
       "settings": {
-        "desktop_image": "shopify://shop_images/facebook_group.png",
-        "background_color": "#000000",
+        "desktop_image": "shopify://shop_images/lets_get_social.png",
+        "background_color": "#FFFAF0",
         "heading": "",
         "text": "",
         "button_label": "",
@@ -459,6 +459,28 @@
         "custom_primary_button_text": "",
         "custom_primary_button_hover_background": "",
         "custom_primary_button_hover_text": ""
+      }
+    },
+    "divider_banner_EWeTXC": {
+      "type": "divider-banner",
+      "name": "Divider banner",
+      "settings": {
+        "desktop_image": "shopify://shop_images/reviews.png",
+        "full_banner_link": "",
+        "width": "contained",
+        "height": "standard",
+        "image_fit": "contain",
+        "top_spacing": 16,
+        "bottom_spacing": 16,
+        "alt_text": "",
+        "decorative_image": true,
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
       }
     },
     "testimonials": {
@@ -509,7 +531,7 @@
       ],
       "name": "Testimonials",
       "settings": {
-        "heading": "Loved by customers",
+        "heading": "",
         "columns": 3,
         "alignment": "center",
         "custom_background": "",
@@ -596,52 +618,34 @@
         "custom_border": ""
       }
     },
-    "business_information": {
-      "type": "business-information",
-      "name": "Business information",
+    "divider_banner_F7Rtmx": {
+      "type": "divider-banner",
+      "name": "Divider banner",
       "settings": {
-        "image_position": "left",
-        "image_fit": "cover",
-        "heading": "Visit or get in touch",
-        "intro": "<p>We’re here to help with product questions, orders, and recommendations. Reach out or stop by during our business hours.</p>",
-        "hours_label": "Business hours",
-        "hours": "<p>Monday–Friday, 9:00 AM–5:00 PM</p>",
-        "phone_label": "Phone",
-        "phone": "",
-        "email_label": "Email",
-        "email": "",
-        "address_label": "Address",
-        "address": "",
-        "address_link": "",
-        "button_label": "Contact us",
-        "button_link": "",
-        "content_width": "wide",
-        "desktop_alignment": "left",
-        "mobile_alignment": "left",
-        "padding_top": 64,
-        "padding_bottom": 64,
-        "mobile_padding_top": 40,
-        "mobile_padding_bottom": 40,
+        "desktop_image": "shopify://shop_images/join-our-email-list-banner.png",
+        "full_banner_link": "",
+        "width": "contained",
+        "height": "standard",
+        "image_fit": "contain",
+        "top_spacing": 16,
+        "bottom_spacing": 16,
+        "alt_text": "",
+        "decorative_image": true,
         "custom_background": "",
         "custom_background_secondary": "",
         "custom_text": "",
-        "custom_muted_text": "",
         "custom_heading": "",
         "custom_link": "",
         "custom_link_hover": "",
-        "custom_border": "",
-        "custom_primary_button_background": "",
-        "custom_primary_button_text": "",
-        "custom_primary_button_hover_background": "",
-        "custom_primary_button_hover_text": ""
+        "custom_border": ""
       }
     },
     "newsletter": {
       "type": "newsletter-signup",
       "name": "Newsletter signup",
       "settings": {
-        "heading": "Stay in the know",
-        "text": "<p>Sign up for new releases, product inspiration, and occasional offers.</p>",
+        "heading": "",
+        "text": "",
         "button_label": "Subscribe",
         "success": "Thanks for subscribing. Welcome to the list!",
         "disclaimer": "<p>You can unsubscribe at any time.</p>",
@@ -675,9 +679,10 @@
     "promotional_divider",
     "customer_favorites",
     "community_banner",
+    "divider_banner_EWeTXC",
     "testimonials",
     "service_highlights",
-    "business_information",
+    "divider_banner_F7Rtmx",
     "newsletter"
   ]
 }
