@@ -1,0 +1,28 @@
+{% liquid
+  assign option_label = block.settings.label | strip | default: 'Custom option'
+  assign option_id = 'ProductOption-' | append: section.id | append: '-' | append: block.id
+  assign help_id = option_id | append: '-help'
+  assign choices = block.settings.choices | newline_to_br | split: '<br />'
+%}
+<div class="product-custom-option" data-product-custom-option>
+  {% if block.settings.option_type == 'radio' %}
+    <fieldset{% if block.settings.instructions != blank %} aria-describedby="{{ help_id }}"{% endif %}>
+      <legend>{{ option_label | escape }}{% if block.settings.required %}<span aria-hidden="true"> *</span>{% endif %}</legend>
+      {% if block.settings.instructions != blank %}<div id="{{ help_id }}" class="product-custom-option__help rte">{{ block.settings.instructions }}</div>{% endif %}
+      <div class="product-custom-option__choices">
+        {% for choice in choices %}{% assign choice_value = choice | strip %}{% if choice_value != blank %}{% assign choice_id = option_id | append: '-' | append: forloop.index %}<label class="product-custom-option__choice" for="{{ choice_id }}"><input id="{{ choice_id }}" type="radio" name="properties[{{ option_label | escape }}]" value="{{ choice_value | escape }}" form="{{ product_form_id }}"{% if block.settings.required %} required{% endif %}><span>{{ choice_value | escape }}</span></label>{% endif %}{% endfor %}
+      </div>
+    </fieldset>
+  {% elsif block.settings.option_type == 'checkbox' %}
+    {% if block.settings.instructions != blank %}<div id="{{ help_id }}" class="product-custom-option__help rte">{{ block.settings.instructions }}</div>{% endif %}
+    <label class="product-custom-option__choice" for="{{ option_id }}"><input id="{{ option_id }}" type="checkbox" name="properties[{{ option_label | escape }}]" value="Yes" form="{{ product_form_id }}"{% if block.settings.required %} required{% endif %}{% if block.settings.instructions != blank %} aria-describedby="{{ help_id }}"{% endif %}><span>{{ option_label | escape }}{% if block.settings.required %}<span aria-hidden="true"> *</span>{% endif %}</span></label>
+  {% else %}
+    <label for="{{ option_id }}">{{ option_label | escape }}{% if block.settings.required %}<span aria-hidden="true"> *</span>{% endif %}</label>
+    {% if block.settings.instructions != blank %}<div id="{{ help_id }}" class="product-custom-option__help rte">{{ block.settings.instructions }}</div>{% endif %}
+    {% case block.settings.option_type %}
+      {% when 'textarea' %}<textarea id="{{ option_id }}" name="properties[{{ option_label | escape }}]" form="{{ product_form_id }}"{% if block.settings.placeholder != blank %} placeholder="{{ block.settings.placeholder | escape }}"{% endif %}{% if block.settings.required %} required{% endif %}{% if block.settings.instructions != blank %} aria-describedby="{{ help_id }}"{% endif %}></textarea>
+      {% when 'select' %}<select id="{{ option_id }}" name="properties[{{ option_label | escape }}]" form="{{ product_form_id }}"{% if block.settings.required %} required{% endif %}{% if block.settings.instructions != blank %} aria-describedby="{{ help_id }}"{% endif %}><option value="">{{ block.settings.placeholder | default: 'Choose an option' | escape }}</option>{% for choice in choices %}{% assign choice_value = choice | strip %}{% if choice_value != blank %}<option value="{{ choice_value | escape }}">{{ choice_value | escape }}</option>{% endif %}{% endfor %}</select>
+      {% else %}<input id="{{ option_id }}" type="text" name="properties[{{ option_label | escape }}]" form="{{ product_form_id }}"{% if block.settings.placeholder != blank %} placeholder="{{ block.settings.placeholder | escape }}"{% endif %}{% if block.settings.required %} required{% endif %}{% if block.settings.instructions != blank %} aria-describedby="{{ help_id }}"{% endif %}>
+    {% endcase %}
+  {% endif %}
+</div>
