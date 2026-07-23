@@ -64,10 +64,24 @@
     var menu = header.querySelector(selectors.menu);
     var close = header.querySelector(selectors.close);
     var overlay = header.querySelector(selectors.overlay);
+    var wrapper = header.closest('.shopify-section') || header.parentElement;
+    if (!wrapper || !wrapper.isConnected || !wrapper.parentNode) return;
+    var spacer = wrapper.previousElementSibling;
+    if (!spacer || !spacer.hasAttribute('data-header-sticky-spacer')) {
+      spacer = document.createElement('div');
+      spacer.className = 'header-sticky-spacer';
+      spacer.setAttribute('data-header-sticky-spacer', '');
+      spacer.setAttribute('aria-hidden', 'true');
+      wrapper.parentNode.insertBefore(spacer, wrapper);
+    }
     var toggles = Array.prototype.slice.call(header.querySelectorAll('[data-header-toggle]'));
     var mobileToggles = Array.prototype.slice.call(header.querySelectorAll('[data-mobile-submenu-toggle]'));
     var lastTrigger = null;
     var lastScrollY = window.scrollY || 0;
+    var stickyStart = wrapper.getBoundingClientRect().top + lastScrollY;
+    var scrollTolerance = 6;
+    var scrollDirection = 0;
+    var directionAnchorY = lastScrollY;
     var destroyed = false;
 
     function setTimeoutTracked(fn, delay) {
@@ -293,23 +307,47 @@
       positionOpenPanels();
     }
 
+    function resetStickyState() {
+      wrapper.classList.remove('header-sticky-wrapper--capable', 'header-sticky-wrapper--fixed');
+      header.classList.remove('is-sticky-capable', 'is-scroll-hidden', 'is-scroll-visible');
+      wrapper.style.removeProperty('--header-fixed-top');
+      spacer.style.height = '0px';
+    }
+
+    function updateScrollDirection(y) {
+      var nextDirection = y > lastScrollY ? 1 : (y < lastScrollY ? -1 : 0);
+      if (nextDirection && nextDirection !== scrollDirection) {
+        scrollDirection = nextDirection;
+        directionAnchorY = lastScrollY;
+      }
+      return scrollDirection ? (y - directionAnchorY) * scrollDirection : 0;
+    }
+
     function syncHeaderState() {
       rafId = null;
       if (destroyed) return;
       var y = window.scrollY || 0;
       var behavior = header.dataset.stickyBehavior;
       var threshold = parseInt(header.dataset.transparentThreshold, 10) || 0;
-      var designMode = header.dataset.designMode === 'true';
       var stickyCapable = behavior === 'always' || behavior === 'sticky-after-scroll' || behavior === 'hide-on-scroll';
+      var shouldFix = behavior === 'always' || ((behavior === 'sticky-after-scroll' || behavior === 'hide-on-scroll') && y > stickyStart);
+      var directionDistance = updateScrollDirection(y);
       header.classList.toggle('is-sticky-capable', stickyCapable);
+      wrapper.classList.toggle('header-sticky-wrapper--capable', stickyCapable);
+      if (shouldFix && !wrapper.classList.contains('header-sticky-wrapper--fixed')) spacer.style.height = wrapper.getBoundingClientRect().height + 'px';
+      wrapper.classList.toggle('header-sticky-wrapper--fixed', shouldFix);
+      if (behavior === 'always') wrapper.style.setProperty('--header-fixed-top', Math.max(stickyStart - y, 0) + 'px');
+      else wrapper.style.removeProperty('--header-fixed-top');
+      if (!shouldFix) spacer.style.height = '0px';
       header.classList.toggle('is-scrolled', y > threshold);
-      if (designMode) {
-        header.classList.remove('is-scroll-hidden');
-        header.classList.add('is-scroll-visible');
-      } else if (behavior === 'hide-on-scroll' && y > threshold && y > lastScrollY) {
+      if (behavior === 'never') {
+        header.classList.remove('is-scroll-hidden', 'is-scroll-visible');
+      } else if (behavior === 'hide-on-scroll' && shouldFix && y > threshold && scrollDirection === 1 && directionDistance > scrollTolerance) {
         header.classList.add('is-scroll-hidden'); header.classList.remove('is-scroll-visible');
-      } else {
+        directionAnchorY = y;
+      } else if (behavior !== 'hide-on-scroll' || !shouldFix || y <= threshold || (scrollDirection === -1 && directionDistance > scrollTolerance)) {
         header.classList.remove('is-scroll-hidden'); header.classList.add('is-scroll-visible');
+        if (scrollDirection === -1 && directionDistance > scrollTolerance) directionAnchorY = y;
       }
       if (header.dataset.transparentActive === 'true') header.classList.toggle('is-solid', y > threshold);
       measureHeader();
@@ -318,7 +356,7 @@
 
     function requestSync() { if (rafId === null) rafId = window.requestAnimationFrame(syncHeaderState); }
     addCleanup(cleanup, window, 'scroll', requestSync, { passive: true });
-    addCleanup(cleanup, window, 'resize', function () { if (window.innerWidth >= 750) closeMenu({ desktopResize: true, returnFocus: false }); requestSync(); });
+    addCleanup(cleanup, window, 'resize', function () { if (window.innerWidth >= 750) closeMenu({ desktopResize: true, returnFocus: false }); stickyStart = spacer.getBoundingClientRect().top + (window.scrollY || 0); if (wrapper.classList.contains('header-sticky-wrapper--fixed')) spacer.style.height = wrapper.getBoundingClientRect().height + 'px'; requestSync(); });
     addCleanup(cleanup, document, 'theme:overlay:close', function () { closeMenu({ returnFocus: false }); });
     if ('ResizeObserver' in window) {
       resizeObserver = new ResizeObserver(requestSync);
@@ -333,6 +371,8 @@
       timeouts.forEach(function (id) { window.clearTimeout(id); });
       closeMenu({ returnFocus: false });
       closeAllPanels();
+      resetStickyState();
+      spacer.remove();
       cleanup.forEach(function (fn) { fn(); });
       headerControllers.delete(header);
     });
