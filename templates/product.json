@@ -39,10 +39,6 @@
             "block_link_hover_color": ""
           }
         },
-        "description": {
-          "type": "description",
-          "settings": {}
-        },
         "quantity": {
           "type": "quantity_selector",
           "settings": {}
@@ -137,6 +133,10 @@
         "buy": {
           "type": "buy_buttons",
           "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
         }
       },
       "block_order": [
@@ -144,7 +144,6 @@
         "vendor",
         "price",
         "variants",
-        "description",
         "quantity",
         "custom_product_option_WWGyRJ",
         "personalization_tdgMDL",
@@ -153,7 +152,8 @@
         "collapsible_row_tkq9mr",
         "text_anPdJT",
         "variant_picker_96ETt3",
-        "buy"
+        "buy",
+        "description"
       ],
       "settings": {
         "content_width": "wide",
