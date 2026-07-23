@@ -1,26 +1,28 @@
 /* Business information image sizing
-   Keep uploaded artwork at its natural proportions instead of forcing it
-   into the section height or cropping important content. */
+   Keep the image inside a tidy square card so tall uploads cannot make the
+   entire business-information section excessively large. */
 .business-information__media {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   align-self: center;
+  width: min(100%, var(--business-image-width, 400px));
+  aspect-ratio: 1 / 1;
   min-height: 0;
+  overflow: hidden;
 }
 
 .business-information__media img {
   display: block;
   width: 100%;
-  height: auto;
-  max-height: min(560px, 70vh);
+  height: 100%;
+  max-height: none;
   aspect-ratio: auto;
-  object-fit: contain;
+  object-fit: var(--business-image-fit, contain);
   object-position: center;
 }
 
 @media (max-width: 749px) {
-  .business-information__media img {
-    max-height: none;
+  .business-information__media {
+    width: min(100%, 360px);
   }
 }
