@@ -35,3 +35,34 @@
     max-height: 320px !important;
   }
 }
+
+/* Product gallery thumbnails
+   Keep every additional product image thumbnail square without changing the
+   size or proportions of the selected main product image. */
+.product-gallery__thumbnails {
+  align-items: flex-start !important;
+}
+
+.product-gallery__thumbnail {
+  flex: 0 0 72px !important;
+  width: 72px !important;
+  height: 72px !important;
+  min-width: 72px !important;
+  min-height: 72px !important;
+  max-width: 72px !important;
+  max-height: 72px !important;
+  padding: 0 !important;
+  align-self: flex-start !important;
+  overflow: hidden !important;
+}
+
+.product-gallery__thumbnail img {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
