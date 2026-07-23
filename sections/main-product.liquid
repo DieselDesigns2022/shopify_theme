@@ -8,7 +8,7 @@
 <section class="main-product" data-product-section data-section-id="{{ section.id }}" data-product-url="{{ product.url }}" data-money-format="{{ shop.money_format | strip_html | escape }}" style="--product-pt: {{ section.settings.top_spacing }}px; --product-pb: {{ section.settings.bottom_spacing }}px;">
   <script type="application/json" data-product-variants>{{ product.variants | json }}</script>
   <div class="main-product__grid content-width--{{ section.settings.content_width }} main-product__grid--media-{{ section.settings.desktop_media_position }} main-product__grid--{{ section.settings.desktop_media_width }}">
-    <div class="product-gallery product-gallery--thumbs-{{ section.settings.desktop_thumbnail_position }}{% unless section.settings.show_mobile_thumbnails %} product-gallery--hide-mobile-thumbnails{% endunless %}" data-product-gallery data-initial-media-id="{{ featured_media.id }}" style="--product-image-fit: {{ section.settings.image_fit }};">
+    <div class="product-gallery{% if product.media.size > 1 %} product-gallery--has-thumbnails product-gallery--thumbs-{{ section.settings.desktop_thumbnail_position }}{% endif %}{% unless section.settings.show_mobile_thumbnails %} product-gallery--hide-mobile-thumbnails{% endunless %}" data-product-gallery{% if featured_media != blank %} data-initial-media-id="{{ featured_media.id }}"{% endif %} style="--product-image-fit: {{ section.settings.image_fit }};">
       <div class="product-gallery__stage" data-product-stage>
         {% if product.media.size > 0 %}
           {% for media in product.media %}{% assign media_loading = 'lazy' %}{% assign media_is_selected = false %}{% if media.id == featured_media.id %}{% assign media_is_selected = true %}{% if section_position <= 2 %}{% assign media_loading = 'eager' %}{% endif %}{% endif %}{% render 'product-media', media: media, media_index: forloop.index, media_loading: media_loading, media_is_selected: media_is_selected, product: product, section: section %}{% endfor %}
@@ -51,7 +51,6 @@
               {% when 'buy_buttons' %}<div class="product-buy-buttons">{% if has_file_upload %}{% form 'product', product, id: product_form_id, class: 'product-form', enctype: 'multipart/form-data', data-product-form: '' %}<input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id disabled><noscript><label for="Variant-{{ section.id }}">Variant</label><select id="Variant-{{ section.id }}" name="id">{% for variant in product.variants %}<option value="{{ variant.id }}"{% if variant.id == current_variant.id %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>{{ variant.title | escape }} — {{ variant.price | money }}{% unless variant.available %} — Sold out{% endunless %}</option>{% endfor %}</select></noscript><button type="submit" name="add" class="button" data-add-to-cart{% unless product.available %} disabled{% endunless %}><span data-add-to-cart-label>{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}</span></button>{% if section.settings.show_dynamic_checkout %}<div data-dynamic-checkout{% unless current_variant.available %} hidden{% endunless %}>{{ form | payment_button }}</div>{% endif %}{% endform %}{% else %}{% form 'product', product, id: product_form_id, class: 'product-form', data-product-form: '' %}<input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id disabled><noscript><label for="Variant-{{ section.id }}">Variant</label><select id="Variant-{{ section.id }}" name="id">{% for variant in product.variants %}<option value="{{ variant.id }}"{% if variant.id == current_variant.id %} selected{% endif %}{% unless variant.available %} disabled{% endunless %}>{{ variant.title | escape }} — {{ variant.price | money }}{% unless variant.available %} — Sold out{% endunless %}</option>{% endfor %}</select></noscript><button type="submit" name="add" class="button" data-add-to-cart{% unless product.available %} disabled{% endunless %}><span data-add-to-cart-label>{% if current_variant.available %}Add to cart{% else %}Sold out{% endif %}</span></button>{% if section.settings.show_dynamic_checkout %}<div data-dynamic-checkout{% unless current_variant.available %} hidden{% endunless %}>{{ form | payment_button }}</div>{% endif %}{% endform %}{% endif %}</div>
               {% when 'collapsible_row' %}{% if block.settings.heading != blank or block.settings.content != blank or block.settings.page.content != blank %}<details class="product-collapsible"><summary>{{ block.settings.heading | default: block.settings.page.title | escape }}</summary><div class="rte">{% if block.settings.content != blank %}{{ block.settings.content }}{% elsif block.settings.page != blank %}{{ block.settings.page.content }}{% endif %}</div></details>{% endif %}
               {% when 'text' %}{% if block.settings.text != blank %}<div class="product-text rte">{{ block.settings.text }}</div>{% endif %}
-              {% when 'inquiry' %}{% assign has_inquiry_button = false %}{% if block.settings.inquiry_label != blank %}{% if block.settings.inquiry_link != blank %}{% assign has_inquiry_button = true %}{% endif %}{% endif %}{% if block.settings.inquiry_heading != blank or block.settings.inquiry_text != blank or has_inquiry_button %}<div class="product-inquiry">{% if block.settings.inquiry_heading != blank %}<h2>{{ block.settings.inquiry_heading | escape }}</h2>{% endif %}{% if block.settings.inquiry_text != blank %}<div class="rte">{{ block.settings.inquiry_text }}</div>{% endif %}{% if has_inquiry_button %}<a class="button" href="{{ block.settings.inquiry_link }}">{{ block.settings.inquiry_label | escape }}</a>{% endif %}</div>{% endif %}
               {% when '@app' %}{% render block %}
             {% endcase %}
           </div>
@@ -775,60 +774,6 @@
           "type": "color",
           "id": "block_text_color",
           "label": "Text",
-          "placeholder": "Inherited from theme style"
-        }
-      ]
-    },
-    {
-      "type": "inquiry",
-      "name": "Inquiry",
-      "settings": [
-        {
-          "type": "text",
-          "id": "inquiry_heading",
-          "label": "Heading"
-        },
-        {
-          "type": "richtext",
-          "id": "inquiry_text",
-          "label": "Text"
-        },
-        {
-          "type": "text",
-          "id": "inquiry_label",
-          "label": "Button label"
-        },
-        {
-          "type": "url",
-          "id": "inquiry_link",
-          "label": "Button link"
-        },
-        {
-          "type": "header",
-          "content": "Custom block colors"
-        },
-        {
-          "type": "color",
-          "id": "block_text_color",
-          "label": "Text",
-          "placeholder": "Inherited from theme style"
-        },
-        {
-          "type": "color",
-          "id": "block_heading_color",
-          "label": "Heading",
-          "placeholder": "Inherited from theme style"
-        },
-        {
-          "type": "color",
-          "id": "block_link_color",
-          "label": "Link",
-          "placeholder": "Inherited from theme style"
-        },
-        {
-          "type": "color",
-          "id": "block_link_hover_color",
-          "label": "Link hover",
           "placeholder": "Inherited from theme style"
         }
       ]
