@@ -18,7 +18,7 @@
   {% assign full_banner_label = 'welcome_banner.full_link_label' | t %}
 {% endif %}
 {% assign banner_alt = section.settings.alt_text | default: desktop_image.alt %}
-<section class="banner welcome-banner banner--{{ section.settings.width }} banner--{{ section.settings.text_position }}" style="--banner-pt: {{ section.settings.top_spacing }}px; --banner-pb: {{ section.settings.bottom_spacing }}px; --banner-height: {{ section.settings.image_height }}px; --banner-mobile-height: {{ section.settings.mobile_image_height }}px; --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}; background-color: {{ section.settings.background_color }};">
+<section class="banner welcome-banner banner--{{ section.settings.width }} banner--{{ section.settings.text_position }}" style="--banner-pt: {{ section.settings.top_spacing }}px; --banner-pb: {{ section.settings.bottom_spacing }}px; --banner-height: {{ section.settings.image_height }}px; --banner-mobile-height: {{ section.settings.mobile_image_height }}px; --banner-desktop-fit: {{ section.settings.desktop_image_fit }}; --banner-desktop-position: {{ section.settings.desktop_image_position }}; --banner-mobile-fit: {{ section.settings.mobile_image_fit }}; --banner-mobile-position: {{ section.settings.mobile_image_position }}; --overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}; background-color: {{ section.settings.background_color }};">
   <div class="banner__inner{% if section.settings.width == 'contained' %} page-width{% endif %}">
     <div class="banner__media">
       {% if desktop_image != blank %}
@@ -45,6 +45,60 @@
       "type": "image_picker",
       "id": "mobile_image",
       "label": "Mobile image"
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_fit",
+      "label": "Desktop image fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Crop to fill" },
+        { "value": "contain", "label": "Show full image" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_position",
+      "label": "Desktop image position",
+      "default": "center center",
+      "options": [
+        { "value": "left top", "label": "Top left" },
+        { "value": "center top", "label": "Top center" },
+        { "value": "right top", "label": "Top right" },
+        { "value": "left center", "label": "Center left" },
+        { "value": "center center", "label": "Center" },
+        { "value": "right center", "label": "Center right" },
+        { "value": "left bottom", "label": "Bottom left" },
+        { "value": "center bottom", "label": "Bottom center" },
+        { "value": "right bottom", "label": "Bottom right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_fit",
+      "label": "Mobile image fit",
+      "default": "cover",
+      "options": [
+        { "value": "cover", "label": "Crop to fill" },
+        { "value": "contain", "label": "Show full image" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_position",
+      "label": "Mobile image position",
+      "default": "center center",
+      "options": [
+        { "value": "left top", "label": "Top left" },
+        { "value": "center top", "label": "Top center" },
+        { "value": "right top", "label": "Top right" },
+        { "value": "left center", "label": "Center left" },
+        { "value": "center center", "label": "Center" },
+        { "value": "right center", "label": "Center right" },
+        { "value": "left bottom", "label": "Bottom left" },
+        { "value": "center bottom", "label": "Bottom center" },
+        { "value": "right bottom", "label": "Bottom right" }
+      ]
     },
     {
       "type": "color",
