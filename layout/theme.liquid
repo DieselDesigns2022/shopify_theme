@@ -130,6 +130,50 @@
     </style>
     {{ 'base.css' | asset_url | stylesheet_tag }}
     {{ 'business-information.css' | asset_url | stylesheet_tag }}
+    <style>
+      @media (min-width: 750px) {
+        .business-information__grid {
+          grid-template-columns: 360px minmax(0, 1fr) !important;
+          align-items: center !important;
+        }
+
+        .business-information__media {
+          width: 360px !important;
+          height: 360px !important;
+          min-width: 360px !important;
+          max-width: 360px !important;
+          min-height: 360px !important;
+          max-height: 360px !important;
+          aspect-ratio: 1 / 1 !important;
+          overflow: hidden !important;
+        }
+      }
+
+      .business-information__media img {
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: none !important;
+        max-height: none !important;
+        aspect-ratio: 1 / 1 !important;
+        object-fit: var(--business-image-fit, cover) !important;
+        object-position: center !important;
+      }
+
+      @media (max-width: 749px) {
+        .business-information__media {
+          width: min(calc(100vw - 2rem), 360px) !important;
+          height: min(calc(100vw - 2rem), 360px) !important;
+          min-width: 0 !important;
+          min-height: 0 !important;
+          max-width: 360px !important;
+          max-height: 360px !important;
+          aspect-ratio: 1 / 1 !important;
+          margin-inline: auto !important;
+          overflow: hidden !important;
+        }
+      }
+    </style>
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
   </head>
   <body data-header-width="{{ settings.header_width_behavior }}" data-footer-width="{{ settings.footer_width_behavior }}" data-show-search="{{ settings.show_search }}" data-show-account="{{ settings.show_account }}" data-show-cart="{{ settings.show_cart }}" data-hover-style="{{ settings.hover_animation_style }}" data-reveal-animation="{{ settings.enable_reveal_animation }}" data-reveal-style="{{ settings.section_reveal_style }}" data-button-hover="{{ settings.enable_button_hover_effects }}" data-link-hover="{{ settings.enable_link_hover_effects }}" data-image-hover="{{ settings.enable_image_hover_effects }}" data-card-hover="{{ settings.enable_card_hover_effects }}">
