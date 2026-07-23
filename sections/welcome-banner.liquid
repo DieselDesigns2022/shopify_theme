@@ -42,18 +42,19 @@
       "label": "Desktop image"
     },
     {
-      "type": "image_picker",
-      "id": "mobile_image",
-      "label": "Mobile image"
-    },
-    {
       "type": "select",
       "id": "desktop_image_fit",
       "label": "Desktop image fit",
       "default": "cover",
       "options": [
-        { "value": "cover", "label": "Crop to fill" },
-        { "value": "contain", "label": "Show full image" }
+        {
+          "value": "cover",
+          "label": "Crop to fill"
+        },
+        {
+          "value": "contain",
+          "label": "Show full image"
+        }
       ]
     },
     {
@@ -62,16 +63,58 @@
       "label": "Desktop image position",
       "default": "center center",
       "options": [
-        { "value": "left top", "label": "Top left" },
-        { "value": "center top", "label": "Top center" },
-        { "value": "right top", "label": "Top right" },
-        { "value": "left center", "label": "Center left" },
-        { "value": "center center", "label": "Center" },
-        { "value": "right center", "label": "Center right" },
-        { "value": "left bottom", "label": "Bottom left" },
-        { "value": "center bottom", "label": "Bottom center" },
-        { "value": "right bottom", "label": "Bottom right" }
+        {
+          "value": "left top",
+          "label": "Top left"
+        },
+        {
+          "value": "center top",
+          "label": "Top center"
+        },
+        {
+          "value": "right top",
+          "label": "Top right"
+        },
+        {
+          "value": "left center",
+          "label": "Center left"
+        },
+        {
+          "value": "center center",
+          "label": "Center"
+        },
+        {
+          "value": "right center",
+          "label": "Center right"
+        },
+        {
+          "value": "left bottom",
+          "label": "Bottom left"
+        },
+        {
+          "value": "center bottom",
+          "label": "Bottom center"
+        },
+        {
+          "value": "right bottom",
+          "label": "Bottom right"
+        }
       ]
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Desktop banner height",
+      "min": 120,
+      "max": 720,
+      "step": 20,
+      "unit": "px",
+      "default": 420
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
     },
     {
       "type": "select",
@@ -79,8 +122,14 @@
       "label": "Mobile image fit",
       "default": "cover",
       "options": [
-        { "value": "cover", "label": "Crop to fill" },
-        { "value": "contain", "label": "Show full image" }
+        {
+          "value": "cover",
+          "label": "Crop to fill"
+        },
+        {
+          "value": "contain",
+          "label": "Show full image"
+        }
       ]
     },
     {
@@ -89,16 +138,53 @@
       "label": "Mobile image position",
       "default": "center center",
       "options": [
-        { "value": "left top", "label": "Top left" },
-        { "value": "center top", "label": "Top center" },
-        { "value": "right top", "label": "Top right" },
-        { "value": "left center", "label": "Center left" },
-        { "value": "center center", "label": "Center" },
-        { "value": "right center", "label": "Center right" },
-        { "value": "left bottom", "label": "Bottom left" },
-        { "value": "center bottom", "label": "Bottom center" },
-        { "value": "right bottom", "label": "Bottom right" }
+        {
+          "value": "left top",
+          "label": "Top left"
+        },
+        {
+          "value": "center top",
+          "label": "Top center"
+        },
+        {
+          "value": "right top",
+          "label": "Top right"
+        },
+        {
+          "value": "left center",
+          "label": "Center left"
+        },
+        {
+          "value": "center center",
+          "label": "Center"
+        },
+        {
+          "value": "right center",
+          "label": "Center right"
+        },
+        {
+          "value": "left bottom",
+          "label": "Bottom left"
+        },
+        {
+          "value": "center bottom",
+          "label": "Bottom center"
+        },
+        {
+          "value": "right bottom",
+          "label": "Bottom right"
+        }
       ]
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Mobile banner height",
+      "min": 120,
+      "max": 640,
+      "step": 20,
+      "unit": "px",
+      "default": 320
     },
     {
       "type": "color",
@@ -224,26 +310,6 @@
       "step": 4,
       "unit": "px",
       "default": 24
-    },
-    {
-      "type": "range",
-      "id": "image_height",
-      "label": "Image height",
-      "min": 240,
-      "max": 720,
-      "step": 20,
-      "unit": "px",
-      "default": 420
-    },
-    {
-      "type": "range",
-      "id": "mobile_image_height",
-      "label": "Mobile image height",
-      "min": 180,
-      "max": 640,
-      "step": 20,
-      "unit": "px",
-      "default": 320
     },
     {
       "type": "text",
