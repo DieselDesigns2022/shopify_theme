@@ -116,7 +116,7 @@
           "type": "text",
           "settings": {
             "text": "<p>Do you have any additional information you'd like included on your products? We can put that here!</p>",
-            "block_text_color": "#7C3AC8"
+            "block_text_color": "#7c3ac8"
           }
         },
         "inquiry_xDyigb": {
