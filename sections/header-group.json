@@ -17,10 +17,10 @@
         "announcement": {
           "type": "announcement",
           "settings": {
-            "desktop_text": "Welcome to our shop.",
+            "desktop_text": "Buy 1 get 1 50% OFF! Sitewite Sale!",
             "mobile_text": "",
             "link": "",
-            "icon": "shipping",
+            "icon": "sale",
             "block_text_color": "",
             "block_link_color": "",
             "block_link_hover_color": "",
@@ -68,7 +68,7 @@
         "header_layout": "left-inline",
         "compact_header": false,
         "main_menu": "main-menu",
-        "sticky_behavior": "hide-on-scroll",
+        "sticky_behavior": "sticky-after-scroll",
         "transparent_home": false,
         "transparent_product": false,
         "transparent_collection": false,
