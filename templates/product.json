@@ -1,8 +1,16 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
-      "settings": {},
       "blocks": {
         "title": {
           "type": "title",
@@ -26,7 +34,9 @@
             "swatch_option_names": "Color, Finish, Pattern",
             "swatch_shape": "circle",
             "show_swatch_labels": true,
-            "use_variant_image": true
+            "use_variant_image": true,
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         },
         "description": {
@@ -36,6 +46,17 @@
         "quantity": {
           "type": "quantity_selector",
           "settings": {}
+        },
+        "custom_product_option_WWGyRJ": {
+          "type": "custom_product_option",
+          "settings": {
+            "option_type": "select",
+            "label": "Custom option",
+            "instructions": "<p>What size do you want?</p>",
+            "placeholder": "Choose one",
+            "required": true,
+            "choices": "Yes\nNo\nMaybe"
+          }
         },
         "buy": {
           "type": "buy_buttons",
@@ -49,8 +70,40 @@
         "variants",
         "description",
         "quantity",
+        "custom_product_option_WWGyRJ",
         "buy"
-      ]
+      ],
+      "settings": {
+        "content_width": "wide",
+        "desktop_media_width": "large",
+        "desktop_media_position": "left",
+        "desktop_thumbnail_position": "bottom",
+        "show_mobile_thumbnails": true,
+        "image_fit": "contain",
+        "enable_image_zoom": true,
+        "show_vendor": true,
+        "show_tax_shipping_message": true,
+        "show_dynamic_checkout": true,
+        "enable_video_looping": false,
+        "top_spacing": 48,
+        "bottom_spacing": 48,
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_primary_button_background": "",
+        "custom_primary_button_text": "",
+        "custom_primary_button_hover_background": "",
+        "custom_primary_button_hover_text": "",
+        "custom_input_background": "",
+        "custom_input_text": "",
+        "custom_input_border": "",
+        "custom_focus": ""
+      }
     }
   },
   "order": [
