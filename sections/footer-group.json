@@ -11,78 +11,6 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
-    "featured_collection_BhANnE": {
-      "type": "featured-collection",
-      "name": "Featured collection",
-      "settings": {
-        "collection": "automated-collection",
-        "heading": "",
-        "intro": "",
-        "width": "wide",
-        "alignment": "left",
-        "product_limit": 4,
-        "desktop_columns": 4,
-        "mobile_columns": "2",
-        "show_view_all": true,
-        "view_all_label": "View all",
-        "image_ratio": "square",
-        "image_fit": "cover",
-        "card_alignment": "left",
-        "show_vendor": false,
-        "show_description": false,
-        "show_second_image": true,
-        "show_sale_badge": true,
-        "show_sold_out_badge": true,
-        "enable_quick_add": false,
-        "padding_top": 24,
-        "padding_bottom": 32,
-        "custom_background": "",
-        "custom_background_secondary": "",
-        "custom_text": "",
-        "custom_muted_text": "",
-        "custom_heading": "",
-        "custom_link": "",
-        "custom_link_hover": "",
-        "custom_border": "",
-        "custom_secondary_button_background": "",
-        "custom_secondary_button_text": "",
-        "custom_secondary_button_border": "",
-        "custom_secondary_button_hover_background": "",
-        "custom_secondary_button_hover_text": "",
-        "custom_card_background": "",
-        "custom_card_text": "",
-        "custom_card_heading": "",
-        "custom_card_border": "",
-        "custom_card_link": "",
-        "custom_card_link_hover": "",
-        "custom_badge_background": "",
-        "custom_badge_text": "",
-        "custom_sale": "",
-        "custom_sold_out": ""
-      }
-    },
-    "divider_banner_7wcrMf": {
-      "type": "divider-banner",
-      "name": "Divider banner",
-      "settings": {
-        "desktop_image": "shopify://shop_images/new_arrivals.png",
-        "full_banner_link": "",
-        "width": "contained",
-        "height": "standard",
-        "image_fit": "contain",
-        "top_spacing": 16,
-        "bottom_spacing": 16,
-        "alt_text": "",
-        "decorative_image": true,
-        "custom_background": "",
-        "custom_background_secondary": "",
-        "custom_text": "",
-        "custom_heading": "",
-        "custom_link": "",
-        "custom_link_hover": "",
-        "custom_border": ""
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -143,8 +71,6 @@
     }
   },
   "order": [
-    "divider_banner_7wcrMf",
-    "featured_collection_BhANnE",
     "footer"
   ]
 }
