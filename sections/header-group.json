@@ -91,6 +91,43 @@
         "custom_border": ""
       }
     },
+    "welcome_banner_cUJ7MH": {
+      "type": "welcome-banner",
+      "name": "Welcome banner",
+      "settings": {
+        "desktop_image": "shopify://shop_images/welcome_banner.png",
+        "desktop_image_fit": "contain",
+        "desktop_image_position": "center center",
+        "image_height": 420,
+        "mobile_image_fit": "cover",
+        "mobile_image_position": "center center",
+        "mobile_image_height": 320,
+        "background_color": "#ffffff",
+        "heading": "",
+        "text": "",
+        "button_label": "",
+        "button_link": "",
+        "full_banner_link": "",
+        "width": "full",
+        "content_alignment": "center",
+        "text_position": "center",
+        "show_overlay": false,
+        "overlay_opacity": 30,
+        "top_spacing": 24,
+        "bottom_spacing": 24,
+        "alt_text": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_primary_button_background": "",
+        "custom_primary_button_text": "",
+        "custom_primary_button_hover_background": "",
+        "custom_primary_button_hover_text": ""
+      }
+    },
     "cart_drawer": {
       "type": "cart-drawer",
       "settings": {
@@ -121,6 +158,7 @@
   "order": [
     "announcement_bar",
     "header",
+    "welcome_banner_cUJ7MH",
     "cart_drawer"
   ]
 }
