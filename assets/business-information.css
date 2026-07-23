@@ -1,28 +1,37 @@
 /* Business information image sizing
-   Keep the image inside a tidy square card so tall uploads cannot make the
-   entire business-information section excessively large. */
+   This file is loaded after base.css. These rules intentionally use a firm
+   size cap so uploaded artwork cannot stretch the section vertically. */
+.business-information__grid {
+  align-items: center !important;
+}
+
 .business-information__media {
-  display: grid;
-  place-items: center;
-  align-self: center;
-  width: min(100%, var(--business-image-width, 400px));
-  aspect-ratio: 1 / 1;
-  min-height: 0;
-  overflow: hidden;
+  display: grid !important;
+  place-items: center !important;
+  align-self: center !important;
+  width: min(100%, var(--business-image-width, 360px), 360px) !important;
+  height: min(var(--business-image-width, 360px), 360px) !important;
+  min-height: 0 !important;
+  max-height: 360px !important;
+  aspect-ratio: 1 / 1 !important;
+  overflow: hidden !important;
 }
 
 .business-information__media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  aspect-ratio: auto;
-  object-fit: var(--business-image-fit, contain);
-  object-position: center;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: contain !important;
+  object-position: center !important;
 }
 
 @media (max-width: 749px) {
   .business-information__media {
-    width: min(100%, 360px);
+    width: min(100%, 320px) !important;
+    height: min(calc(100vw - 2rem), 320px) !important;
+    max-height: 320px !important;
   }
 }
