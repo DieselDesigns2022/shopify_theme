@@ -196,6 +196,28 @@
         "custom_primary_button_hover_text": ""
       }
     },
+    "divider_banner_ikA6QN": {
+      "type": "divider-banner",
+      "name": "Divider banner",
+      "settings": {
+        "desktop_image": "shopify://shop_images/shop-the-collections-short-banner.png",
+        "full_banner_link": "",
+        "width": "contained",
+        "height": "standard",
+        "image_fit": "contain",
+        "top_spacing": 16,
+        "bottom_spacing": 16,
+        "alt_text": "",
+        "decorative_image": true,
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
+      }
+    },
     "shop_by_category": {
       "type": "collection-showcase",
       "blocks": {
@@ -270,8 +292,8 @@
       ],
       "name": "Shop by category",
       "settings": {
-        "heading": "Shop by category",
-        "intro": "<p>Browse our collections and find something made for your style.</p>",
+        "heading": "",
+        "intro": "",
         "width": "wide",
         "alignment": "left",
         "desktop_columns": 3,
@@ -299,13 +321,35 @@
         "custom_card_link_hover": ""
       }
     },
+    "divider_banner_FhpPBD": {
+      "type": "divider-banner",
+      "name": "Divider banner",
+      "settings": {
+        "desktop_image": "shopify://shop_images/new_arrivals.png",
+        "full_banner_link": "",
+        "width": "contained",
+        "height": "standard",
+        "image_fit": "contain",
+        "top_spacing": 16,
+        "bottom_spacing": 16,
+        "alt_text": "",
+        "decorative_image": true,
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
+      }
+    },
     "new_arrivals": {
       "type": "featured-collection",
       "name": "New arrivals",
       "settings": {
         "collection": "all",
-        "heading": "New arrivals",
-        "intro": "<p>Discover the latest additions to our collection.</p>",
+        "heading": "",
+        "intro": "",
         "width": "wide",
         "alignment": "left",
         "product_limit": 8,
@@ -628,7 +672,7 @@
         "bottom_spacing": 16,
         "alt_text": "",
         "decorative_image": true,
-        "custom_background": "#FFFAF4",
+        "custom_background": "#fffaf4",
         "custom_background_secondary": "",
         "custom_text": "",
         "custom_heading": "",
@@ -647,7 +691,7 @@
         "success": "Thanks for subscribing. Welcome to the list!",
         "disclaimer": "<p>You can unsubscribe at any time.</p>",
         "alignment": "center",
-        "custom_background": "#FFFAF4",
+        "custom_background": "#fffaf4",
         "custom_background_secondary": "",
         "custom_text": "",
         "custom_muted_text": "",
@@ -671,7 +715,9 @@
     "welcome_primary",
     "store_highlights",
     "business_information_nPig6f",
+    "divider_banner_ikA6QN",
     "shop_by_category",
+    "divider_banner_FhpPBD",
     "new_arrivals",
     "promotional_divider",
     "customer_favorites",
