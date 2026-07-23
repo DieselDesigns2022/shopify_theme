@@ -75,6 +75,43 @@
             "block_link_hover_color": ""
           }
         },
+        "file_upload_VL3XDP": {
+          "type": "file_upload",
+          "settings": {
+            "heading": "Upload a file",
+            "instructions": "<p>Upload your photo. Must be high quality res.</p>",
+            "field_label": "",
+            "required": false,
+            "accepted_file_types": "",
+            "maximum_size_notice": "",
+            "block_heading_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
+          }
+        },
+        "size_chart_ygHMgb": {
+          "type": "size_chart",
+          "settings": {
+            "button_label": "Size chart",
+            "heading": "Size chart",
+            "page": "",
+            "fallback": "",
+            "display_style": "collapsible",
+            "block_heading_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
+          }
+        },
+        "collapsible_row_tkq9mr": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Question",
+            "content": "<p>Answer</p>",
+            "page": "",
+            "block_text_color": "",
+            "block_heading_color": ""
+          }
+        },
         "buy": {
           "type": "buy_buttons",
           "settings": {}
@@ -89,6 +126,9 @@
         "quantity",
         "custom_product_option_WWGyRJ",
         "personalization_tdgMDL",
+        "file_upload_VL3XDP",
+        "size_chart_ygHMgb",
+        "collapsible_row_tkq9mr",
         "buy"
       ],
       "settings": {
