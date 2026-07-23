@@ -4,6 +4,7 @@
   function moveProductDescription(scope) {
     var root = scope && scope.querySelectorAll ? scope : document;
     var sections = [];
+    var descriptionLabel = 'CLICK HERE FOR FULL PRODUCT DESCRIPTION';
 
     if (root.matches && root.matches('[data-product-section]')) sections.push(root);
     root.querySelectorAll('[data-product-section]').forEach(function (section) {
@@ -26,11 +27,14 @@
         details.className = 'product-collapsible product-gallery__description';
 
         var summary = document.createElement('summary');
-        summary.textContent = 'Description';
+        summary.textContent = descriptionLabel;
 
         details.appendChild(summary);
         details.appendChild(description);
         descriptionBlock.replaceChildren(details);
+      } else {
+        var existingSummary = details.querySelector('summary');
+        if (existingSummary) existingSummary.textContent = descriptionLabel;
       }
 
       descriptionBlock.classList.add('product-gallery__description-block');
