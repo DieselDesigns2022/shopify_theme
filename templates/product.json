@@ -156,8 +156,8 @@
         "buy"
       ],
       "settings": {
-        "content_width": "wide",
-        "desktop_media_width": "large",
+        "content_width": "standard",
+        "desktop_media_width": "equal",
         "desktop_media_position": "left",
         "desktop_thumbnail_position": "bottom",
         "show_mobile_thumbnails": true,
