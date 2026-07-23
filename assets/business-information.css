@@ -66,3 +66,30 @@
   object-fit: cover !important;
   object-position: center !important;
 }
+
+/* Product and collection list spacing
+   Empty headings should not reserve space above cards. */
+.section-heading:empty {
+  display: none !important;
+  margin: 0 !important;
+}
+
+.featured-collection__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 0;
+  margin-bottom: 0.75rem;
+}
+
+.featured-collection__header .section-heading {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.featured-collection__view-all {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
