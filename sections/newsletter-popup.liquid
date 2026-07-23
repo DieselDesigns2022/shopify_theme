@@ -32,6 +32,7 @@
     id="NewsletterPopup-{{ section.id }}"
     class="promotion-dialog"
     data-promotion-popup
+    data-section-id="{{ section.id }}"
     data-design-mode="{{ request.design_mode }}"
     data-delay="{{ section.settings.delay }}"
     data-frequency="{{ section.settings.frequency }}"
@@ -40,7 +41,7 @@
     data-disable-mobile="{{ section.settings.disable_mobile }}"
     data-is-homepage="{{ is_homepage }}"
     {% if newsletter_success %}data-form-success="true"{% endif %}
-    hidden
+    hidden inert aria-hidden="true"
   >
     {% if section.settings.overlay %}<div class="promotion-dialog__overlay" data-dialog-overlay></div>{% endif %}
     <div class="promotion-dialog__content promotion-dialog__content--image-{{ section.settings.image_position }}" role="dialog" aria-modal="true" aria-labelledby="NewsletterPopupTitle-{{ section.id }}" tabindex="-1">

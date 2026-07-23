@@ -26,7 +26,7 @@
         </div>
       {% endif %}
       {% if section.settings.enable_image_zoom %}
-        <div class="product-gallery__modal" data-product-modal hidden role="dialog" aria-modal="true" aria-label="Product image viewer">
+        <div class="product-gallery__modal" data-product-modal hidden inert role="dialog" aria-modal="true" aria-hidden="true" aria-label="Product image viewer">
           <div class="product-gallery__modal-inner">
             <button type="button" class="product-gallery__modal-close" data-product-modal-close aria-label="Close image viewer">{% render 'icon-close' %}</button>
             <img data-product-modal-image src="" alt="" width="1800" height="1800">
@@ -43,6 +43,7 @@
               {% when 'price' %}{% render 'price', product: product, use_variant: current_variant %}
               {% when 'variant_picker' %}{% unless product.has_only_default_variant %}{% render 'product-variant-options', product: product, current_variant: current_variant, section: section, block: block %}{% endunless %}
               {% when 'personalization' %}{% render 'product-personalization', section: section, block: block, product_form_id: product_form_id %}
+              {% when 'custom_product_option' %}{% render 'product-custom-option', section: section, block: block, product_form_id: product_form_id %}
               {% when 'file_upload' %}{% assign upload_id = 'FileUpload-' | append: section.id | append: '-' | append: block.id %}{% assign upload_help_id = upload_id | append: '-help' %}{% assign upload_status_id = upload_id | append: '-status' %}{% assign upload_notice_id = upload_id | append: '-notice' %}<div class="product-file-upload">{% if block.settings.heading != blank %}<h2>{{ block.settings.heading | escape }}</h2>{% endif %}{% if block.settings.instructions != blank %}<div id="{{ upload_help_id }}" class="rte">{{ block.settings.instructions }}</div>{% endif %}<label for="{{ upload_id }}">{{ block.settings.field_label | default: 'Upload a file' | escape }}{% if block.settings.required %}<span aria-hidden="true"> *</span>{% endif %}</label><input id="{{ upload_id }}" type="file" name="properties[{{ block.settings.field_label | default: 'Upload a file' | escape }}]" form="{{ product_form_id }}"{% if block.settings.required %} required{% endif %}{% if block.settings.accepted_file_types != blank %} accept="{{ block.settings.accepted_file_types | escape }}"{% endif %} aria-describedby="{% if block.settings.instructions != blank %}{{ upload_help_id }} {% endif %}{{ upload_status_id }}{% if block.settings.maximum_size_notice != blank %} {{ upload_notice_id }}{% endif %}" data-file-input><p id="{{ upload_status_id }}" class="product-file-upload__status" data-file-name aria-live="polite">No file selected.</p>{% if block.settings.maximum_size_notice != blank %}<p id="{{ upload_notice_id }}" class="product-file-upload__notice">{{ block.settings.maximum_size_notice | escape }}</p>{% endif %}</div>
               {% when 'size_chart' %}{% render 'product-size-chart', section: section, block: block %}
               {% when 'description' %}{% if product.description != blank %}<div class="product-description rte">{{ product.description }}</div>{% endif %}
@@ -511,6 +512,68 @@
           "id": "block_link_hover_color",
           "label": "Link hover",
           "placeholder": "Inherited from theme style"
+        }
+      ]
+    },
+    {
+      "type": "custom_product_option",
+      "name": "Custom product option",
+      "settings": [
+        {
+          "type": "select",
+          "id": "option_type",
+          "label": "Option type",
+          "default": "text",
+          "options": [
+            {
+              "value": "text",
+              "label": "Single-line text"
+            },
+            {
+              "value": "textarea",
+              "label": "Multi-line personalization text"
+            },
+            {
+              "value": "select",
+              "label": "Dropdown"
+            },
+            {
+              "value": "radio",
+              "label": "Radio buttons"
+            },
+            {
+              "value": "checkbox",
+              "label": "Checkbox"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Merchant-facing label",
+          "default": "Custom option"
+        },
+        {
+          "type": "richtext",
+          "id": "instructions",
+          "label": "Instructions / help text"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required",
+          "default": false
+        },
+        {
+          "type": "textarea",
+          "id": "choices",
+          "label": "Choices",
+          "info": "Enter one choice per line. Used by dropdown and radio options."
         }
       ]
     },
