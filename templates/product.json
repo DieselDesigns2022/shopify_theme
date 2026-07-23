@@ -112,6 +112,13 @@
             "block_heading_color": ""
           }
         },
+        "text_anPdJT": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Do you have any additional information you'd like included on your products? We can put that here!</p>",
+            "block_text_color": "#7C3AC8"
+          }
+        },
         "buy": {
           "type": "buy_buttons",
           "settings": {}
@@ -129,6 +136,7 @@
         "file_upload_VL3XDP",
         "size_chart_ygHMgb",
         "collapsible_row_tkq9mr",
+        "text_anPdJT",
         "buy"
       ],
       "settings": {
