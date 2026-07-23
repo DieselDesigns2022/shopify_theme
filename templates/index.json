@@ -18,7 +18,12 @@
             "desktop_text": "Welcome to our shop.",
             "mobile_text": "",
             "link": "",
-            "icon": "none"
+            "icon": "none",
+            "block_text_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         }
       },
@@ -28,7 +33,7 @@
       "name": "Announcement bar",
       "settings": {
         "display_style": "static",
-        "background_color": "#111111",
+        "background_color": "#000000",
         "text_color": "#ffffff",
         "link_color": "#ffffff",
         "text_alignment": "center",
@@ -46,7 +51,14 @@
         "show_article": true,
         "show_search": true,
         "show_cart": true,
-        "show_other": true
+        "show_other": true,
+        "custom_background": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
       }
     },
     "welcome_primary": {
@@ -54,7 +66,7 @@
       "name": "Primary welcome banner",
       "settings": {
         "desktop_image": "shopify://shop_images/welcome.png",
-        "background_color": "#FFFFFF",
+        "background_color": "#ffffff",
         "heading": "",
         "text": "",
         "button_label": "",
@@ -69,7 +81,17 @@
         "bottom_spacing": 24,
         "image_height": 500,
         "mobile_image_height": 320,
-        "alt_text": "Welcome to our store"
+        "alt_text": "Welcome to our store",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_primary_button_background": "",
+        "custom_primary_button_text": "",
+        "custom_primary_button_hover_background": "",
+        "custom_primary_button_hover_text": ""
       }
     },
     "store_highlights": {
@@ -78,25 +100,37 @@
         "message_1": {
           "type": "message",
           "settings": {
-            "text": "Fresh finds for every day"
+            "text": "Fresh finds for every day",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "message_2": {
           "type": "message",
           "settings": {
-            "text": "Thoughtfully selected"
+            "text": "Thoughtfully selected",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "message_3": {
           "type": "message",
           "settings": {
-            "text": "Easy, secure checkout"
+            "text": "Easy, secure checkout",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "message_4": {
           "type": "message",
           "settings": {
-            "text": "Friendly customer care"
+            "text": "Friendly customer care",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         }
       },
@@ -118,7 +152,14 @@
         "pause_on_hover": true,
         "visibility": "all",
         "padding_top": 16,
-        "padding_bottom": 16
+        "padding_bottom": 16,
+        "custom_background": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
       }
     },
     "shop_by_category": {
@@ -127,37 +168,61 @@
         "category_1": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-1"
+            "collection": "tester-collection-1",
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         },
         "category_2": {
           "type": "collection",
           "settings": {
-            "collection": "hydrogen"
+            "collection": "hydrogen",
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         },
         "category_3": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-4-copy"
+            "collection": "tester-collection-4-copy",
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         },
         "category_4": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-1-copy"
+            "collection": "tester-collection-1-copy",
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         },
         "category_5": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-2-copy"
+            "collection": "tester-collection-2-copy",
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         },
         "category_6": {
           "type": "collection",
           "settings": {
-            "collection": "tester-collection-3-copy"
+            "collection": "tester-collection-3-copy",
+            "block_background_color": "",
+            "block_border_color": "",
+            "block_link_color": "",
+            "block_link_hover_color": ""
           }
         }
       },
@@ -184,8 +249,20 @@
         "link_label": "Explore collection",
         "padding_top": 64,
         "padding_bottom": 64,
-        "custom_heading": "#B42C92",
-        "custom_card_text": "#B42C92"
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "#b42c92",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_card_background": "",
+        "custom_card_text": "#b42c92",
+        "custom_card_heading": "",
+        "custom_card_border": "",
+        "custom_card_link": "",
+        "custom_card_link_hover": ""
       }
     },
     "new_arrivals": {
@@ -213,12 +290,29 @@
         "enable_quick_add": false,
         "padding_top": 64,
         "padding_bottom": 64,
-        "custom_text": "#B42C92",
-        "custom_muted_text": "#F0D1D1",
-        "custom_heading": "#B42C92",
-        "custom_link": "#F0D1D1",
-        "custom_link_hover": "#3EB793",
-        "custom_border": "#7C3AC8"
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "#b42c92",
+        "custom_muted_text": "#f0d1d1",
+        "custom_heading": "#b42c92",
+        "custom_link": "#f0d1d1",
+        "custom_link_hover": "#3eb793",
+        "custom_border": "#7c3ac8",
+        "custom_secondary_button_background": "",
+        "custom_secondary_button_text": "",
+        "custom_secondary_button_border": "",
+        "custom_secondary_button_hover_background": "",
+        "custom_secondary_button_hover_text": "",
+        "custom_card_background": "",
+        "custom_card_text": "",
+        "custom_card_heading": "",
+        "custom_card_border": "",
+        "custom_card_link": "",
+        "custom_card_link_hover": "",
+        "custom_badge_background": "",
+        "custom_badge_text": "",
+        "custom_sale": "",
+        "custom_sold_out": ""
       }
     },
     "promotional_divider": {
@@ -233,7 +327,14 @@
         "top_spacing": 0,
         "bottom_spacing": 0,
         "alt_text": "New this month",
-        "decorative_image": false
+        "decorative_image": false,
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
       }
     },
     "customer_favorites": {
@@ -260,7 +361,30 @@
         "show_sold_out_badge": true,
         "enable_quick_add": false,
         "padding_top": 64,
-        "padding_bottom": 64
+        "padding_bottom": 64,
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_secondary_button_background": "",
+        "custom_secondary_button_text": "",
+        "custom_secondary_button_border": "",
+        "custom_secondary_button_hover_background": "",
+        "custom_secondary_button_hover_text": "",
+        "custom_card_background": "",
+        "custom_card_text": "",
+        "custom_card_heading": "",
+        "custom_card_border": "",
+        "custom_card_link": "",
+        "custom_card_link_hover": "",
+        "custom_badge_background": "",
+        "custom_badge_text": "",
+        "custom_sale": "",
+        "custom_sold_out": ""
       }
     },
     "community_banner": {
@@ -283,7 +407,17 @@
         "bottom_spacing": 24,
         "image_height": 380,
         "mobile_image_height": 320,
-        "alt_text": "Connect with our community"
+        "alt_text": "Connect with our community",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_primary_button_background": "",
+        "custom_primary_button_text": "",
+        "custom_primary_button_hover_background": "",
+        "custom_primary_button_hover_text": ""
       }
     },
     "testimonials": {
@@ -296,7 +430,10 @@
             "name": "Customer name",
             "detail": "Replace with a real review",
             "image": "shopify://shop_images/Western_Seamless_V1_Seamless.png",
-            "rating": 5
+            "rating": 5,
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "review_2": {
@@ -305,7 +442,10 @@
             "quote": "<p>“Use this space for a thoughtful review about the product, service, or delivery experience.”</p>",
             "name": "Customer name",
             "detail": "Replace with a real review",
-            "rating": 5
+            "rating": 5,
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "review_3": {
@@ -314,7 +454,10 @@
             "quote": "<p>“Replace this sample with feedback that helps new shoppers feel confident choosing your store.”</p>",
             "name": "Customer name",
             "detail": "Replace with a real review",
-            "rating": 5
+            "rating": 5,
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         }
       },
@@ -327,7 +470,21 @@
       "settings": {
         "heading": "Loved by customers",
         "columns": 3,
-        "alignment": "center"
+        "alignment": "center",
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_card_background": "",
+        "custom_card_text": "",
+        "custom_card_heading": "",
+        "custom_card_border": "",
+        "custom_card_link": "",
+        "custom_card_link_hover": ""
       }
     },
     "service_highlights": {
@@ -336,25 +493,37 @@
         "message_1": {
           "type": "message",
           "settings": {
-            "text": "Quality you can feel"
+            "text": "Quality you can feel",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "message_2": {
           "type": "message",
           "settings": {
-            "text": "Helpful service when you need it"
+            "text": "Helpful service when you need it",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "message_3": {
           "type": "message",
           "settings": {
-            "text": "New releases added regularly"
+            "text": "New releases added regularly",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         },
         "message_4": {
           "type": "message",
           "settings": {
-            "text": "Made to be enjoyed"
+            "text": "Made to be enjoyed",
+            "block_text_color": "",
+            "block_background_color": "",
+            "block_border_color": ""
           }
         }
       },
@@ -376,7 +545,14 @@
         "pause_on_hover": true,
         "visibility": "all",
         "padding_top": 16,
-        "padding_bottom": 16
+        "padding_bottom": 16,
+        "custom_background": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": ""
       }
     },
     "newsletter": {
@@ -388,7 +564,23 @@
         "button_label": "Subscribe",
         "success": "Thanks for subscribing. Welcome to the list!",
         "disclaimer": "<p>You can unsubscribe at any time.</p>",
-        "alignment": "center"
+        "alignment": "center",
+        "custom_background": "",
+        "custom_background_secondary": "",
+        "custom_text": "",
+        "custom_muted_text": "",
+        "custom_heading": "",
+        "custom_link": "",
+        "custom_link_hover": "",
+        "custom_border": "",
+        "custom_primary_button_background": "",
+        "custom_primary_button_text": "",
+        "custom_primary_button_hover_background": "",
+        "custom_primary_button_hover_text": "",
+        "custom_input_background": "",
+        "custom_input_text": "",
+        "custom_input_border": "",
+        "custom_focus": ""
       }
     }
   },
