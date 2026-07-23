@@ -29,8 +29,8 @@
       ],
       "settings": {
         "display_style": "static",
-        "background_color": "#111111",
-        "text_color": "#ffffff",
+        "background_color": "#738378",
+        "text_color": "#000000",
         "link_color": "#ffffff",
         "text_alignment": "center",
         "rotation_speed": 5,
