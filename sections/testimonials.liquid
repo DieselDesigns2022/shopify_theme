@@ -1,5 +1,294 @@
 {% render 'custom-color-scope', section: section %}
-<section class="home-section testimonials"><div class="content-width--wide text-{{ section.settings.alignment }}">{% if section.settings.heading != blank %}<h2>{{ section.settings.heading | escape }}</h2>{% endif %}<div class="testimonials__grid" style="--desktop-columns:{{ section.settings.columns }};--mobile-columns:1">{% for block in section.blocks %}<figure data-color-block-id="{{ block.id }}" {{ block.shopify_attributes }} class="card feature-list__item">{% if block.settings.rating > 0 %}<p aria-label="{{ block.settings.rating }} out of 5 stars"><span aria-hidden="true">{% for i in (1..block.settings.rating) %}★{% endfor %}</span></p>{% endif %}<blockquote>{{ block.settings.quote }}</blockquote><figcaption>{% if block.settings.image != blank %}{{ block.settings.image | image_url:width:100 | image_tag: loading:'lazy', alt:'' }}{% endif %}<strong>{{ block.settings.name | escape }}</strong>{% if block.settings.detail != blank %}<span>{{ block.settings.detail | escape }}</span>{% endif %}</figcaption></figure>{% endfor %}</div></div></section>
+
+{% liquid
+  assign tablet_columns = section.settings.columns
+  if tablet_columns > 2
+    assign tablet_columns = 2
+  endif
+%}
+
+<section
+  id="Testimonials-{{ section.id }}"
+  class="home-section testimonials{% if section.settings.enable_read_more %} testimonials--read-more-enabled{% endif %}"
+>
+  <style>
+    #Testimonials-{{ section.id }} .testimonials__grid {
+      display: grid !important;
+      align-items: stretch !important;
+      gap: clamp(1rem, 2vw, 2rem);
+      width: 100%;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card {
+      box-sizing: border-box;
+      display: flex !important;
+      flex-direction: column;
+      justify-content: flex-start !important;
+      align-items: stretch !important;
+      width: 100% !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      height: 100%;
+      margin: 0 !important;
+      padding: clamp(1.25rem, 2.5vw, 2rem);
+      overflow: hidden;
+      text-align: inherit;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__rating {
+      width: 100%;
+      margin: 0 0 1rem;
+      line-height: 1;
+      text-align: inherit;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__quote {
+      box-sizing: border-box;
+      width: 100% !important;
+      max-width: none !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      font-size: inherit;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      white-space: normal;
+      text-align: inherit;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__quote > * {
+      width: 100%;
+      max-width: none !important;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__quote > *:first-child {
+      margin-top: 0;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__quote > *:last-child {
+      margin-bottom: 0;
+    }
+
+    #Testimonials-{{ section.id }}.testimonials--read-more-enabled.testimonials--has-js
+      .testimonial-card__quote:not(.is-expanded) {
+      max-height: calc({{ section.settings.preview_lines }} * 1.6em);
+      overflow: hidden;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__toggle {
+      align-self: flex-start;
+      margin: 0.75rem 0 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      font-weight: 700;
+      line-height: 1.3;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+      cursor: pointer;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__toggle:hover,
+    #Testimonials-{{ section.id }} .testimonial-card__toggle:focus-visible {
+      opacity: 0.75;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__caption {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+      margin-top: auto;
+      padding-top: 1.25rem;
+      text-align: inherit;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__caption img {
+      display: block;
+      width: 50px;
+      height: 50px;
+      margin-bottom: 0.75rem;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    #Testimonials-{{ section.id }} .testimonial-card__caption strong,
+    #Testimonials-{{ section.id }} .testimonial-card__caption span {
+      display: block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    #Testimonials-{{ section.id }} .text-center .testimonial-card__toggle {
+      align-self: center;
+    }
+
+    #Testimonials-{{ section.id }} .text-center .testimonial-card__caption {
+      align-items: center;
+    }
+
+    #Testimonials-{{ section.id }} .text-right .testimonial-card__toggle {
+      align-self: flex-end;
+    }
+
+    #Testimonials-{{ section.id }} .text-right .testimonial-card__caption {
+      align-items: flex-end;
+    }
+
+    @media screen and (min-width: 990px) {
+      #Testimonials-{{ section.id }} .testimonials__grid {
+        grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media screen and (min-width: 750px) and (max-width: 989px) {
+      #Testimonials-{{ section.id }} .testimonials__grid {
+        grid-template-columns: repeat({{ tablet_columns }}, minmax(0, 1fr)) !important;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      #Testimonials-{{ section.id }} .testimonials__grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+      }
+    }
+  </style>
+
+  <div class="content-width--wide text-{{ section.settings.alignment }}">
+    {% if section.settings.heading != blank %}
+      <h2>{{ section.settings.heading | escape }}</h2>
+    {% endif %}
+
+    <div class="testimonials__grid">
+      {% for block in section.blocks %}
+        <figure
+          class="card feature-list__item testimonial-card"
+          data-color-block-id="{{ block.id }}"
+          data-testimonial-card
+          {{ block.shopify_attributes }}
+        >
+          {% if block.settings.rating > 0 %}
+            <p
+              class="testimonial-card__rating"
+              aria-label="{{ block.settings.rating }} out of 5 stars"
+            >
+              <span aria-hidden="true">
+                {% for i in (1..block.settings.rating) %}★{% endfor %}
+              </span>
+            </p>
+          {% endif %}
+
+          <blockquote
+            id="TestimonialQuote-{{ section.id }}-{{ block.id }}"
+            class="testimonial-card__quote"
+            data-testimonial-quote
+          >
+            {{ block.settings.quote }}
+          </blockquote>
+
+          {% if section.settings.enable_read_more %}
+            <button
+              class="testimonial-card__toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="TestimonialQuote-{{ section.id }}-{{ block.id }}"
+              data-testimonial-toggle
+              data-more-label="{{ section.settings.read_more_label | escape }}"
+              data-less-label="{{ section.settings.read_less_label | escape }}"
+              hidden
+            >
+              {{ section.settings.read_more_label | escape }}
+            </button>
+          {% endif %}
+
+          {% if block.settings.image != blank or block.settings.name != blank or block.settings.detail != blank %}
+            <figcaption class="testimonial-card__caption">
+              {% if block.settings.image != blank %}
+                {{
+                  block.settings.image
+                  | image_url: width: 100
+                  | image_tag:
+                    loading: 'lazy',
+                    alt: block.settings.name,
+                    width: 50,
+                    height: 50
+                }}
+              {% endif %}
+
+              {% if block.settings.name != blank %}
+                <strong>{{ block.settings.name | escape }}</strong>
+              {% endif %}
+
+              {% if block.settings.detail != blank %}
+                <span>{{ block.settings.detail | escape }}</span>
+              {% endif %}
+            </figcaption>
+          {% endif %}
+        </figure>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.settings.enable_read_more %}
+    <script>
+      (function () {
+        var sectionElement = document.getElementById('Testimonials-{{ section.id }}');
+
+        if (!sectionElement) return;
+
+        sectionElement.classList.add('testimonials--has-js');
+
+        function updateTestimonialButtons() {
+          var cards = sectionElement.querySelectorAll('[data-testimonial-card]');
+
+          cards.forEach(function (card) {
+            var quote = card.querySelector('[data-testimonial-quote]');
+            var toggle = card.querySelector('[data-testimonial-toggle]');
+
+            if (!quote || !toggle) return;
+
+            var isExpanded = quote.classList.contains('is-expanded');
+            var needsToggle = isExpanded || quote.scrollHeight > quote.clientHeight + 2;
+
+            toggle.hidden = !needsToggle;
+
+            if (toggle.dataset.testimonialBound === 'true') return;
+
+            toggle.dataset.testimonialBound = 'true';
+
+            toggle.addEventListener('click', function () {
+              var expanded = quote.classList.toggle('is-expanded');
+
+              toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+              toggle.textContent = expanded
+                ? toggle.getAttribute('data-less-label')
+                : toggle.getAttribute('data-more-label');
+            });
+          });
+        }
+
+        window.requestAnimationFrame(updateTestimonialButtons);
+
+        if (document.readyState !== 'complete') {
+          window.addEventListener('load', updateTestimonialButtons, { once: true });
+        }
+
+        var resizeTimer;
+
+        window.addEventListener('resize', function () {
+          window.clearTimeout(resizeTimer);
+          resizeTimer = window.setTimeout(updateTestimonialButtons, 150);
+        });
+      }());
+    </script>
+  {% endif %}
+</section>
+
 {% schema %}
 {
   "name": "Testimonials",
@@ -39,6 +328,33 @@
           "label": "Right"
         }
       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_read_more",
+      "label": "Shorten long reviews with View more",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "preview_lines",
+      "label": "Review preview lines",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "read_more_label",
+      "label": "View more button text",
+      "default": "View more"
+    },
+    {
+      "type": "text",
+      "id": "read_less_label",
+      "label": "View less button text",
+      "default": "View less"
     },
     {
       "type": "header",
