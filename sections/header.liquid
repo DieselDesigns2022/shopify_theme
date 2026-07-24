@@ -74,14 +74,92 @@
     assign sticky_class = ' is-sticky-capable'
   endif
 %}
+
+{%- comment -%}
+  Keep every header logo at its original aspect ratio.
+  These section-scoped rules override any global header CSS that tries to
+  force the logo into a fixed width-and-height box.
+{%- endcomment -%}
+<style>
+  #SiteHeader-{{ section.id }} .site-header__brand {
+    flex-shrink: 0 !important;
+    min-width: 0;
+  }
+
+  #SiteHeader-{{ section.id }} .site-header__logo-picture {
+    display: block;
+    width: var(--logo-desktop-width) !important;
+    max-width: 100%;
+    height: auto !important;
+    line-height: 0;
+  }
+
+  #SiteHeader-{{ section.id }} .site-header__logo-picture > img,
+  #SiteHeader-{{ section.id }} .site-header__logo {
+    display: block;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    object-fit: contain !important;
+  }
+
+  @media screen and (max-width: 749px) {
+    #SiteHeader-{{ section.id }} .site-header__logo-picture {
+      width: var(--logo-mobile-width) !important;
+    }
+  }
+</style>
+
 <header id="SiteHeader-{{ section.id }}" class="site-header {{ layout_class }}{{ sticky_class }}{% if section.settings.compact_header %} site-header--compact{% endif %}{% if is_transparent %} site-header--transparent{% endif %}" data-header-section data-sticky-behavior="{{ section.settings.sticky_behavior }}" data-transparent-active="{{ is_transparent }}" data-transparent-threshold="{{ section.settings.transparent_scroll_threshold }}" data-design-mode="{{ request.design_mode }}" style="--header-transparent-text: {{ section.settings.transparent_text_color }}; --header-transparent-icon: {{ section.settings.transparent_icon_color }}; --header-transparent-nav: {{ section.settings.transparent_nav_color }}; --header-solid-bg: {{ section.settings.solid_background_color }}; --header-solid-text: {{ section.settings.solid_text_color }}; --logo-desktop-width: {{ desktop_logo_width }}px; --logo-mobile-width: {{ mobile_logo_width }}px;">
   <div class="site-header__inner page-width">
     {% if has_mobile_menu %}<button class="site-header__menu-button header-action header-action--menu" type="button" data-mobile-menu-trigger aria-expanded="false" aria-controls="MobileMenu-{{ section.id }}" aria-label="{{ 'header.open_menu' | t }}">{% render 'icon-menu' %}</button>{% endif %}
     {% if effective_layout == 'center-split' and has_main_menu %}<nav class="site-header__nav site-header__nav--left" aria-label="{{ 'header.left_navigation' | t }}"><ul class="site-header__nav-list">{% for link in section.settings.main_menu.links limit: split_left_count %}{% render 'header-nav-item', link: link, section: section, index: forloop.index %}{% endfor %}</ul></nav>{% endif %}
     <a class="site-header__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name | escape }}">
       {% if has_any_logo %}
-        {% if logo != blank %}{% assign logo_height = desktop_logo_width | divided_by: logo.aspect_ratio | round %}{% assign mobile_logo_height = mobile_logo_width | divided_by: mobile_logo.aspect_ratio | round %}<picture class="site-header__logo-picture site-header__logo-picture--solid"><source media="(max-width: 749px)" srcset="{{ mobile_logo | image_url: width: 220 }} 220w, {{ mobile_logo | image_url: width: 440 }} 440w" sizes="{{ mobile_logo_width }}px" width="{{ mobile_logo_width }}" height="{{ mobile_logo_height }}"><source media="(min-width: 750px)" srcset="{{ logo | image_url: width: 320 }} 320w, {{ logo | image_url: width: 640 }} 640w" sizes="{{ desktop_logo_width }}px" width="{{ desktop_logo_width }}" height="{{ logo_height }}">{{ logo | image_url: width: 640 | image_tag: class: 'site-header__logo', alt: shop.name, width: desktop_logo_width, height: logo_height, loading: solid_logo_loading }}</picture>{% endif %}
-        {% if is_transparent and transparent_logo != blank %}{% assign transparent_logo_height = desktop_logo_width | divided_by: transparent_logo.aspect_ratio | round %}{% assign transparent_mobile_logo_height = mobile_logo_width | divided_by: transparent_logo.aspect_ratio | round %}<picture class="site-header__logo-picture site-header__logo-picture--transparent"><source media="(max-width: 749px)" srcset="{{ transparent_logo | image_url: width: 220 }} 220w, {{ transparent_logo | image_url: width: 440 }} 440w" sizes="{{ mobile_logo_width }}px" width="{{ mobile_logo_width }}" height="{{ transparent_mobile_logo_height }}"><source media="(min-width: 750px)" srcset="{{ transparent_logo | image_url: width: 320 }} 320w, {{ transparent_logo | image_url: width: 640 }} 640w" sizes="{{ desktop_logo_width }}px" width="{{ desktop_logo_width }}" height="{{ transparent_logo_height }}">{{ transparent_logo | image_url: width: 640 | image_tag: class: 'site-header__logo', alt: shop.name, width: desktop_logo_width, height: transparent_logo_height, loading: transparent_logo_loading }}</picture>{% endif %}
+        {% if logo != blank %}
+          {% assign logo_height = desktop_logo_width | divided_by: logo.aspect_ratio | round %}
+          {% assign mobile_logo_height = mobile_logo_width | divided_by: mobile_logo.aspect_ratio | round %}
+          <picture class="site-header__logo-picture site-header__logo-picture--solid">
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ mobile_logo | image_url: width: 220 }} 220w, {{ mobile_logo | image_url: width: 440 }} 440w"
+              sizes="{{ mobile_logo_width }}px"
+              width="{{ mobile_logo_width }}"
+              height="{{ mobile_logo_height }}"
+            >
+            <source
+              media="(min-width: 750px)"
+              srcset="{{ logo | image_url: width: 320 }} 320w, {{ logo | image_url: width: 640 }} 640w"
+              sizes="{{ desktop_logo_width }}px"
+              width="{{ desktop_logo_width }}"
+              height="{{ logo_height }}"
+            >
+            {{ logo | image_url: width: 640 | image_tag: class: 'site-header__logo', alt: shop.name, width: desktop_logo_width, height: logo_height, loading: solid_logo_loading }}
+          </picture>
+        {% endif %}
+        {% if is_transparent and transparent_logo != blank %}
+          {% assign transparent_logo_height = desktop_logo_width | divided_by: transparent_logo.aspect_ratio | round %}
+          {% assign transparent_mobile_logo_height = mobile_logo_width | divided_by: transparent_logo.aspect_ratio | round %}
+          <picture class="site-header__logo-picture site-header__logo-picture--transparent">
+            <source
+              media="(max-width: 749px)"
+              srcset="{{ transparent_logo | image_url: width: 220 }} 220w, {{ transparent_logo | image_url: width: 440 }} 440w"
+              sizes="{{ mobile_logo_width }}px"
+              width="{{ mobile_logo_width }}"
+              height="{{ transparent_mobile_logo_height }}"
+            >
+            <source
+              media="(min-width: 750px)"
+              srcset="{{ transparent_logo | image_url: width: 320 }} 320w, {{ transparent_logo | image_url: width: 640 }} 640w"
+              sizes="{{ desktop_logo_width }}px"
+              width="{{ desktop_logo_width }}"
+              height="{{ transparent_logo_height }}"
+            >
+            {{ transparent_logo | image_url: width: 640 | image_tag: class: 'site-header__logo', alt: shop.name, width: desktop_logo_width, height: transparent_logo_height, loading: transparent_logo_loading }}
+          </picture>
+        {% endif %}
       {% else %}<span class="site-header__brand-text">{{ shop.name | escape }}</span>{% endif %}
       {% if settings.store_tagline != blank %}<small>{{ settings.store_tagline | escape }}</small>{% endif %}
     </a>
